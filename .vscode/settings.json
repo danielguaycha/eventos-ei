@@ -1,0 +1,19 @@
+{
+  "files.exclude": {
+    "node_modules": true,
+    ".vscode": true,
+    ".idea": true,
+    ".editorconfig": true,
+    "vendor": true,
+    ".env.example": true,
+    ".gitattributes": true,
+    ".styleci.yml": true,
+    "artisan": true,
+    "yarn.lock": true,
+    "phpunit.xml": true,
+    "package-lock.json": true,
+    "tests": true,
+    "bootstrap": true,
+    "composer.lock": true
+  }
+}

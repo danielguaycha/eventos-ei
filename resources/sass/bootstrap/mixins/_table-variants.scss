@@ -1,4 +1,4 @@
-// bootstrap-docs-start table-variant
+// scss-docs-start table-variant
 @mixin table-variant($state, $background) {
   .table-#{$state} {
     $color: color-contrast(opaque($body-bg, $background));
@@ -18,4 +18,4 @@
     border-color: mix($color, $background, percentage($table-border-factor));
   }
 }
-// bootstrap-docs-end table-variant
+// scss-docs-end table-variant

@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+<div class="container d-flex align-items-center">
+    <div class="row flex-column justify-content-center align-items-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">
+                    <b class="text-primary">REGISTRARSE</b>
+                </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
@@ -94,39 +96,49 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label">
-                                    <input class="form-check-input @error('role') is-invalid @enderror" required
-                                           @if(old('role') === 'student') checked @endif
-                                           type="radio" name="role" id="role_student" value="student">
-                                    Estudiante
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label">
-                                    <input class="form-check-input @error('role') is-invalid @enderror" required
-                                           @if(old('role') === 'particular') checked @endif
-                                           type="radio" name="role" id="role_particular" value="particular">
-                                    Particular
-                                </label>
-                            </div>
+                        <div class="form-group row align-items-center">
+                            <label for="" class="col-md-4 col-form-label text-md-right"></label>
+                            <div class="col-md-6">
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input @error('role') is-invalid @enderror" required
+                                               @if(old('role') === 'student') checked @endif
+                                               type="radio" name="role" id="role_student" value="student">
+                                        Estudiante
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input @error('role') is-invalid @enderror" required
+                                               @if(old('role') === 'particular') checked @endif
+                                               type="radio" name="role" id="role_particular" value="particular">
+                                        Particular
+                                    </label>
+                                </div>
 
-                            @error('role')
-                                    <span class="invalid-feedback" role="alert">
+                                @error('role')
+                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                            @enderror
+                                @enderror
+                            </div>
                         </div>
 
-                        <div class="form-group row mb-0">
+                        <div class="form-group row mb-0 mt-4">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    Registrarme
                                 </button>
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group text-center">
+                <div>
+                    <b class="text-muted">¿Ya tienes cuenta?</b> &nbsp;<a class="text-secondary" href="{{ route('login') }}">Inicia sesión</a>
                 </div>
             </div>
         </div>

@@ -1,3 +1,4 @@
+<span data-toggle="tooltip" title="Eliminar">
 <button class="btn btn-sm btn-danger delete"
         data-id="{{ $id }}"
         title="Eliminar"
@@ -5,3 +6,4 @@
         data-toggle="modal" data-target="#deleteConfirm">
     <i class="fa fa-trash"></i>
 </button>
+</span>

@@ -78,23 +78,14 @@
 
                 <div class="col">
                     <div class="card-body-title">Seleccione un rol (Si desea cambiarlo)</div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="role" id="admin" value="admin" @if(old('role', $user->role) === 'admin') checked @endif> Administrador
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="role" id="student" value="student"
-                                   @if(old('role', $user->role) === 'student') checked @endif> Estudiante
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="role" id="particular" value="particular"
-                                   @if(old('role', $user->role) === 'particular') checked @endif> Particular
-                        </label>
-                    </div>
+                    @foreach($roles as $r)
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="role" id="{{ $r->name }}" value="{{ $r->id  }}"
+                                       @if(old('role') === $r->id || $user->hasRole($r->name) ) checked @endif> {{ $r->description }}
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
             </div>
             <div class="row mt-2">

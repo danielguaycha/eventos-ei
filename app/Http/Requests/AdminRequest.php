@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 use App\Rules\CedulaValida;
+use App\Rules\UniqueDniStore;
+use App\Rules\UniqueEmailStore;
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 
 class AdminRequest extends FormRequest
 {
@@ -20,8 +23,8 @@ class AdminRequest extends FormRequest
             return [
                 'name' => ['required', 'string', 'max:100', 'min:3'],
                 'surname' => ['required', 'string', 'max:100', 'min:3'],
-                'dni' => ['required', new CedulaValida],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'dni' => ['required', new CedulaValida, new UniqueDniStore],
+                'email' => ['required', 'string', 'email', 'max:255', new UniqueEmailStore],
                 'password' => ['required',
                     'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
                     'string', 'min:8'],
@@ -30,12 +33,12 @@ class AdminRequest extends FormRequest
             return [
                     'name' => ['required', 'string', 'max:100', 'min:3'],
                     'surname' => ['required', 'string', 'max:100', 'min:3'],
-                    'dni' => ['required', new CedulaValida],
-                    'email' => ['required', 'string', 'email', 'max:255',  'unique:users,email,'.$this->admin],
+                    'dni' => ['required', new CedulaValida, new UniqueDniStore($this->admin)],
+                    'email' => ['required', 'string', 'email', 'max:255', new UniqueEmailStore($this->admin)],
                     'password' => ['nullable',
                         'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
                         'string', 'min:8'],
-                    'role' => "required|in:".User::rolAdmin.",".User::rolStudent.",".User::rolParticular
+                    'role' => "required|exists:roles,id|not_in:1"
                 ];
     }
 

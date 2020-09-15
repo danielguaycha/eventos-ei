@@ -1,0 +1,86 @@
+.ei-content {
+    display: flex;
+    flex-flow: wrap;
+    .ei-event-content {
+        width: 100%;
+        @include tablet {
+            width: 50%;
+        }
+        @include desktop {
+            width: 25%;
+        }
+        padding: .5rem .4rem;
+    }
+}
+.ei-event {
+    border: 1px solid rgba(black, .15);
+    padding: 1rem 0 .5rem;
+    .ei-event-head {
+        padding: 0rem .8rem;
+        margin-bottom: 10px;
+        .title {
+            display: inline-block;
+            min-height: 40px;
+            span {
+                font-size: .89em;
+                display: inline-block;
+                font-weight: 600;
+                line-height: 18px !important;
+                color: darken($gray, 10);
+            }
+        }
+    }
+    .ei-event-body {
+        .type {
+            padding: 0 .8em;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: darken($gray, 1);
+            display: flex;
+        }
+        .organizador {
+            background: rgba(black, .02);
+            display: flex;
+            align-items: center;
+            color: darken($gray, 15);
+            padding: 2.5px 2.5px 2.5px 5px;
+            margin-bottom: 2.5px;
+            img {
+                height: 20px;
+            }
+            span {
+
+                margin-left: 5px;
+            }
+        }
+        .more {
+            margin-top: 10px;
+            color: gray;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: .3rem .7rem;
+           text-decoration: none;
+            &:hover {
+                color: $primary;
+            }
+        }
+        .dates {
+            padding: 0 .8rem;
+            line-height: 15px;
+            small {
+                display: block;
+                margin-top: 10px;
+                color: rgba($gray, .7);
+            }
+        }
+    }
+    .ei-event-footer {
+        text-align: right;
+        margin-top: .5rem;
+        padding: 10px .8rem 0 .8rem;
+        border-top: 1px solid rgba(black, .15);
+    }
+}

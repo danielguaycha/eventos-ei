@@ -1,0 +1,80 @@
+html,
+body, #app {
+    height: 100%;
+}
+
+.card {
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+        @include tablet {
+            flex-direction: row;
+        }
+        b {
+            font-size: 1.1em;
+            i {
+                margin-right: 5px;
+                color: red;
+            }
+        }
+        .title {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: .5rem;
+            @include tablet {
+                justify-content: flex-start;
+                margin-bottom: 0;
+            }
+            b {
+                margin-right: 5px;
+            }
+            .ei-a-helper {
+                color: #495057a1;
+                border-radius: 50%;
+                border: solid transparent;
+                &:focus {
+                    outline: none;
+                    border: solid rgba(black, .12);
+                }
+            }
+        }
+        .actions{
+            display: flex;
+            align-items: center;
+            width: 100%;
+            form {
+                display: flex;
+                width: 100%;
+            }
+        }
+    }
+    .card-body {
+        .card-body-title {
+            color: #4f4f4f8a;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+    }
+}
+
+.alert {
+    @include mobil-only {
+        padding: .5rem;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0px;
+        li {
+            list-style: none;
+        }
+    }
+}
+
+.form-group {
+    margin: .45rem 0;
+}

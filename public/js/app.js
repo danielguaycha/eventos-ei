@@ -49623,16 +49623,52 @@ $(document).ready(function () {
   });
 });
 
-window.generatePassword = function (length) {
-  var result = '';
-  var characters = 'ACDDASDeirwdgoep@@!!#@$$#.123456789@@';
-  var charactersLength = characters.length;
+String.prototype.pick = function (min, max) {
+  var n,
+      chars = '';
 
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  if (typeof max === 'undefined') {
+    n = min;
+  } else {
+    n = min + Math.floor(Math.random() * (max - min + 1));
   }
 
-  return result;
+  for (var i = 0; i < n; i++) {
+    chars += this.charAt(Math.floor(Math.random() * this.length));
+  }
+
+  return chars;
+}; // Credit to @Christoph: http://stackoverflow.com/a/962890/464744
+
+
+String.prototype.shuffle = function () {
+  var array = this.split('');
+  var tmp,
+      current,
+      top = array.length;
+  if (top) while (--top) {
+    current = Math.floor(Math.random() * (top + 1));
+    tmp = array[current];
+    array[current] = array[top];
+    array[top] = tmp;
+  }
+  return array.join('');
+};
+
+window.generatePassword = function (length) {
+  var specials = '@.#$%';
+  var lowercase = 'abcdefghijklmnopqrstuvwxyz';
+  var uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var numbers = '0123456789123456789';
+  var all = specials + lowercase + uppercase + numbers + numbers;
+  var password = '';
+  password += specials.pick(1);
+  password += lowercase.pick(1);
+  password += uppercase.pick(1);
+  password += numbers.pick(1);
+  password += all.pick(8, 8);
+  password = password.shuffle();
+  return password;
 };
 
 /***/ }),

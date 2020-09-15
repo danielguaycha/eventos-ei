@@ -1,0 +1,66 @@
+$hf_height : 25px;
+
+.doc-design {
+    .head {
+        span {
+            display: block;
+            height: 12px;
+            background: $red;
+            width: 90%;
+            margin: 0 auto 1rem auto;
+        }
+    }
+    .content {
+        .encabezado {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            position: relative;
+            .logo {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                img {
+                    height: 2cm;
+                }
+            }
+            .membrete {
+                text-align: center;
+                line-height: 10px;
+                margin-top: 1rem;
+                padding: 0 1rem;
+                h3, h4, h5 {
+                    margin: 0;
+                }
+                h4 {
+                    font-weight: bold;
+                    font-size: 1.2em;
+                }
+            }
+            .select_logo {
+                display: flex;
+                align-items: center;
+                min-width: 2cm;
+                .logo_b {
+                    width: 2cm;
+                }
+            }
+        }
+        .otorga {
+            .select-center {
+                text-align-last:center;
+            }
+        }
+    }
+
+    .footer {
+        margin-top: 1rem;
+    }
+    // img
+    .head, .footer {
+        img {
+            width: 100%;
+            height: $hf_height;
+        }
+    }
+}

@@ -3,19 +3,19 @@
     <div class="col-md-12 p-0">
     @if (session()->has('warn'))
         <div class="alert alert-warning mb-0" role="alert">
-            <b>{{ session()->get('warn') }}</b>
+            <span>{{ session()->get('warn') }}</span>
         </div>
     @elseif(session()->has('ok'))
         <div class="alert alert-success mb-0" role="alert">
-            <b>{{ session()->get('ok') }}</b>
+            <span>{{ session()->get('ok') }}</span>
         </div>
     @elseif(session()->has('err'))
             <div class="alert alert-danger mb-0" role="alert">
-                <b>{{ session()->get('err') }}</b>
+                <span>{{ session()->get('err') }}</span>
             </div>
     @elseif (session()->has('info'))
         <div class="alert alert-info mb-0" role="alert">
-            <b>{{ session()->get('info') }}</b>
+            <span>{{ session()->get('info') }}</span>
         </div>
     @endif
 

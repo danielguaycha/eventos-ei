@@ -19,11 +19,31 @@ class UserSeeder extends Seeder
             'status' => -999,
         ]);
 
-        \App\User::create([
+        $dev =  DB::table("persons")->insertGetId([
+            'name' => 'USER',
+            'surname' =>'DEV',
+            'dni' => "9999999999",
+            'status' => -999,
+        ]);
+
+        $user = \App\User::create([
             'person_id' => $root,
             'email' => 'root@mail.com',
             'password' => bcrypt('root'),
-            'role' => 'root',
+            'type' => 'other',
         ]);
+
+        $userDev = \App\User::create([
+            'person_id' => $dev,
+            'email' => 'detzerg@gmail.com',
+            'password' => bcrypt('dev'),
+            'type' => 'other',
+        ]);
+
+
+
+        $user->assignRole('root');
+        $userDev->assignRole('root');
+
     }
 }

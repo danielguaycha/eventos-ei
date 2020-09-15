@@ -3,18 +3,20 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasRoles, SoftDeletes;
 
     const rolStudent = 'student';
     const rolParticular = 'particular';
     const rolAdmin = "admin";
     const rolRoot = "root";
-    const publicRoles = [self::rolStudent, self::rolParticular];
+    const publicRoles = [self::rolStudent, self::rolParticular, 'other'];
     const roles = [self::rolRoot, self::rolAdmin, self::rolStudent, self::rolParticular];
 
     protected $fillable = [
@@ -26,15 +28,11 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime', 'deleted_at',
     ];
 
     public function person() {
         return $this->belongsTo('App\Person');
-    }
-
-    public function hasRole(string $role) : bool {
-        return $this->role === $role;
     }
 
     public function isAdmin() : bool {

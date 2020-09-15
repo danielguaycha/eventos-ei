@@ -17,9 +17,10 @@ class CreatePeopleTable extends Migration
             $table->id();
             $table->string("name", 100);
             $table->string("surname", 100);
-            $table->char("dni", 13)->index()->unique();
+            $table->char("dni", 13)->index();
             $table->integer("status")->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

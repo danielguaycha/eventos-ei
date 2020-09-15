@@ -1,4 +1,4 @@
-// bootstrap-docs-start clearfix
+// scss-docs-start clearfix
 @mixin clearfix() {
   &::after {
     display: block;
@@ -6,4 +6,4 @@
     content: "";
   }
 }
-// bootstrap-docs-end clearfix
+// scss-docs-end clearfix

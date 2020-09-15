@@ -68,11 +68,16 @@ class RegisterController extends Controller
             'dni' => $data['dni']
         ]);
 
-        return User::create([
+        $user = User::create([
             'email' => $data['email'],
             'person_id' => $person->id,
             'password' => Hash::make($data['password']),
+            'type' => $data['role']
         ]);
+
+        $user->syncRoles(User::rolStudent);
+
+        return $user;
     }
 
     private function messages() {

@@ -13,14 +13,54 @@ $(document).ready(function () {
     $(document).ready(function (){
         $('[data-toggle="tooltip"]').tooltip()
     });
-})
+});
+
+String.prototype.pick = function(min, max) {
+    let n, chars = '';
+
+    if (typeof max === 'undefined') {
+        n = min;
+    } else {
+        n = min + Math.floor(Math.random() * (max - min + 1));
+    }
+
+    for (let i = 0; i < n; i++) {
+        chars += this.charAt(Math.floor(Math.random() * this.length));
+    }
+
+    return chars;
+};
+
+
+// Credit to @Christoph: http://stackoverflow.com/a/962890/464744
+String.prototype.shuffle = function() {
+    let array = this.split('');
+    let tmp, current, top = array.length;
+
+    if (top) while (--top) {
+        current = Math.floor(Math.random() * (top + 1));
+        tmp = array[current];
+        array[current] = array[top];
+        array[top] = tmp;
+    }
+
+    return array.join('');
+};
 
 window.generatePassword = function (length) {
-    let result           = '';
-    const characters       = 'ACDDASDeirwdgoep@@!!#@$$#.123456789@@';
-    const charactersLength = characters.length;
-    for ( let i = 0; i < length; i++ ) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+    const specials = '@.#$%';
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789123456789';
+
+    let all = specials + lowercase + uppercase + numbers + numbers;
+
+    let password = '';
+    password += specials.pick(1);
+    password += lowercase.pick(1);
+    password += uppercase.pick(1);
+    password += numbers.pick(1);
+    password += all.pick(8, 8);
+    password = password.shuffle();
+    return password;
 }
