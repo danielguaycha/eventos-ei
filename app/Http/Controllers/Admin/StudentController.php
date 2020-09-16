@@ -31,7 +31,7 @@ class StudentController extends Controller
             $search = $request->query('q');
         }
 
-        $student = User::join("persons", 'persons.id', 'users.person_id')
+        $student = User::role(User::rolStudent)->join("persons", 'persons.id', 'users.person_id')
             ->select('persons.name', 'persons.surname', 'users.type', 'persons.dni', 'persons.id as person', 'users.email', 'users.id')
             ->where([["status", ">", 0]])
             ->where(function ($query) use ($search){

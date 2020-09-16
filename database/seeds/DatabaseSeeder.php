@@ -14,5 +14,13 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(SponsorSeeder::class);
+
+        if (env('APP_DEBUG')) {
+            factory(App\User::class, 50)
+                ->create()
+                ->each(function ($u) {
+                    $u->assignRole(\App\User::rolStudent);
+                });
+        }
     }
 }

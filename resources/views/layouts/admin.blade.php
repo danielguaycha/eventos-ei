@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -8,6 +9,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'EI-Event') }}</title>
+
+
+
 
     @include('_globals._meta_icon_head')
 
@@ -20,8 +24,7 @@
     @yield('css')
 </head>
 <body>
-    <div id="app" class="ei-container">
-
+    <div class="ei-container" >
         <div class="ei-sidebar">
             <div class="ei-sidebar-header">
                 <h3> {{ config('app.name', 'Escuela Informática') }}</h3>
@@ -44,37 +47,44 @@
                 <div class="ei-sidebar-menu">
 
                     <ul>
+                        {{--Acceso solo al uaurio root--}}
                         @role('root')
                             <li class="ei-sidebar-divider">Usuarios</li>
-                            <li><a href="{{ route('admins.index') }}" class="@if (request()->is('user/admins/*') || request()->is('user/admins')) active @endif"> <i class="fa fa-users-cog"></i>Administradores</a></li>
+                            <li><a href="{{ route('admins.index') }}"
+                                   class="@if (request()->is('user/admins/*') || request()->is('user/admins')) active @endif"> <i class="fa fa-users-cog"></i>Usuarios/Admins</a></li>
+                            <li><a href="{{ route('rol.index') }}"
+                                   class="@if (request()->is('rol/*') || request()->is('rol')) active @endif"><i class="fa fa-user-lock"></i>Roles/Permisos</a></li>
                         @endrole
+
                         @can('students.index')
                             <li><a href="{{ route('students.index') }}" class="@if (request()->is('user/students/*') || request()->is('user/students')) active @endif"> <i class="fa fa-user-alt"></i>Estudiantes</a></li>
                         @endcan
-                        <li class="ei-sidebar-divider">Eventos</li>
-                        @role('student')
-                            <li>
-                                <a href="#"><i class="fa fa-user-graduate"></i>Mis cursos</a>
-                            </li>
-                        @else
-                            <li><a href="{{ route('events.index') }}"
-                                   class="@if (request()->is('events/*') || request()->is('events')) active @endif"
-                                ><i class="fa fa-graduation-cap"></i>Cursos/Eventos</a></li>
 
-                            <li class="ei-sidebar-divider">Configuraciones</li>
-                            <li>
-                                <a href="{{ route('sponsor.index') }}"
-                                   class="@if (request()->is('sponsor/*') || request()->is('sponsor')) active @endif">
-                                    <i class="fa fa-university"></i>Organizadores</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('signatures.index') }}"
-                                   class="@if (request()->is('signatures/*') || request()->is('signatures')) active @endif">
-                                    <i class="fa fa-signature"></i>Firmas</a>
-                            </li>
-                        @endrole
-
-
+                        {{--Acceso a los usuarios con su respectivo permiso--}}
+                            <li class="ei-sidebar-divider">Eventos</li>
+                            <li><a href="#"><i class="fa fa-user-graduate"></i>Mis cursos</a></li>
+                            @can('events.index')
+                                <li><a href="{{ route('events.index') }}"
+                                       class="@if (request()->is('events/*') || request()->is('events')) active @endif"
+                                    ><i class="fa fa-graduation-cap"></i>Cursos/Eventos</a></li>
+                            @endcan
+                            @canany('sponsors.*|signatures.*')
+                                <li class="ei-sidebar-divider">Configuraciones</li>
+                            @endcanany
+                            @can('sponsors.index')
+                                <li>
+                                    <a href="{{ route('sponsor.index') }}"
+                                       class="@if (request()->is('sponsor/*') || request()->is('sponsor')) active @endif">
+                                        <i class="fa fa-university"></i>Organizadores</a>
+                                </li>
+                            @endcan
+                            @can('signatures.index')
+                                <li>
+                                    <a href="{{ route('signatures.index') }}"
+                                       class="@if (request()->is('signatures/*') || request()->is('signatures')) active @endif">
+                                        <i class="fa fa-signature"></i>Firmas</a>
+                                </li>
+                            @endcan
                     </ul>
                 </div>
             </div>
@@ -121,14 +131,14 @@
             </nav>
             @endauth
             {{--Parant content--}}
-            <main class="ei-parent-content" class="py-4">
+            <main class="ei-parent-content" class="py-4" id="app">
                 @yield('content')
             </main>
         </div>
     </div>
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-
     <script>
         $(document).on('click','.delete',function(){
             let id = $(this).attr('data-id');
@@ -139,5 +149,6 @@
     </script>
     @yield('js')
     @stack('js')
+
 </body>
 </html>

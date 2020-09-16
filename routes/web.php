@@ -27,6 +27,8 @@ Route::group(['namespace' => 'Guest'], function () {
 
 Route::group([
     'namespace' => 'Admin'], function () {
+    // roles
+    Route::resource('rol', 'RoleController')->except('show');
     // admins
     Route::resource("user/admins", 'AdminController');
     Route::resource("user/students", 'StudentController');
@@ -34,6 +36,10 @@ Route::group([
     // events
     Route::get('events/postular/{event}', 'EventController@postular')->name('events.postular');
     Route::resource("events", 'EventController');
+
+    // postulaciones
+    Route::get('postulantes/{event}', 'PostulanteController@index')->name('postulates.index');
+
     // signatures
     Route::resource("signatures", 'SignatureController')->except(['show']);
     // sponsors

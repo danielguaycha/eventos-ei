@@ -1,0 +1,17 @@
+.head-perms {
+    border: 1.2px solid rgba(black, .1);
+    button {
+        color: darken(grey, 10);
+         &:focus {
+            background: $primary;
+            color: rgba(white, .9);
+        }
+    }
+}
+.body-perms {
+    padding: .5rem 1rem;
+    border: 1.5px solid rgba(black, .1);
+}
+
+#accPerms {
+}

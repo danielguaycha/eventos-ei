@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
 use App\Signature;
 use App\Sponsor;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,11 +20,20 @@ class EventController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
+        // perms
+        $this->middleware('permission:events.store')->only(['store', 'create']);
+        $this->middleware('permission:events.index')->only(['index']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $e = Event::with('sponsor')->get();
+        if ($request->user()->hasRole(User::rolRoot)) {
+            $e = Event::with('sponsor')->get();
+        }
+        else {
+            $e = $request->user()->events()->with('sponsor')->get();
+        }
+
         return view('events.index', [
             'events'=> $e
         ]);
@@ -112,6 +122,12 @@ class EventController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    // listar postulantes
+    public function listPostulantes($eventId) {
+
     }
 
     // function postular

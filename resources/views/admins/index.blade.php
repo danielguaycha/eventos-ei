@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-header border-bottom-0">
                 <div class="title">
-                    <b>Listado de administradores</b>
+                    <b>Listado de usuarios</b>
                     <a href="{{ route('admins.create') }}"
                        title="Agregar nuevo administrador"
                        data-toggle="tooltip"
@@ -34,6 +34,7 @@
                     <tr>
                         <th>Nombres</th>
                         <th>Cédula</th>
+                        <th>Rol</th>
                         <th>Correo</th>
                         <th class="text-right">Opciones</th>
                     </tr>
@@ -44,6 +45,7 @@
                             <tr>
                                 <td>{{$u->surname}} {{ $u->name }} </td>
                                 <td>{{ $u->dni }}</td>
+                                <td>{{ $u->roles->pluck('description')[0] }}</td>
                                 <td>{{ $u->email }}</td>
                                 <td class="text-right">
                                     <a href="{{ route('admins.edit', ['admin' => $u->id]) }}" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>

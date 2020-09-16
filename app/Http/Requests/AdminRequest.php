@@ -25,6 +25,7 @@ class AdminRequest extends FormRequest
                 'surname' => ['required', 'string', 'max:100', 'min:3'],
                 'dni' => ['required', new CedulaValida, new UniqueDniStore],
                 'email' => ['required', 'string', 'email', 'max:255', new UniqueEmailStore],
+                'role' => "required|exists:roles,id|not_in:1",
                 'password' => ['required',
                     'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
                     'string', 'min:8'],

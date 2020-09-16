@@ -16,6 +16,8 @@ class DocDesignController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:events.design.view')->only(['preview']);
+        $this->middleware('permission:events.design.edit')->only(['update', 'edit']);
     }
 
     public function preview($eventId){

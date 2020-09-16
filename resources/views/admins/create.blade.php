@@ -4,7 +4,7 @@
     <form class="card" method="post" action="{{ route('admins.store') }}">
         @csrf
         <div class="card-header">
-            <b><i class="fa fa-users-cog"></i> Crear administrador</b>
+            <b><i class="fa fa-users-cog"></i> Crear usuarios</b>
         </div>
         <div class="card-body">  {{--form--}}
             <div class="row">
@@ -73,7 +73,20 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
 
+                <div class="col">
+                    <div class="card-body-title">Seleccione un rol</div>
+                    @foreach($roles as $r)
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="role" id="{{ $r->name }}" value="{{ $r->id  }}"
+                                       @if(old('role') == $r->id  || $r->name === \App\User::rolAdmin) checked @endif> {{ $r->description }}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
 
         @include('notify');

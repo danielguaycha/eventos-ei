@@ -18,6 +18,7 @@ class AdminController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
         $this->middleware("role:root");
     }
 
@@ -29,7 +30,9 @@ class AdminController extends Controller
             $search = $request->query('q');
         }
 
-        $admins = User::role(User::rolAdmin)->join("persons", 'persons.id', 'users.person_id')
+        $admins = User::with(['roles' => function($q){
+            $q->where('name', '<>', User::rolStudent);
+        }])->join("persons", 'persons.id', 'users.person_id')
             ->select('persons.name', 'persons.surname', 'persons.dni', 'users.*')
             ->where([["status", ">", 0]])
             ->where(function ($query) use ($search){
@@ -44,12 +47,17 @@ class AdminController extends Controller
 
     public function create()
     {
-        return view('admins.create');
+        $roles = Role::where('name', '<>', User::rolRoot)
+            ->where('name', '<>', User::rolStudent)
+            ->get();
+        return view('admins.create', ['roles' => $roles]);
     }
 
     public function store(AdminRequest $request)
     {
         DB::beginTransaction();
+        $role = Role::findOrFail($request->role);
+
         $person = Person::create(
             [
                 'dni' => $request->dni,
@@ -70,7 +78,8 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'type' => 'other'
         ]);
-        $user->syncRoles(User::rolAdmin);
+
+        $user->syncRoles($role);
 
         if ($request->get('sendEmail'))
             $user->notify(new SendTempPassword($request->password));
@@ -85,7 +94,6 @@ class AdminController extends Controller
         //
     }
 
-
     public function edit($id)
     {
         $u = User::with('roles')->findOrFail($id);
@@ -93,7 +101,6 @@ class AdminController extends Controller
 
         return view('admins.edit', ['user'=> $u, 'roles' => $roles]);
     }
-
 
     public function update(AdminRequest $request, $id)
     {
@@ -136,7 +143,6 @@ class AdminController extends Controller
 
         return back()->with('ok', 'Usuario modificado con éxito');
     }
-
 
     public function destroy($id)
     {

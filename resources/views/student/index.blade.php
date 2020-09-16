@@ -38,7 +38,7 @@
                         <th>Cédula</th>
                         <th>Tipo</th>
                         <th>Correo</th>
-                        <th class="text-right">Opciones</th>
+                        <th class="text-right"></th>
                     </tr>
                     </thead>
                     <tbody>

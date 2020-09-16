@@ -70,13 +70,13 @@
                         </td>
                     </tr>
                     <tr>
-                        @if ($data->date && $data->show_date === 1)
+
                             <td class="fecha">
                                 <p>
                                     Machala, {{ Carbon\Carbon::parse($data->date)->isoFormat('DD [de] MMMM [de] YYYY') }}
                                 </p>
                             </td>
-                        @endif
+
                     </tr>
                     </tbody>
                 </table>

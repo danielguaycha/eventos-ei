@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function isStudent() : bool {
         return $this->role === self::rolStudent || $this->role === self::rolParticular;
     }
+
+    public function events() {
+        return $this->belongsToMany(Event::class, "user_admin_events", "user_id", "event_id");
+    }
 }

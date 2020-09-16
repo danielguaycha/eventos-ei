@@ -45,5 +45,23 @@ class UserSeeder extends Seeder
         $user->assignRole('root');
         $userDev->assignRole('root');
 
+        if (env('APP_DEBUG')) {
+            $adminPerson =  DB::table("persons")->insertGetId([
+                'name' => 'ADMIN',
+                'dni' => "0000000000",
+                'surname' =>'ADMIN',
+                'status' => 1,
+            ]);
+
+            $userAdmin = \App\User::create([
+                'person_id' => $adminPerson,
+                'email' => 'admin@mail.com',
+                'password' => bcrypt('admin'),
+                'type' => 'other',
+            ]);
+
+            $userAdmin->assignRole('admin');
+        }
+
     }
 }

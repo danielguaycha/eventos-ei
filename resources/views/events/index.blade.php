@@ -8,11 +8,12 @@
                     <b>Listado de Eventos</b>
                     @include('_globals._helper', ['title'=> '¿Qué son los eventos?', 'content' => 'Son los cursos dictados u organizados por una persona determinada'])
                 </div>
-
-                <a href="{{ route('events.create') }}"
-                   title="Agregar nueva evento"
-                   data-toggle="tooltip"
-                   class="btn btn-link text-secondary"><i class="fa fa-plus"></i></a>
+                @can('events.store')
+                    <a href="{{ route('events.create') }}"
+                       title="Agregar nueva evento"
+                       data-toggle="tooltip"
+                       class="btn btn-link text-secondary"><i class="fa fa-plus"></i></a>
+                @endcan
             </div>
             <div class="actions">
                 {{--search--}}
@@ -98,14 +99,18 @@
 
                                         {{--<a href="#"><i class="fa fa-trash fa-lg"></i></a>
                                         <a href="#"><i class="fa fa-edit fa-lg"></i></a>--}}
-
-                                        <a class="btn btn-sm text-grey" href="{{ route('design.preview', ['eventId' => $e->id]) }}" data-toggle="tooltip"
-                                          target="_blank"
-                                           title="Ver diseño de certificado"><i class="fa fa-certificate fa-lg"></i></a>
-                                        <a class="btn btn-sm"
-                                            href="{{ route('doc.edit', ['id' => $e->id]) }}" data-toggle="tooltip"
-                                           title="Diseñar certificado"><i class="fa fa-pen-nib fa-lg"></i></a>
-
+                                            <a href="{{ route('postulates.index', ['event' => $e->id]) }}"
+                                                class="btn"><i class="fa fa-users"></i></a>
+                                        @can('events.design.view')
+                                            <a class="btn btn-sm text-grey" href="{{ route('design.preview', ['eventId' => $e->id]) }}" data-toggle="tooltip"
+                                              target="_blank"
+                                               title="Ver diseño de certificado"><i class="fa fa-certificate fa-lg"></i></a>
+                                        @endcan
+                                        @can('events.design.edit')
+                                            <a class="btn btn-sm"
+                                                href="{{ route('doc.edit', ['id' => $e->id]) }}" data-toggle="tooltip"
+                                               title="Diseñar certificado"><i class="fa fa-pen-nib fa-lg"></i></a>
+                                        @endcan
                                         <div class="btn-group" role="group">
                                             <button id="btnGroupDrop1" type="button" class="btn btn-sm" data-toggle="dropdown" aria-expanded="false">
                                                 <i class="fa fa-ellipsis-v mx-1"></i>
