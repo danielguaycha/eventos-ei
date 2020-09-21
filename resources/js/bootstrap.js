@@ -11,23 +11,68 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
+    require('./configs');
 } catch (e) {}
-
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
 window.axios = require('axios');
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+
+    if(!error.response) {
+        return Promise.reject("Error desconocido, contacte con soporte!");
+    }
+
+    const { response: { status }} = error;
+    if(status === 401) {
+        // para sacar al usuario de la vista actual y mandarlo al login
+        if (secureStorage.getItem(sysConfig.getSlug()) !== null) {
+            secureStorage.removeItem(sysConfig.getSlug());
+            //Vue.auth.destroyToken(); //destroy token
+            window.location.href = "/";
+        }
+        return Promise.reject("No autorizado");
+    } else {
+        let err = "";
+        const {response: {data}} = error;
+
+        if(data.error || data.errors) {
+            let errors = data.error;
+            if (data.error) {
+                errors = data.error;
+            }
+            if (data.errors) {
+                errors = data.errors;
+            }
+
+            if (Array.isArray(errors)) { // si es un array de errores
+                if(errors.length === 0) {
+                    if(data.message) {
+                        err = data.message;
+                    } else {
+                        err = 'Error #001 desconocido contacte con soporte!';
+                    }
+                }
+                else if(errors.length > 0 && errors.length <=2) {
+                    err = [...new Set(errors)].join(', ');
+                } else {
+                    err = errors[0];
+                }
+            } else {
+                err = errors;
+            }
+        } else {
+            if (data.message) {
+                err = data.message;
+            } else {
+                err = "Error #002 desconocido contacte con soporte!";
+            }
+        }
+        return Promise.reject(err);
+    }
+
+});
 
 // import Echo from 'laravel-echo';
 

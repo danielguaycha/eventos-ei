@@ -24,7 +24,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token','pivot', 'deleted_at', 'email_verified_at'
     ];
 
     protected $casts = [
@@ -35,19 +35,26 @@ class User extends Authenticatable
         return $this->belongsTo('App\Person');
     }
 
+    public function admins() {
+        return $this->roles()->where([
+            ['name', '<>', User::rolStudent],
+            ['name', '<>', User::rolRoot],
+        ]);
+    }
+
     public function isAdmin() : bool {
-        if ($this->role === self::rolAdmin || $this->role === self::rolRoot) {
+        if ($this->hasAnyRole([self::rolAdmin, self::rolRoot])) {
             return true;
         }
         return false;
     }
 
     public function isRoot() : bool {
-        return $this->role === self::rolRoot;
+        return $this->hasRole(self::rolRoot);
     }
 
     public function isStudent() : bool {
-        return $this->role === self::rolStudent || $this->role === self::rolParticular;
+        return$this->hasRole(self::rolStudent);
     }
 
     public function events() {

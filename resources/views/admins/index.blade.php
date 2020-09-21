@@ -45,7 +45,12 @@
                             <tr>
                                 <td>{{$u->surname}} {{ $u->name }} </td>
                                 <td>{{ $u->dni }}</td>
-                                <td>{{ $u->roles->pluck('description')[0] }}</td>
+                                <td>
+                                    @if (count($u->roles) > 0)
+                                        {{ $u->roles->pluck('description')[0] }}
+                                    @endif
+
+                                </td>
                                 <td>{{ $u->email }}</td>
                                 <td class="text-right">
                                     <a href="{{ route('admins.edit', ['admin' => $u->id]) }}" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>

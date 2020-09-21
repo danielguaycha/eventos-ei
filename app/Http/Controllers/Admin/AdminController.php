@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class AdminController extends Controller
 {
@@ -19,7 +21,11 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware("role:root");
+        $this->middleware("role:root")->except(['search']);
+    }
+
+    public function search(Request $request) {
+
     }
 
     public function index(Request $request)
@@ -30,9 +36,13 @@ class AdminController extends Controller
             $search = $request->query('q');
         }
 
-        $admins = User::with(['roles' => function($q){
-            $q->where('name', '<>', User::rolStudent);
-        }])->join("persons", 'persons.id', 'users.person_id')
+        $admins = User::whereHas('roles', function (Builder $query) {
+                $query->where([
+                    ['name', '<>', User::rolStudent],
+                    ['name', '<>', User::rolRoot],
+                ]);
+            })
+            ->join("persons", 'persons.id', 'users.person_id')
             ->select('persons.name', 'persons.surname', 'persons.dni', 'users.*')
             ->where([["status", ">", 0]])
             ->where(function ($query) use ($search){

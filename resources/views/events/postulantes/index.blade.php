@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
-    <postulante event="{{ request()->event }}"></postulante>
-@stop
-@push('js')
 
-@endpush
+    <postulantes
+        @can('events.postulantes.accept') :can-accept="true" @endcan
+        :event="{{ request()->event }}"></postulantes>
+@stop

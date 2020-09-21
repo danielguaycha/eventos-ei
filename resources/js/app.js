@@ -7,7 +7,9 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-
+import "./plugins/toasted";
+import './plugins/dialog';
+import './plugins/numeric'
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -18,9 +20,12 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-Vue.component('postulante', require('./components/PostulantComponent.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
-
+Vue.component('postulantes', require('./components/PostulantComponent.vue').default);
+Vue.component('participantes', require('./components/ParticipantComponent.vue').default);
+Vue.component('notas', require('./components/NotasComponent.vue').default);
+Vue.component('admins', require('./components/AdminsEventComponent.vue').default);
+Vue.component('table-notas', require('./components/_partials/TableNotas.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

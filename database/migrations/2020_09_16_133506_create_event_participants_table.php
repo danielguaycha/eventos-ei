@@ -15,8 +15,8 @@ class CreateEventParticipantsTable extends Migration
     {
         Schema::create('event_participants', function (Blueprint $table) {
             $table->id();
-            $table->double('nota_3',2,2)->default(0);
-            $table->double("nota_7",2,2)->default(0);
+            $table->double('nota_3',10,2)->default(0);
+            $table->double("nota_7",10,2)->default(0);
             $table->string("src", 100)->nullable();
             $table->unsignedBigInteger("event_id");
             $table->unsignedBigInteger("user_id");

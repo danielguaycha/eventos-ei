@@ -10,6 +10,7 @@ use App\Http\Requests\EventRequest;
 use App\Signature;
 use App\Sponsor;
 use App\User;
+use App\UserAdminEvents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,15 +24,19 @@ class EventController extends Controller
         // perms
         $this->middleware('permission:events.store')->only(['store', 'create']);
         $this->middleware('permission:events.index')->only(['index']);
+        $this->middleware('permission:events.admins.add|events.admins.destroy')->only(['indexAdmins']);
     }
 
     public function index(Request $request)
     {
-        if ($request->user()->hasRole(User::rolRoot)) {
-            $e = Event::with('sponsor')->get();
+        if ($request->user()->can('events.all')) {
+            $e = Event::with('sponsor')->withCount('postulants', 'participantes')->get();
         }
         else {
-            $e = $request->user()->events()->with('sponsor')->get();
+            $e = $request->user()->events()
+                ->with('sponsor')
+                ->withCount('postulants', 'participantes')
+                ->get();
         }
 
         return view('events.index', [
@@ -125,9 +130,84 @@ class EventController extends Controller
     }
 
 
-    // listar postulantes
-    public function listPostulantes($eventId) {
+    //* administradores de eventos
 
+    public function indexAdmins($event){
+        $e = Event::findOrFail($event);
+        return view('events.admins.index', ['event' => $e]);
+    }
+
+    public function listAdmins($event) {
+
+        $v = Event::with('admins')->find($event);
+        $admins = $v->admins()
+            ->with('person:id,name,surname,dni', 'roles:id,description')
+            ->paginate(10);
+
+
+        return response()->json([
+            'ok' => true,
+            'body' => $admins
+        ]);
+    }
+
+    public function addAdmins(Request $request) {
+        $request->validate([
+            'event_id' => 'required|exists:events,id',
+            'user_id' => 'required|exists:users,id'
+        ]);
+
+        $exists = UserAdminEvents::where([
+            ['user_id', $request->user_id],
+            ['event_id', $request->event_id]
+        ])->exists();
+
+        if ($exists) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Esta persona ya se encuentra como administrador del evento'
+            ], 400);
+        }
+
+        if (User::findOrFail($request->user_id)->hasRole(User::rolStudent)) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'No puedes asignar este evento a un estudiante'
+            ], 400);
+        }
+
+        $e = UserAdminEvents::create([
+            'user_id' => $request->user_id,
+            'event_id' => $request->event_id
+        ]);
+
+        return response()->json([
+           'ok' => true,
+           'body' => $e,
+           'message' => 'Administrador registrado con éxito'
+        ]);
+    }
+
+    public function destroyAdmins($event, $user) {
+
+        $admins = UserAdminEvents::where([
+            ['user_id', $user],
+            ['event_id', $event]
+        ]);
+
+        if (!$admins->exists()) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'No existe el administrador para este evento'
+            ], 400);
+        }
+
+        $admins->delete();
+
+        return response()->json([
+           'ok' => true,
+           'message' => 'Administrador eliminando con éxito'
+        ]);
     }
 
     // function postular

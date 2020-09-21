@@ -7,9 +7,13 @@
             width: 50%;
         }
         @include desktop {
+            width: 33.3%;
+        }
+
+        @include xxDesktop {
             width: 25%;
         }
-        padding: .5rem .4rem;
+        padding: .7rem .6rem;
     }
 }
 .ei-event {
@@ -31,6 +35,7 @@
         }
     }
     .ei-event-body {
+        position: relative;
         .type {
             padding: 0 .8em;
             justify-content: space-between;
@@ -55,14 +60,18 @@
             }
         }
         .more {
-            margin-top: 10px;
+            position: absolute;
+            right: 10px;
+            bottom: 0;
             color: gray;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            flex-direction: row;
+            justify-content: center;
             align-items: center;
-            padding: .3rem .7rem;
-           text-decoration: none;
+            text-decoration: none;
+            i {
+                margin-right: 5px;
+            }
             &:hover {
                 color: $primary;
             }
@@ -82,5 +91,9 @@
         margin-top: .5rem;
         padding: 10px .8rem 0 .8rem;
         border-top: 1px solid rgba(black, .15);
+
+            .dropdown-menu {transform: translate3d(-130px, 32px, 0px) !important;}
+
+
     }
 }

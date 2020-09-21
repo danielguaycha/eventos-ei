@@ -7,6 +7,7 @@ use App\Http\Requests\StudentRequest;
 use App\Notifications\SendTempPassword;
 use App\Person;
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -17,10 +18,75 @@ class StudentController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth');
         $this->middleware('permission:students.index')->only(['index']);
         $this->middleware('permission:students.store')->only(['store', 'create']);
         $this->middleware('permission:students.update')->only(['edit', 'update']);
         $this->middleware('permission:students.destroy')->only(['destroy']);
+    }
+
+    public function search(Request $request) {
+        $search = '';
+        $admins = false;
+        if ($request->user()->hasRole(User::rolStudent)) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'No tienes permisos realizar esta acción'
+            ]);
+        }
+
+        if ($request->query('search')) {
+            $search = $request->query('search');
+        }
+
+        if ($request->query('admins')) {
+            $admins = true;
+        }
+
+       /* $persons = Person::join('users', 'users.person_id', 'persons.id')
+            ->where('persons.status', 1)
+            ->where(function ($query) use ($search){
+                $query->orWhere("persons.surname", 'like', "$search%")
+                    ->orWhere('persons.name', 'like', "%$search%")
+                    ->orWhere('persons.dni', 'like', "%$search%");
+            })
+            ->select(
+                'persons.id as person_id',
+                'persons.name',
+                'persons.surname',
+                'persons.dni',
+                'users.email',
+                'users.id'
+            )
+            ->orderBy('persons.created_at', 'desc')
+            ->orderBy('persons.surname', 'asc')
+            ->limit(5)->get(); */
+        $persons = User::join("persons", 'persons.id', 'users.person_id')
+            ->select('persons.id as person_id','persons.name',
+                'persons.surname', 'persons.dni', 'users.id', 'users.email')
+            ->where([["status", ">", 0]])
+            ->where(function ($query) use ($search){
+                $query->orWhere("persons.dni", 'like', "$search%")
+                    ->orWhere('persons.name', 'like', "%$search%")
+                    ->orWhere('persons.surname', 'like', "%$search%");
+            })
+            ->orderBy('persons.created_at', 'desc')
+            ->orderBy('persons.surname', 'asc');
+
+        if ($admins) {
+            $persons->whereHas('roles', function (Builder $query) {
+                $query->where([
+                    ['name', '<>', User::rolStudent],
+                    ['name', '<>', User::rolRoot],
+                ]);
+            });
+            $persons->with('roles:id,description');
+        }
+
+        return response()->json([
+            'ok' => true,
+            'body' => $persons->limit(5)->get()
+        ]);
     }
 
     public function index(Request $request)

@@ -9,10 +9,16 @@ use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use phpseclib\Crypt\RC4;
 
 class SignatureController extends Controller
 {
     use UploadTrait;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function index(Request $request)
     {

@@ -11,7 +11,23 @@ class Event extends Model
     const TypeAsistencia = 'asistencia';
     const TypeAprovacion = 'aprobacion';
     const TypeAsistenciaAprovation = 'asistencia_aprobacion';
+
+    const STATUS_ACTIVO = 1;
+    const STATUS_CALIFICADO = 2;
+    const STATUS_FINALIZADO = 3;
+
     use SoftDeletes;
+
+    protected $hidden = ['pivot'];
+
+    protected $fillable = [
+        'status'
+    ];
+
+    protected $casts = [
+        'status' => 'integer'
+    ];
+
 
     public function design () {
         return $this->hasOne(DocDesigns::class);
@@ -29,8 +45,19 @@ class Event extends Model
         return $this->belongsToMany(User::class, 'event_postulant');
     }
 
+    public function participantes() {
+        return $this->belongsToMany(User::class, 'event_participants');
+    }
+
     public function admins() {
-        return $this->belongsToMany(UserAdminEvents::class, "user_admin_events", "event_id", "user_id");
+        return $this->belongsToMany(User::class, "user_admin_events", "event_id", "user_id");
+    }
+
+    public function isAdmin($userId){
+        return $this->admins()->where([
+            ['user_id', $userId],
+            ['event_id', $this->id]
+        ])->exists();
     }
 
     // obtener tipo

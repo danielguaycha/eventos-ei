@@ -28,6 +28,8 @@ class CreateEventsTable extends Migration
             $table->date("matricula_inicio");
             $table->date("matricula_fin");
 
+            $table->smallInteger("status")->default(1);
+
             $table->unsignedBigInteger('sponsor_id');
 
             $table->timestamps();

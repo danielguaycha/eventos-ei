@@ -8,6 +8,7 @@
                 <div class="card-header py-3">
                     <b class="text-primary">INICIAR SESIÓN</b>
                 </div>
+
                 <div class="card-body px-4">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf

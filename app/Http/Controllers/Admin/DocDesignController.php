@@ -24,6 +24,7 @@ class DocDesignController extends Controller
 
         $e = Event::with('signatures')->findOrFail($eventId);
         $design = DocDesigns::where('event_id', $eventId)->first();
+        if (!$design) abort(404);
 
         return \PDF::loadView('design.preview', ['event' => $e, 'data'=> $design, ])
             ->setPaper('a4', 'landscape')

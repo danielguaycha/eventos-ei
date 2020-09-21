@@ -26,11 +26,29 @@ class RolesSeeder extends Seeder
         }
 
         //* permisos especiales
+
         // Estudiantes
         $this->addPerm("Estudiantes", "events.add.students", "Agregar estudiante a un evento");
 
+        //* Eventos
+        $this->addPerm('Eventos', 'events.all', 'Acceso a listar todos todos los eventos registrados');
         $this->addPerm("Eventos", "events.design.edit", "Diseñar certificados para eventos");
         $this->addPerm("Eventos", "events.design.view", "Pre-visualizar certificados de eventos");
+
+        // Administradores de eventos
+        $this->addPerm("Eventos", "events.admins.add", "Agregar administradores a eventos");
+        $this->addPerm("Eventos", "events.admins.destroy", "Eliminar administradores de eventos");
+        // postulantes
+        $this->addPerm("Eventos", "events.postulantes.index", "Ver listado de postulantes para un evento");
+        $this->addPerm("Eventos", "events.postulantes.accept", "Aprobar postulaciones a un evento");
+
+        // participantes
+        $this->addPerm("Eventos", "events.participantes.index", "Ver listado de estudiantes para un evento");
+        $this->addPerm("Eventos", "events.participantes.destroy", "Eliminar a los estudiantes de un evento");
+        $this->addPerm("Eventos", "events.participantes.add", "Agregar estudiantes a un evento");
+
+        // calificaciones
+        $this->addPerm("Eventos", "events.notas", "Ingresar notas a estudiantes en los eventos");
 
         // roles
 
@@ -44,7 +62,6 @@ class RolesSeeder extends Seeder
             'events.store',
             'events.index'
         );
-
     }
 
     private function addPerm($modulo, $nombre, $desc){
