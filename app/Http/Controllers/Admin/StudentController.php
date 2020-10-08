@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Event;
+use App\EventParticipant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;
 use App\Notifications\SendTempPassword;
@@ -43,24 +45,6 @@ class StudentController extends Controller
             $admins = true;
         }
 
-       /* $persons = Person::join('users', 'users.person_id', 'persons.id')
-            ->where('persons.status', 1)
-            ->where(function ($query) use ($search){
-                $query->orWhere("persons.surname", 'like', "$search%")
-                    ->orWhere('persons.name', 'like', "%$search%")
-                    ->orWhere('persons.dni', 'like', "%$search%");
-            })
-            ->select(
-                'persons.id as person_id',
-                'persons.name',
-                'persons.surname',
-                'persons.dni',
-                'users.email',
-                'users.id'
-            )
-            ->orderBy('persons.created_at', 'desc')
-            ->orderBy('persons.surname', 'asc')
-            ->limit(5)->get(); */
         $persons = User::join("persons", 'persons.id', 'users.person_id')
             ->select('persons.id as person_id','persons.name',
                 'persons.surname', 'persons.dni', 'users.id', 'users.email')
@@ -92,19 +76,46 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $search = '';
+        $type = '';
 
         if ($request->query('q')) {
             $search = $request->query('q');
         }
 
-        $student = User::role(User::rolStudent)->join("persons", 'persons.id', 'users.person_id')
-            ->select('persons.name', 'persons.surname', 'users.type', 'persons.dni', 'persons.id as person', 'users.email', 'users.id')
-            ->where([["status", ">", 0]])
-            ->where(function ($query) use ($search){
-                $query->orWhere("persons.dni", 'like', "$search%")
-                    ->orWhere('persons.surname', 'like', "%$search%");
-            })
-            ->paginate(30);
+        if ($request->query('type')) {
+            $type = $request->query('type');
+        }
+
+        if ($type == 2) {
+            $student = EventParticipant::join('users', 'users.id', 'event_participants.user_id')
+                ->join('persons', 'persons.id', 'users.person_id')
+                ->whereHas('event', function ($query) use($search){
+                    return $query->where('title', 'like', "$search%");
+                })
+                ->select(
+                    'event_participants.status',
+                    'users.id',
+                    'users.email',
+                    'persons.name',
+                    'persons.surname',
+                    'persons.dni'
+                )
+                ->paginate(30);
+        }
+        else  {
+            $student = User::role(User::rolStudent)
+                ->withCount('events_aprobados')
+                ->join("persons", 'persons.id', 'users.person_id')
+                ->select('persons.name', 'persons.surname', 'users.type', 'persons.dni', 'persons.id as person', 'users.email', 'users.id')
+                ->where([["status", ">", 0]])
+                ->where(function ($query) use ($search){
+                    $query->orWhere("persons.dni", 'like', "$search%")
+                        ->orWhere('persons.surname', 'like', "%$search%");
+                })
+                ->orderBy('users.id', 'desc')
+                ->paginate(30);
+            //return response()->json($student);
+        }
 
 
         return view('student.index', ['users'=> $student]);
@@ -150,7 +161,21 @@ class StudentController extends Controller
 
     public function show($id)
     {
-        //
+        $e = User::with('person')->findOrFail($id);
+
+        $eventos = EventParticipant::join('events', 'events.id', 'event_participants.event_id')
+            ->where('event_participants.user_id', $e->id)
+            ->select(
+                'events.id',
+                'events.title',
+                'events.type',
+                'event_participants.nota_7',
+                'event_participants.nota_3',
+                'event_participants.status'
+            )
+            ->get();
+
+        return view('student.show', ['student' => $e, 'events' => $eventos]);
     }
 
     public function edit($id)

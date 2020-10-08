@@ -17,6 +17,7 @@ class DocDesignRequest extends FormRequest
             'otorga' => 'required|string|max:100|min:3|in:'.$this->otorgaValid(),
             'certificado' => 'required|string|max:100|min:2|in:'.$this->certificatedValid(),
             'sponsor_logo' => 'nullable|string',
+            'sponsor_id' => 'required|numeric|exists:sponsors,id',
             'description' => 'required|string|max:500|min:10',
             'date' => 'required_if:hide_date,false|date_format:Y-m-d',
             'signatures' => 'required|array|min:1|max:4',

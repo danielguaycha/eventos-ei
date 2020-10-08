@@ -9,12 +9,14 @@ class DocDesigns extends Model
     protected $fillable = [
         'sponsor',
         'description',
-        'signature_a',
-        'signature_b',
-        'signature_c',
-        'logo_b',
+        'signatures',
         'event_id',
-        'date'
+        'date',
+        'sponsor_logo'
+    ];
+
+    protected $casts = [
+      'signatures' => 'collection'
     ];
 
     public function signatures(){

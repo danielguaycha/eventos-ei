@@ -29,6 +29,7 @@ class UserSeeder extends Seeder
         $user = \App\User::create([
             'person_id' => $root,
             'email' => 'root@mail.com',
+            'email_verified_at' => \Carbon\Carbon::now(),
             'password' => bcrypt('root'),
             'type' => 'other',
         ]);
@@ -37,6 +38,7 @@ class UserSeeder extends Seeder
             'person_id' => $dev,
             'email' => 'detzerg@gmail.com',
             'password' => bcrypt('dev'),
+            'email_verified_at' => \Carbon\Carbon::now(),
             'type' => 'other',
         ]);
 

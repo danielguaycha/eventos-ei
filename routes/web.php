@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
 \Illuminate\Support\Facades\Auth::routes();
 
@@ -25,16 +26,21 @@ Route::group(['namespace' => 'Guest'], function () {
     Route::get('e/{shortLink}', 'RedirectController@redirectEvent')->name('redirect.event');
 });
 
+Auth::routes(['verify' => true]);
+
 Route::group([
-    'namespace' => 'Admin'], function () {
+    'namespace' => 'Admin', 'middleware' => ['verified']], function () {
     // roles
     Route::resource('rol', 'RoleController')->except('show');
     // admins
+    Route::get('user/admins/perms/{userId}', 'AdminController@showPerms')->name('admins.perms');
+    Route::post('user/admins/perms/{userId}', 'AdminController@savePerms')->name('admins.perms_save');
     Route::resource("user/admins", 'AdminController');
     Route::get('user/students/search', 'StudentController@search');
     Route::resource("user/students", 'StudentController');
 
     // events
+
     Route::get('events/broadcast/email/{event}', 'MailBroadCastController@send')->name('events.send_mail');
     Route::get('events/postular/{event}', 'EventController@postular')->name('events.postular');
     Route::resource("events", 'EventController');
@@ -52,12 +58,16 @@ Route::group([
     Route::get('postulantes/{event}', 'PostulanteController@index')->name('postulates.index');
 
     // participantes
+
+    Route::get('events/sendmail/{participante}', 'ParticipantController@sendOneEmail');
+    Route::get('participantes/aprobados/{event}', 'ParticipantController@aprobados');
     Route::post('participantes/add', 'ParticipantController@add');
     Route::get('participantes/listar/{event}', 'ParticipantController@list');
     Route::delete('participantes/{id}', 'ParticipantController@destroy');
     Route::get('participantes/{evento}', 'ParticipantController@index')->name('participantes.index');
 
     // calificaciones
+    Route::get('events/notas/{event}/editar', 'ParticipantController@editNotas')->name('events.notas_edit');
     Route::get('events/notas/{event}', 'ParticipantController@calificar')->name('events.notas');
     Route::post('events/notas/save/{event}', 'ParticipantController@saveNotas');
     Route::post('events/notas/finish/{event}', 'ParticipantController@confirmNotas');
@@ -79,6 +89,24 @@ Route::group([
 
     // img
     Route::get('/img/{pathFile}/{filename}/{h?}', 'UtilController@showImg')->name('img')->middleware('auth');
+
+    /*Route::get('mailable', function () {
+        $invoice = App\Event::find(21);
+        return new App\Mail\CertificateMail($invoice, request()->user());
+    });*/
+
+    /*Route::get('/prueba', function () {
+        $event = App\Event::find(21);
+        $user = request()->user();
+        $participante = \App\EventParticipant::find(14);
+
+        return view('docs.certificate', [
+            'event' => $event,
+            'design'=> \App\DocDesigns::where('event_id', $event->id)->first() ,
+            'user' => $user,
+            'notas' => $participante
+        ]);
+    });*/
 });
 
 

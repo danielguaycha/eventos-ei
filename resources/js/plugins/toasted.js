@@ -5,17 +5,17 @@ Vue.use(Toasted, {
     theme: "bubble",
     position: "bottom-right",
     duration: 3500,
-    iconPack: 'mdi',
+    iconPack: 'fontawesome',
     className: "alert-family",
     closeOnSwipe: true
 });
 
 Vue.prototype.$alert = {
     err(message){
-        Vue.toasted.error(message, {icon: 'alert-circle'})
+        Vue.toasted.error(message, {icon: 'fa-exclamation-circle'})
     },
     ok(message){
-        Vue.toasted.success(message, {icon: 'feather'})
+        Vue.toasted.success(message, {icon: 'fa-check-double'})
     }
 };
 

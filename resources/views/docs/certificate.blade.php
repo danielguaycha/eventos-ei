@@ -31,13 +31,13 @@
                             <h3>D.I. NO. 69-04 DE 14 DE ABRIL DE 1969</h3>
                             <h2>
                                 <i>&mdash;&mdash;&nbsp;</i>
-                                {{ $data->sponsor }}
+                                {{ $design->sponsor }}
                                 <i>&nbsp;&mdash;&mdash;</i>
                             </h2>
                         </td>
                         <td class="second-logo" >
-                            @if ($data->sponsor_logo)
-                                <img src="{{storage_path()}}/app/public/{{ $data->sponsor_logo }}" alt="logo_b">
+                            @if ($design->sponsor_logo)
+                                <img src="{{storage_path()}}/app/public/{{ $design->sponsor_logo }}" alt="logo_b">
                             @endif
                         </td>
                     </tr>
@@ -47,9 +47,9 @@
                 {{--CUERPO---}}
                 <table class="body" width="100%">
                     <tbody>
-                    <tr><td  class="otorga">{{ $data->otorga }}</td></tr>
+                    <tr><td  class="otorga">{{ $design->otorga }}</td></tr>
                     <tr>
-                        <td  class="certificado"><h1>{{$data->certificado}}</h1></td>
+                        <td  class="certificado"><h1>{{$design->certificado}}</h1></td>
                     </tr>
                     <tr>
                         <td class="person-content">
@@ -57,7 +57,7 @@
                                 <b>A: </b>
                             </div>
                             <div class="person">
-                                <h2>{Nombres completos del Estudiante}</h2>
+                                <h2>{{ $user->person->surname }} {{ $user->person->name }}</h2>
                                 <div class="line"></div>
                             </div>
                         </td>
@@ -65,7 +65,7 @@
                     <tr>
                         <td class="description">
                             <p >
-                                {!! $data->description !!}
+                                {!! \Illuminate\Support\Str::replaceFirst("{nota}", number_format($notas->nota_3 + $notas->nota_7, 2),$design->description) !!}
                             </p>
                         </td>
                     </tr>
@@ -73,7 +73,7 @@
 
                             <td class="fecha">
                                 <p>
-                                    Machala, {{ Carbon\Carbon::parse($data->date)->isoFormat('DD [de] MMMM [de] YYYY') }}
+                                    Machala, {{ Carbon\Carbon::parse($design->date)->isoFormat('DD [de] MMMM [de] YYYY') }}
                                 </p>
                             </td>
 

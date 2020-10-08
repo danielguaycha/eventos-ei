@@ -46,13 +46,13 @@
                     <tbody>
                     @foreach ($sponsors as $s)
                         <tr>
-                            <td>
+                            <td data-name="Nombre">
                                 @if ($s->logo)
                                     <img src="{{ url('img/'.$s->logo).'/20' }}" alt="logo_" height="20px" class="mr-2">
                                 @endif
                                 {{ $s->name }}
                             </td>
-                            <td class="text-right">
+                            <td class="text-right" data-name="">
                                 @if ($s->logo)
                                     <a href="{{ url('img/'.$s->logo) }}" target="_blank" class="btn btn-sm btn-success"><i class="fa fa-image"></i></a>
                                 @endif

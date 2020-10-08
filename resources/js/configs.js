@@ -11,9 +11,25 @@ $(document).ready(function () {
 
     // toogle
     $(document).ready(function (){
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="tooltip"]').tooltip({
+            container: '.ei-parent-content',
+            placement: autoPlacement,
+            html: true
+        })
     });
 });
+
+const autoPlacement = function (tip, element) {
+    let $document = $('.ei-parent-content');
+    let offset = $(element).offset();
+    let width = $document.outerWidth();
+    if (offset.left < 100) {
+        return  'right';
+    }
+    if (offset.left - width <= 100)
+        return  'left';
+    return "bottom"
+};
 
 String.prototype.pick = function(min, max) {
     let n, chars = '';

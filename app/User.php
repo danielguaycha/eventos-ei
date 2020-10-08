@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, HasRoles, SoftDeletes;
 
@@ -59,5 +59,9 @@ class User extends Authenticatable
 
     public function events() {
         return $this->belongsToMany(Event::class, "user_admin_events", "user_id", "event_id");
+    }
+
+    public function events_aprobados() {
+        return $this->hasMany(EventParticipant::class, "user_id");
     }
 }

@@ -14,6 +14,7 @@ class CreateDocDesignsTable extends Migration
             $table->string("otorga", 50)->default("Otorga el presente");
             $table->string("certificado", 50)->default("CERTIFICADO");
             $table->string("sponsor_logo", 100)->nullable();
+            $table->json("signatures");
             $table->text("description");
             $table->date("date")->nullable();
             $table->smallInteger('show_date')->default(1);

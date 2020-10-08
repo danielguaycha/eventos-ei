@@ -49,6 +49,7 @@ class RolesSeeder extends Seeder
 
         // calificaciones
         $this->addPerm("Eventos", "events.notas", "Ingresar notas a estudiantes en los eventos");
+        $this->addPerm("Eventos", "events.notas.edit", "Permite editar las notas luego de ser procesadas");
 
         // roles
 

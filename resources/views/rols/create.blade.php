@@ -9,11 +9,10 @@
             <b><i class="fa fa-user-lock"></i>Crear Rol</b>
         </div>
         <div class="card-body">
-            @include('notify')
             <div class="form-group row">
                 <div class="col-sm-12 col-md-4">
                     <label for="name">Nombre del Rol</label>
-                    <input type="text" value="{{ old('name') }}"
+                    <input type="text" value="{{ old('name') }}" required
                            class="form-control" name="name" id="name" placeholder="Use un nombre corto">
                 </div>
                 <div class="col-sm-12 col-md-8">
@@ -27,3 +26,7 @@
         </div>
     </form>
 @stop
+
+@push('nav')
+    @include('notify-min')
+@endpush

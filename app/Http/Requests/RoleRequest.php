@@ -19,4 +19,12 @@ class RoleRequest extends FormRequest
             'perms.*' => 'required|numeric|exists:permissions,id'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'perms.required' => 'Seleccione al menos un permiso para crear el rol'
+        ];
+
+    }
 }

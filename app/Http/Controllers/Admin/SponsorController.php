@@ -71,9 +71,6 @@ class SponsorController extends Controller
 
         //dd($request->hasFile("logo"));
         if ($request->hasFile('logo')) {
-            if (Storage::disk('public')->exists($s->logo)) {
-                Storage::disk('public')->delete($s->logo);
-            }
             $s->logo = $this->uploadImg($request->file('logo'), 'sponsors', 400,400);
         }
 

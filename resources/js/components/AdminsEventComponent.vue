@@ -10,10 +10,10 @@
                                   :admin="true"></DlgSearchStudent>
             </div>
         </div>
-        <div class="card-body p-0">
+        <div class="card-body py-0">
             <Loader :loading="loader"></Loader>
-            <div class="table-responsive table-bordered m-0">
-                <table class="table table-hover m-0 table-sm " v-if="!loader && laravelData">
+            <div class="table-responsive m-0">
+                <table class="table table-bordered table-hover m-0 table-sm " v-if="!loader && laravelData">
                     <thead>
                     <tr class="align-middle">
                         <th>Administrador</th>
@@ -25,10 +25,10 @@
                     </thead>
                     <tbody>
                     <tr v-for="p in laravelData.data" :key="p.id">
-                        <td>{{ p.person.surname }} {{ p.person.name }}</td>
-                        <td>{{ p.person.dni }}</td>
-                        <td>{{ p.email }}</td>
-                        <td>{{ p.roles.map(r => r['description']).join(',')}}</td>
+                        <td data-name="Admin">{{ p.person.surname }} {{ p.person.name }}</td>
+                        <td data-name="Cedula">{{ p.person.dni }}</td>
+                        <td data-name="Correo">{{ p.email }}</td>
+                        <td data-name="rol">{{ p.roles.map(r => r['description']).join(',')}}</td>
                         <td class="text-right">
                             <button type="button" v-if="canDelete" @click="deleteAdmin(p)"
                                     class="btn btn-sm btn-outline-danger" >
@@ -36,8 +36,8 @@
                             </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="4" class="text-center text-muted py-2" v-if="laravelData.data && laravelData.data.length <=0">No hay administradores para este evento</td>
+                    <tr v-if="laravelData.data && laravelData.data.length <=0">
+                        <td colspan="4" class="text-center text-muted py-2" >No hay administradores para este evento</td>
                     </tr>
                     </tbody>
                 </table>

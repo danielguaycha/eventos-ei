@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Event;
 use App\EventParticipant;
 use App\EventPostulant;
 use App\Http\Controllers\Controller;
@@ -17,8 +18,9 @@ class PostulanteController extends Controller
         $this->middleware('permission:events.postulantes.accept')->only(['acceptOrDeny', 'acceptAll']);
     }
 
-    public function index(){
-        return view('events.postulantes.index');
+    public function index($event){
+        $event = Event::findOrFail($event);
+        return view('events.postulantes.index', ['event' => $event]);
     }
 
     // aceptar la postulación o denegar

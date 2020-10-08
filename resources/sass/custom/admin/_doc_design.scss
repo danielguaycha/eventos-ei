@@ -29,13 +29,22 @@ $hf_height : 25px;
                 line-height: 10px;
                 margin-top: 1rem;
                 padding: 0 1rem;
-                h3, h4, h5 {
-                    margin: 0;
+                .sponsor {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    select {
+                        font-weight: 600;
+                        font-size: 1.2em;
+                        border: none;
+                        width: initial;
+                        &:focus {
+                            box-shadow: none;
+                            border: .8px solid rgba(0,0,0, .1);
+                        }
+                    }
                 }
-                h4 {
-                    font-weight: bold;
-                    font-size: 1.2em;
-                }
+
             }
             .select_logo {
                 display: flex;
@@ -47,8 +56,16 @@ $hf_height : 25px;
             }
         }
         .otorga {
-            .select-center {
-                text-align-last:center;
+            .form-group {
+                display: flex;
+                justify-content: center;
+                select {
+                    border: none;
+                    &:focus {
+                        box-shadow: none;
+                        border: .8px solid rgba(0,0,0, .1);
+                    }
+                }
             }
         }
     }
@@ -63,4 +80,8 @@ $hf_height : 25px;
             height: $hf_height;
         }
     }
+}
+
+.select-center {
+    text-align-last:center;
 }

@@ -72,9 +72,9 @@ class SignatureController extends Controller
         $s->cargo = $request->cargo;
 
         if ($request->hasFile('image')) {
-            if (Storage::disk('public')->exists($s->image)) {
-                Storage::disk('public')->delete($s->image);
-            }
+            //if (Storage::disk('public')->exists($s->image)) {
+              //  Storage::disk('public')->delete($s->image);
+            //}
             $s->image = $this->uploadImg($request->file('image'), 'signatures', 300, 300);
         }
 

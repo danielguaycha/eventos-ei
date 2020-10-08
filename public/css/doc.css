@@ -104,7 +104,9 @@ main {
     float: left;
     display: inline-block;
     position: absolute;
-    top: 34px; }
+    top: 34px;
+    background: white;
+    z-index: 10; }
     .body .person-content .ab b {
       display: block;
       font-size: 16pt;
@@ -115,7 +117,8 @@ main {
   text-align: center;
   position: relative;
   display: block;
-  float: left; }
+  float: left;
+  width: 100%; }
   .body .person h2 {
     display: block;
     text-transform: uppercase; }

@@ -15,8 +15,8 @@
         </div>
         <div class="card-body p-0">
             <Loader :loading="loader"></Loader>
-            <div class="table-responsive table-bordered m-0">
-                <table class="table table-hover m-0 table-sm " v-if="!loader && laravelData">
+            <div class="table-responsive m-0">
+                <table class="table table-bordered table-hover m-0 table-sm " v-if="!loader && laravelData">
                     <thead>
                     <tr class="align-middle">
                         <th>Estudiante</th>
@@ -28,8 +28,8 @@
                     </thead>
                     <tbody>
                     <tr v-for="p in laravelData.data" :key="p.id">
-                        <td>{{ p.surname }} {{ p.name }}</td>
-                        <td class="input-nota">
+                        <td data-name="Estudiante">{{ p.surname }} {{ p.name }}</td>
+                        <td data-name="Nota /7" class="input-nota">
                             <vue-numeric
                                 :min="0" v-bind:max="7"
                                 :precision="2"
@@ -38,7 +38,7 @@
                                 decimal-separator="."
                                 v-model="p.nota_7" />
                         </td>
-                        <td class="input-nota">
+                        <td data-name="Nota /3" class="input-nota">
                             <vue-numeric
                                 :min="0" v-bind:max="3"
                                 :precision="2"
@@ -47,13 +47,13 @@
                                 decimal-separator="."
                                 v-model="p.nota_3" />
                         </td>
-                        <td class="input-nota">
+                        <td data-name="Promedio" class="input-nota">
                             <input type="text"
                                    :disabled="true"
                                    :value="(p.nota_7 + p.nota_3)"
                                    readonly class="form-control form-control-sm">
                         </td>
-                        <td width="1%">
+                        <td width="1%" class="td-100">
                             <small v-if="p.nota_7 + p.nota_3 < 7" class="text-danger">Reprobado</small>
                             <small v-else class="text-success">Aprobado</small>
                         </td>

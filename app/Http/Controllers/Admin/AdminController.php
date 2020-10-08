@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -161,5 +162,23 @@ class AdminController extends Controller
         $user->save();
 
         return back()->with('ok', 'El usuario fué dado de baja con éxito');
+    }
+
+    public function showPerms($userId) {
+        $user = User::with('person')->findOrFail($userId);
+        $perms = Permission::orderBy('module')->get();
+        $permsSelected = $user->getDirectPermissions();
+        return view('admins.perms', ['user' => $user, 'perms' => $perms, 'selected' => $permsSelected]);
+    }
+
+    public function savePerms(Request $request, $user){
+        $request->validate([
+            'perms' => 'array',
+            'perms.*' => 'numeric|exists:permissions,id'
+        ]);
+        $u = User::findOrFail($user);
+        $u->syncPermissions($request->get('perms'));
+
+        return back()->with('ok', 'Permisos actualizados con éxito');
     }
 }

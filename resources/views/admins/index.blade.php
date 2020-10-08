@@ -43,16 +43,17 @@
                     @if (count($users) > 0)
                         @foreach($users as $u)
                             <tr>
-                                <td>{{$u->surname}} {{ $u->name }} </td>
-                                <td>{{ $u->dni }}</td>
-                                <td>
+                                <td data-name="Nombres">{{$u->surname}} {{ $u->name }} </td>
+                                <td data-name="dni">{{ $u->dni }}</td>
+                                <td data-name="Rol">
                                     @if (count($u->roles) > 0)
                                         {{ $u->roles->pluck('description')[0] }}
                                     @endif
 
                                 </td>
-                                <td>{{ $u->email }}</td>
+                                <td data-name="Correo">{{ $u->email }}</td>
                                 <td class="text-right">
+                                    <a href="{{ route('admins.perms', ['userId' => $u->id]) }}" class="btn btn-sm btn-success"><i class="fa fa-cogs"></i></a>
                                     <a href="{{ route('admins.edit', ['admin' => $u->id]) }}" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
                                     @include('admins._partials._btn_delete',
                                             ['id' => $u->id, 'route'=> route('admins.destroy', ['admin' => $u->id])])

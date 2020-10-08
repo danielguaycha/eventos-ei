@@ -11,6 +11,7 @@ use App\Signature;
 use App\Sponsor;
 use App\User;
 use App\UserAdminEvents;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,12 +31,16 @@ class EventController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->can('events.all')) {
-            $e = Event::with('sponsor')->withCount('postulants', 'participantes')->get();
+            $e = Event::with('sponsor')
+                ->withCount('postulants', 'participantes')
+                ->orderBy('id', 'desc')
+                ->get();
         }
         else {
             $e = $request->user()->events()
                 ->with('sponsor')
                 ->withCount('postulants', 'participantes')
+                ->orderBy('id', 'desc')
                 ->get();
         }
 
@@ -74,17 +79,24 @@ class EventController extends Controller
         $e->matricula_fin = $request->matricula_fin;
         $e->hours = $request->hours;
 
+        if ($request->get('type') === Event::TypeAsistencia) {
+            $e->status = Event::STATUS_CALIFICADO;
+        }
+
         $e->save();
 
         $e->signatures()->sync($request->get('signatures'));
         $e->admins()->sync([$request->user()->id]);
+
+        $imgSignatures = Signature::whereIn('id',$request->get('signatures'))->get();
 
         DocDesigns::create([
             'sponsor' => $sponsor->name,
             'description' => $this->getDescriptionByType($e),
             'event_id'=> $e->id,
             'date' => $e->f_fin,
-            'sponsor_logo' => $sponsor->logo
+            'sponsor_logo' => $sponsor->logo,
+            'signatures' => $imgSignatures
         ]);
 
         DB::commit();
@@ -116,17 +128,62 @@ class EventController extends Controller
 
     public function edit($id)
     {
-        //
+        $e = Event::with('signatures')->findOrFail($id);
+        $sponsor = Sponsor::where('status', 1)->get();
+        $signatures = Signature::where('status', 1)->get();
+        return view('events.edit', [
+            'event' => $e,
+            'sponsors' => $sponsor,
+            'signatures' => $signatures
+        ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(EventRequest $request, $id)
     {
-        //
+        DB::beginTransaction();
+        $e = Event::findOrFail($id);
+        $sponsor = Sponsor::find($request->sponsor_id);
+        // titulo y slug
+        $e->title = Str::upper($request->title);
+        $e->slug = Str::slug($e->title);
+        $e->short_link = $this->getShortLink();
+
+        $e->description = $request->description;
+        $e->type = $request->type;
+        $e->sponsor_id = $request->sponsor_id;
+        $e->f_inicio = $request->f_inicio;
+        $e->f_fin = $request->f_fin;
+        $e->matricula_inicio = $request->matricula_inicio;
+        $e->matricula_fin = $request->matricula_fin;
+        $e->hours = $request->hours;
+
+        if ($request->get('type') === Event::TypeAsistencia) {
+            $e->status = Event::STATUS_CALIFICADO;
+        }
+        $e->save();
+        $e->signatures()->sync($request->get('signatures'));
+        $imgSignatures = Signature::whereIn('id',$request->get('signatures'))->get();
+
+        //diseño del certificado
+        DocDesigns::updateOrCreate(
+            ['event_id'=> $e->id],
+            ['sponsor' => $sponsor->name,
+            'description' => $this->getDescriptionByType($e),
+            'event_id'=> $e->id,
+            'date' => $e->f_fin,
+            'sponsor_logo' => $sponsor->logo,
+            'signatures' => $imgSignatures]);
+
+
+        DB::commit();
+        return back()->with('ok', 'Evento actualizado con éxito');
     }
 
     public function destroy($id)
     {
-        //
+        $event = Event::findOrFail($id);
+        $event->delete();
+        return back()->with('ok', 'Evento eliminado con éxito');
     }
 
 
@@ -215,6 +272,10 @@ class EventController extends Controller
 
         $e = Event::findOrFail($event);
 
+        if (!Carbon::now()->isBefore($e->matricula_fin)) {
+            return back()->with('err', 'El periodo de matricula ha terminado');
+        }
+
         if ($this->isPostulant($event, $request->user()->id)) {
             return back()->with('err', 'Ya has enviado tu inscripción para este evento');
         }
@@ -241,17 +302,26 @@ class EventController extends Controller
         switch ($e->type){
             case Event::TypeAsistencia:
                 $desc = "Por haber <b>ASISTIDO</b> al <b>$e->title</b> realizado ".$e->eventDateForDoc();
+                if ($e->hours > 0) {
+                    $desc.= " equivalente a ".$e->hours." horas.";
+                }
                 break;
             case Event::TypeAprovacion:
-                $desc = "Por haber <b>APROBADO</b> al <b>$e->title</b> obteniendo un promedio de {nota}";
+                $desc = "Por haber <b>APROBADO</b> al <b>$e->title</b>";
+                if ($e->hours > 0) {
+                    $desc.= " equivalente a ".$e->hours." horas,";
+                }
+                $desc.= "  obteniendo un promedio de {nota}";
                 break;
             case Event::TypeAsistenciaAprovation:
-                $desc = "Por haber <b>ASISTIDO</b> y <b>APROBADO</b> al <b>$e->title</b> realizado ".$e->eventDateForDoc().", con un promedio de {nota}";
+                $desc = "Por haber <b>ASISTIDO</b> y <b>APROBADO</b> al <b>$e->title</b> realizado ".$e->eventDateForDoc();
+                if ($e->hours > 0) {
+                    $desc.= " equivalente a ".$e->hours." horas,";
+                }
+                $desc.= " obteniendo un promedio de {nota}";
                 break;
         }
-        if ($e->hours > 0) {
-            $desc.= " equivalente a ".$e->hours." horas.";
-        }
+
         return $desc;
     }
 }

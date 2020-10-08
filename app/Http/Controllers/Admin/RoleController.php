@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
@@ -67,5 +68,17 @@ class RoleController extends Controller
 
         $role->syncPermissions($request->get('perms'));
         return back()->with('ok', 'Rol actualizado con éxito');
+    }
+
+    public function destroy($id){
+        $role = Role::findOrFail($id);
+
+        if ($role->name === User::rolAdmin || $role->name === User::rolStudent) {
+            return back()->with('warn', 'No se pueden eliminar roles básicos');
+        }
+
+        $role->delete();
+
+        return back()->with('ok', 'Rol eliminado con éxito');
     }
 }

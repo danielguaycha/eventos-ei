@@ -10,9 +10,6 @@
 
     <title>{{ config('app.name', 'EI-Event') }}</title>
 
-
-
-
     @include('_globals._meta_icon_head')
 
     <!-- Fonts -->
@@ -22,6 +19,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('css')
+    @stack('styles')
 </head>
 <body>
     <div class="ei-container" >
@@ -45,7 +43,6 @@
                 </div>
                 {{--Menú--}}
                 <div class="ei-sidebar-menu">
-
                     <ul>
                         {{--Acceso solo al uaurio root--}}
                         @role('root')
@@ -62,7 +59,7 @@
 
                         {{--Acceso a los usuarios con su respectivo permiso--}}
                             <li class="ei-sidebar-divider">Eventos</li>
-                            <li><a href="#"><i class="fa fa-user-graduate"></i>Mis cursos</a></li>
+                            {{--<li><a href="#"><i class="fa fa-user-graduate"></i>Mis cursos</a></li>--}}
                             @can('events.index')
                                 <li><a href="{{ route('events.index') }}"
                                        class="@if (request()->is('events/*') || request()->is('events')) active @endif"
@@ -99,12 +96,16 @@
                     <button class="menu-open btn btn-link">
                         <i class="fa fa-bars"></i>
                     </button>
+                    @stack('nav')
                 </div>
                 <ul class="ei-nav-items">
                     <li class="dropdown">
                         <a id="session-user" class="ei-nav-user dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             <img src="{{ asset('img/profile.png') }}" alt="user-profile" width="30px">
-                            {{ Auth::user()->person->name }} <span class="caret"></span>
+                            <span>
+                                {{ Auth::user()->person->name }}
+                            </span>
+                            <span class="caret"></span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="session-user">

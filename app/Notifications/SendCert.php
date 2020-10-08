@@ -10,10 +10,10 @@ use Illuminate\Notifications\Notification;
 class SendCert extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    public function __construct()
+    protected $file;
+    public function __construct($file)
     {
-        //
+        $this->file = $file;
     }
 
     public function via($notifiable)
@@ -27,7 +27,7 @@ class SendCert extends Notification implements ShouldQueue
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!')
-                    ->attach(public_path('file.pdf'), [
+                    ->attach($this->file, [
                         'as' => 'filename.pdf',
                         'mime' => 'text/pdf',
                     ]);

@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DocDesigns;
 use App\Event;
 use App\EventParticipant;
 use App\EventPostulant;
 use App\Http\Controllers\Controller;
-use http\Env\Response;
+use App\Jobs\OneMail;
+use App\Mail\CertificateMail;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ParticipantController extends Controller
 {
@@ -60,7 +65,7 @@ class ParticipantController extends Controller
         $p = EventParticipant::join('users', 'users.id', 'event_participants.user_id')
             ->join('persons', 'persons.id', 'users.person_id')
             ->select(
-                'event_participants.id',
+                'event_participants.*',
                 'persons.dni',
                 'persons.name', 'persons.surname',
                 'users.id as user_id',
@@ -110,6 +115,21 @@ class ParticipantController extends Controller
         return view('events.notas.index', ['event' => $e]);
     }
 
+    public function editNotas($event, Request $request){
+        $e = Event::findOrFail($event);
+        if ($e->type === Event::TypeAsistencia) {
+            return redirect(route('events.index'))->with('info', 'El evento es de tipo asistencia');
+        }
+
+        if (!$request->user()->can('events.all')) {
+            if (!$e->isAdmin($request->user()->id)) {
+                abort(403);
+            }
+        }
+
+        return view('events.notas.edit', ['event' => $e]);
+    }
+
     public function listForNotas($event){
         $p = EventParticipant::join('users', 'users.id', 'event_participants.user_id')
             ->join('persons', 'persons.id', 'users.person_id')
@@ -140,10 +160,10 @@ class ParticipantController extends Controller
         ]);
 
         $e = Event::findOrFail($event);
-        if ($e->status !== Event::STATUS_ACTIVO) {
+        if ($e->status !== Event::STATUS_ACTIVO && !$request->user()->can('events.notas.edit')) {
             return response()->json([
                 'ok' => false,
-                'message' => 'Las calificaciones para este evento ya fueron procesadas '.$e->status.' == '.Event::STATUS_ACTIVO.' event '.$event
+                'message' => 'Las calificaciones para este evento ya fueron procesadas'
             ], 400);
         }
 
@@ -164,7 +184,7 @@ class ParticipantController extends Controller
         ]);
     }
 
-    public function confirmNotas($event)
+    public function confirmNotas($event, Request $request)
     {
         $e = Event::withCount('participantes')->findOrFail($event);
 
@@ -175,7 +195,7 @@ class ParticipantController extends Controller
             ], 400);
         }
 
-        if ($e->status !== Event::STATUS_ACTIVO) {
+        if ($e->status !== Event::STATUS_ACTIVO && !$request->user()->can('events.notas.edit')) {
             return response()->json([
                 'ok' => false,
                 'message' => 'Las calificaciones para este evento ya fueron procesadas'
@@ -198,5 +218,69 @@ class ParticipantController extends Controller
             'message' => 'Calificaciones procesadas con éxito'
         ]);
     }
+
+    public function aprobados($event) {
+
+        $e = Event::findOrFail($event);
+
+        if ($e->type === Event::TypeAsistencia) {
+            $a = EventParticipant::where([
+                'event_id' => $event
+            ])->select(
+                'id',
+                'status'
+            )->get();
+            return response()->json([
+                'ok' => true,
+                'body' => $a
+            ]);
+        }
+
+
+        $a = EventParticipant::where([
+            'event_id' => $event
+        ])->select(
+            'id',
+            'status'
+        )->whereRaw('(nota_3 + nota_7) >= 7')->get();
+
+        return response()->json([
+            'ok' => true,
+            'body' => $a
+        ]);
+    }
+
+    // enviar certificado a estudiante
+    public function sendOneEmail($participanteId){
+        $participante = EventParticipant::findOrFail($participanteId);
+        $event = $participante->event()->with('signatures')->first();
+
+        if ($event->status === Event::STATUS_ACTIVO) {
+            return response()->json([
+               'ok' => false,
+               'message' => 'Aun no se han enviado las notas para este evento'
+            ], 400);
+        }
+
+        if ($event->type !== Event::TypeAsistencia) {
+            $notaTotal = $participante->nota_7 + $participante->nota_3;
+            if ($notaTotal < 7) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'Este estudiante esta reprobado por nota'
+                ], 400);
+            }
+        }
+
+        $user = User::with('person')->findOrFail($participante->user_id);
+
+        OneMail::dispatchAfterResponse($event, $user, $participante);
+
+        return response()->json([
+           'ok' => true,
+           'message' => 'Certificado enviado correctamente'
+        ]);
+    }
+
 
 }

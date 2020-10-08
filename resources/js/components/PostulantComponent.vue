@@ -11,8 +11,9 @@
         </div>
         <div class="card-body p-0">
             <Loader :loading="loader"></Loader>
+            <slot></slot>
             <div class="table-responsive table-bordered m-0">
-                <table class="table table-hover m-0 table-sm " v-if="!loader && laravelData">
+                <table class="table table-bordered table-hover m-0 table-sm " v-if="!loader && laravelData">
                     <thead>
                     <tr class="align-middle">
                         <th class="text-center"></th>
@@ -23,7 +24,7 @@
                     </thead>
                     <tbody>
                     <tr v-for="p in laravelData.data" :key="p.id">
-                        <td width="1%" class="text-center">
+                        <td width="1%" class="text-center td-radio">
                             <label class="form-check-label" v-if="p.status === 0">
                                 <input class="form-check-input" type="checkbox"
                                        :value="p.id"
@@ -31,8 +32,8 @@
                                        :aria-label="'Seleccionar '+p.name">
                             </label>
                         </td>
-                        <td>{{ p.surname }} {{ p.name }}</td>
-                        <td>
+                        <td data-name="Estudiante">{{ p.surname }} {{ p.name }}</td>
+                        <td data-name="Estado">
                             <small class="text-success" v-if="p.status === 1"><b>Aprobado</b></small>
                             <small class="text-danger" v-if="p.status === 0"><b>No aprobado</b></small>
                         </td>
@@ -45,7 +46,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" class="text-center text-muted py-2" v-if="laravelData.data.length <=0">No hay postulantes para este curso</td>
+                        <td colspan="4" class="text-center text-muted py-2" v-if="laravelData.data.length <=0">No hay postulantes para este evento</td>
                     </tr>
                     </tbody>
                 </table>

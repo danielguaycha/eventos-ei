@@ -16,7 +16,7 @@
             </div>
             <div class="dlg-body">
                 <Loader :loading="loader"/>
-                <table class="table table-borderless table-hover" v-if="!loader">
+                <table class="table table-bordered table-hover" v-if="!loader">
                     <thead>
                     <tr>
                         <th>Nombres</th>
@@ -27,10 +27,10 @@
                     </thead>
                     <tbody>
                     <tr v-for="p in students" :key="p.id" class="tr-hover" @dblclick="emit(p)">
-                        <td>{{ p.surname }} {{ p.name }}</td>
+                        <td data-name="Nombres">{{ p.surname }} {{ p.name }}</td>
 
-                        <td> {{ p.dni}} </td>
-                        <td v-if="admin">
+                        <td data-name="Cedula"> {{ p.dni}} </td>
+                        <td data-name="Rol" v-if="admin">
                             <small v-if="p.roles">
                                 {{ p.roles.map(r => r['description']).join(',')}}
                             </small>

@@ -18,7 +18,12 @@
                     <input type="search" name="q" id="q"
                            value="{{ old('q', app('request')->input('q')) }}"
                            class="form-control"
-                           placeholder="Buscar por: CI, Apellidos">
+                           placeholder="Búsqueda por nombres y cedula">
+                    <select name="type" id="type" class="form-select select-min">
+                        <option value="" @if(!request()->query('type')) selected @endif >Búsqueda por...</option>
+                        <option value="1" @if(request()->query('type') && request()->query('type') == 1) selected @endif>Nombres, Cedula</option>
+                        <option value="2" @if(request()->query('type') && request()->query('type') == 2) selected @endif>Evento</option>
+                    </select>
                     <button class="btn btn-primary"><i class="fa fa-search"></i></button>
                     @if (app('request')->input("q"))
                         <a href="{{ route('students.index') }}"
@@ -45,17 +50,19 @@
                     @if (count($users) > 0)
                         @foreach($users as $u)
                             <tr>
-                                <td>{{$u->surname}} {{ $u->name }} </td>
-                                <td>{{ $u->dni }}</td>
-                                <td>
+                                <td data-name="Nombres">{{$u->surname}} {{ $u->name }} </td>
+                                <td data-name="Cédula">{{ $u->dni }}</td>
+                                <td data-name="Tipo">
                                     @if ($u->type === 'student')
                                         Estudiante
                                     @else
                                         Particular
                                     @endif
                                 </td>
-                                <td>{{ $u->email }}</td>
+                                <td data-name="Correo">{{ $u->email }}</td>
                                 <td class="text-right">
+                                    <a href="{{route('students.show', ['student' => $u->id])}}" title="Ver cursos"
+                                       class="btn btn-sm btn-secondary"><i class="fa fa-graduation-cap"></i></a>
                                     @can('students.update')
                                         <a href="{{ route('students.edit', ['student' => $u->id]) }}" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
                                     @endcan
@@ -92,3 +99,30 @@
         @endif
     </div>
 @endsection
+@push('js')
+    <script>
+        (function (){
+            const val = document.getElementById('type').value;
+            setPlaceHolder(val);
+        })();
+
+        document.getElementById("type").addEventListener('change', function (e) {
+            const val = e.target.value;
+            if (val) {
+                setPlaceHolder(val);
+            }
+        });
+
+        function setPlaceHolder(val) {
+            let txtSearch = document.getElementById("q");
+            switch (parseInt(val)) {
+                case 1:
+                    txtSearch.placeholder = 'Búsqueda por nombres y cedula';
+                    break;
+                case 2:
+                    txtSearch.placeholder = 'Búsqueda por nombre de evento';
+                    break;
+            }
+        }
+    </script>
+@endpush

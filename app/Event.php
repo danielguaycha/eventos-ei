@@ -25,7 +25,8 @@ class Event extends Model
     ];
 
     protected $casts = [
-        'status' => 'integer'
+        'status' => 'integer',
+        'sponsor_id' => 'integer'
     ];
 
 

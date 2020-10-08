@@ -48,11 +48,11 @@
                     <tbody>
                     @foreach ($signatures as $s)
                         <tr>
-                            <td>
+                            <td data-name="Cargo">
                                 {{ $s->cargo }}
                             </td>
-                            <td>{{ $s->name }}</td>
-                            <td class="text-right">
+                            <td data-name="Nombre">{{ $s->name }}</td>
+                            <td data-name="" class="text-right">
                                 <a href="{{ url('img/'.$s->image) }}" target="_blank"
                                    data-toggle="tooltip" title="Ver firma de {{ $s->cargo }}"
                                    class="btn btn-sm btn-success"><i class="fa fa-image"></i></a>

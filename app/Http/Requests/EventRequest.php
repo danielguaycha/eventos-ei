@@ -34,4 +34,12 @@ class EventRequest extends FormRequest
             'hours' => 'required|numeric|min:0|max:9999'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'f_fin.after'=> 'La fecha fin del evento debe ser posterior a la fecha de inicio',
+            'matricula_fin.after'=> 'La fecha fin de matricula debe ser posterior a la fecha de inicio'
+        ];
+    }
 }

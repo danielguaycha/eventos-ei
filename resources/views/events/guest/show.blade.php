@@ -25,8 +25,13 @@
                        <li class="list-group-item"><span>Tipo: </span> <b>{{ $event->type() }}</b></li>
                    </ul>
                    <div class="card-body">
+
                        @if (!$isPostulant)
-                           <a href="{{ route('events.postular', ['event' => $event->id]) }}" class="btn btn-primary btn-block"> <i class="fa fa-graduation-cap mr-2"></i> Inscribirme</a>
+                           @if (\Carbon\Carbon::now()->isBefore($event->matricula_fin))
+                               <a href="{{ route('events.postular', ['event' => $event->id]) }}" class="btn btn-primary btn-block"> <i class="fa fa-graduation-cap mr-2"></i> Inscribirme</a>
+                           @else
+                                <span class="d-block text-center text-danger">El periodo de matricula finalizó</span>
+                           @endif
                        @else
                            <a class="btn btn-success btn-block disabled"><i class="fa fa-check mr-2"></i>INSCRITO</a>
                        @endif

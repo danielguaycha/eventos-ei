@@ -160,10 +160,100 @@ $sidebarBg: #2C313D;
     box-shadow: 0 2px 3px #00000012;
 
     .ei-search {
+        display: flex;
+        justify-content: space-between;
+        flex-grow: 1;
         .menu-open {
             font-size: 1.7em;
             @include desktop {
                 display: none;
+            }
+        }
+        .alert {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            border-radius: 0;
+            border: none;
+            border-right: 5px solid transparent;
+
+                position: fixed;
+                bottom: 0;
+
+            @include tablet {
+                position: relative;
+                height: $navH;
+                margin-right: 1rem;
+            }
+            line-height: 16px;
+            ul {
+
+                display: grid;
+                @include tablet {
+                    grid-template: 1fr auto/  auto;
+                    column-gap: 1rem;
+                }
+                @include desktop {
+                    grid-template: 1fr /  auto;
+                }
+                @include xDesktop {
+                    grid-template: 1fr / auto;
+                }
+                justify-items: start;
+                li {
+                    color: $red-800;
+                    display: flex;
+                    align-items: center;
+                    span {
+                        font-size: 12px;
+                        margin-right: 5px;
+                        color: $red-600;
+                    }
+                }
+            }
+            i {
+                height: 22px;
+                width: 22px;
+                text-align: center;
+                margin-right: .5rem;
+                border-radius: 50%;
+                font-size: 10px;
+                background: $black;
+                color: white;
+                padding: 5px;
+            }
+            span {
+                display: block;
+            }
+            &.alert-success {
+                background: rgba($green, .1);
+                border-color: $green;
+                i {
+                    background: $green-400;
+                }
+            }
+            &.alert-danger {
+                background: rgba($red, .1);
+                border-color: $red;
+                i {
+                    background: $red-400;
+                }
+            }
+            &.alert-warning {
+                background: rgba($orange-300, .2);
+                border-color: $orange-300;
+                i {
+                    background: $orange-300;
+                }
+            }
+            &.alert-info {
+                background: rgba($blue-500, .2);
+                border-color: $blue-300;
+                i {
+                    background: $blue-300;
+                }
             }
         }
     }
@@ -172,6 +262,11 @@ $sidebarBg: #2C313D;
         padding: 0;
         list-style: none;
         margin: 0;
+        @include mobil-only {
+            .dropdown-toggle::after {
+                display: none;
+            }
+        }
     }
 
     .ei-nav-user {
@@ -179,13 +274,75 @@ $sidebarBg: #2C313D;
         text-decoration: none;
         align-items: center;
         margin-right: 5px;
+        margin-left: 5px;
         color: black;
         background: rgba(0, 0, 0, .05);
         padding: 5px 9px;
         border-radius: 25px;
         img {
-            margin-right: 5px;
+            margin: 0;
+        }
+        span {
+            display: none;
+        }
+
+        @include tablet {
+            img {
+                margin-right: 5px;
+            }
+            span {
+                display: initial;
+            }
         }
     }
 ;
+}
+
+.ei-card-head {
+    background: #f2f2f2;
+    padding: 7px 5px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-top: 2.5px solid darken($primary,1);
+    border-left: 2.5px solid $gray-300;
+    border-right: 2.5px solid $gray-300;
+    b {
+        margin-right: 2.5px;
+    }
+}
+
+.ei-direct-access {
+    display: none;
+    @include desktop {
+        display: flex;
+    }
+    align-items: center;
+    a {
+        margin-left: .7rem;
+        text-decoration: none;
+        padding: 5px 5px;
+        color: $gray-600;
+    }
+}
+//
+.loading-email {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    .spinner-border {
+        width: 2.5rem;
+        height: 2.5rem;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+    i {
+        text-align: center;
+        position: absolute;
+        top: 22%;
+        left: calc(50% - 8px);
+        font-size: 17px;
+        color: $primary;
+    }
 }

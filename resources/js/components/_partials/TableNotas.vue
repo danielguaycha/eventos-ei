@@ -13,15 +13,15 @@
             </thead>
             <tbody>
                 <tr v-for="p in laravelData.data" :key="p.id">
-                    <td>{{ p.surname }} {{ p.name }}</td>
-                    <td width="10%" class="text-center">{{ p.nota_7 }}</td>
-                    <td width="10%" class="text-center">{{ p.nota_3 }}</td>
-                    <td width="10%" class="text-center">
+                    <td data-name="Estudiante">{{ p.surname }} {{ p.name }}</td>
+                    <td width="10%" class="text-center td-100" data-name="Nota /7">{{ p.nota_7 }}</td>
+                    <td width="10%" class="text-center td-100" data-name="Nota /3">{{ p.nota_3 }}</td>
+                    <td width="10%" class="text-center td-100" data-name="Total">
                         <b>
                             {{ p.nota_3 + p.nota_7 }}
                         </b>
                     </td>
-                    <td width="1%">
+                    <td width="1%" class="td-100" data-name="Estado">
                         <small v-if="p.nota_7 + p.nota_3 < 7" class="text-danger">Reprobado</small>
                         <small v-else class="text-success">Aprobado</small>
                     </td>

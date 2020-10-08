@@ -93,68 +93,9 @@
                                             <div>{{ $e->eventDate() }}</div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="ei-event-footer d-flex justify-content-between">
-                                        <div class="btn-group">
-                                            @can('events.notas')
-                                                @if ($e->type !== \App\Event::TypeAsistencia)
-                                                    <a href="{{ route('events.notas', ['event'=> $e->id]) }}" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fa fa-clipboard-list"></i> Notas
-                                                    </a>
-                                                @endif
-                                            @endcan
-                                            @if ($e->participantes_count > 0 && $e->status !== \App\Event::STATUS_ACTIVO)
-                                                    <a href="{{ route('events.send_mail', ['event' => $e->id]) }}"
-                                                       data-toggle="tooltip" title="Enviar certificados"
-                                                       class="btn btn-sm btn-outline-dark"><i class="fa fa-envelope"></i></a>
-                                            @endif
-
-                                        </div>
-                                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-
-                                        {{--<a href="#"><i class="fa fa-trash fa-lg"></i></a>
-                                        <a href="#"><i class="fa fa-edit fa-lg"></i></a>--}}
-
-                                        @can('events.participantes.index')
-                                            <a href="{{ route('participantes.index', ['evento' => $e->id]) }}" class="btn btn-sm" data-toggle="tooltip" title="Participantes ({{$e->participantes_count}})">
-                                                <i class="fa fa-user-graduate"></i> {{ $e->participantes_count }}
-                                            </a>
-                                        @endcan
-
-
-                                        @can('events.design.view')
-                                            <a class="btn btn-sm text-grey" href="{{ route('design.preview', ['eventId' => $e->id]) }}" data-toggle="tooltip"
-                                              target="_blank"
-                                               title="Ver diseño de certificado"><i class="fa fa-certificate fa-lg"></i></a>
-                                        @endcan
-                                        @can('events.design.edit')
-                                            <a class="btn btn-sm"
-                                                href="{{ route('doc.edit', ['id' => $e->id]) }}" data-toggle="tooltip"
-                                               title="Diseñar certificado"><i class="fa fa-pen-nib fa-lg"></i></a>
-                                        @endcan
-                                        <div class="btn-group" role="group">
-                                            <button id="btnGroupDrop1" type="button" class="btn btn-sm" data-toggle="dropdown" aria-expanded="false">
-                                                <i class="fa fa-ellipsis-v mx-1"></i>
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-
-                                                @can('events.postulantes')
-                                                    <li>
-                                                        <a href="{{ route('postulates.index', ['event' => $e->id]) }}"
-                                                           class="dropdown-item">
-                                                            Postulantes <span class="badge bg-dark">{{$e->postulants_count}}</span>
-                                                        </a>
-                                                    </li>
-                                                @endcan
-                                                @can('events.admins.add|events.admins.destroy')
-                                                    <li><a  class="dropdown-item" href="{{ route('events.admins', ['event' => $e->id]) }}">Administradores</a></li>
-                                                @endcan
-                                                <li><a  class="dropdown-item" href="{{ route('events.show', ['event' => $e->slug]) }}" target="_blank">Ver evento</a></li>
-                                                <li><button class="dropdown-item" onclick="copyLink('{{  route('redirect.event', ['shortLink' => $e->short_link])  }}')">Copiar enlace</button></li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                    @include('events._partials.actions-event', ['e' => $e])
                                 </div>
                             </div>
                         </div>
@@ -162,7 +103,11 @@
                 </div>
         </div>
     </div>
+    @include('admins._partials._modal', ['msg'=> '¿Esta seguro que desea eliminar este evento?'])
 @endsection
+@push('nav')
+    @include('notify-min')
+@endpush
 @push('js')
     <script>
         function copyLink(url) {
