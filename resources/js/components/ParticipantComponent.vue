@@ -5,26 +5,26 @@
                 <b><i class="fa fa-user"></i>Listado de participantes ({{ laravelData.data ?  laravelData.data.length : 0}})</b>
             </div>
             <div class="d-flex">
-                <DlgSendEmails v-model="dialogEmail"
+                <DlgSendEmails v-if="event"
                                ref="sendEmail"
-                               v-if="event"
-                               :event="event.id" @onSend="onSend"
-                               :participantes="laravelData.data" />
+                               v-model="dialogEmail"
+                               :event="event.id" :participantes="laravelData.data"
+                               @onSend="onSend"/>
 
                 <DlgSearchStudent v-if="add" v-model="dialog"  @onSelect="addParticipant" ></DlgSearchStudent>
             </div>
         </div>
         <div class="card-body p-0">
             <Loader :loading="loader"></Loader>
-            <div class="table-responsive table-bordered m-0">
-                <table class="table table-bordered table-hover m-0 table-sm " v-if="!loader && laravelData">
+            <div class="table-responsive m-0">
+                <table v-if="!loader && laravelData" class="table table-bordered table-hover m-0 table-sm ">
                     <thead>
                     <tr class="align-middle">
                         <th>Estudiante</th>
                         <th>Cedula</th>
                         <th>Correo</th>
-                        <th class="text-left" v-if="event.type !== 'asistencia'">
-                            <span >Calif.</span></th>
+                        <th v-if="event.type !== 'asistencia'" class="text-left">
+                            <span>Calif.</span></th>
                         <th>Certificado</th>
                         <th></th>
                     </tr>
@@ -34,7 +34,7 @@
                         <td data-name="Estudiante">{{ p.surname }} {{ p.name }}</td>
                         <td data-name="Cedula">{{ p.dni }}</td>
                         <td data-name="Correo">{{ p.email }}</td>
-                        <td data-name="Calif." class="text-left" v-if="event.type !== 'asistencia'">
+                        <td v-if="event.type !== 'asistencia'" class="text-left" data-name="Calif.">
                             <b v-if="(p.nota_3 + p.nota_7) < 7 " class="text-danger">{{ p.nota_3 + p.nota_7 }}</b>
                             <b v-else class="text-success">{{ p.nota_3 + p.nota_7 }}</b>
                         </td>
@@ -43,22 +43,25 @@
                             <span v-else>No enviado</span>
                         </td>
                         <td class="text-right">
-                            <button type="button" v-if="viewBtnSend(p)"  :disabled="loaders[index].loader"
-                                    @click="sendEmailCert(p, index)"
+                            <button v-if="viewBtnSend(p)" :disabled="loaders[index].loader"
+                                    class="btn btn-sm btn-outline-primary"
                                     title="Enviar certificado"
-                                    class="btn btn-sm btn-outline-primary">
-                                <i class="fa fa-envelope" v-if="!loaders[index].loader"></i>
-                                <span class="spinner-border spinner-border-sm text-primary" role="status" v-else></span>
+                                    type="button"
+                                    @click="sendEmailCert(p, index)">
+                                <i v-if="!loaders[index].loader" class="fa fa-envelope"></i>
+                                <span v-else class="spinner-border spinner-border-sm text-primary" role="status"></span>
                             </button>
-                            <button type="button" v-if="canDelete"
-                                    @click="deleteParticipante(p)"
-                                    class="btn btn-sm btn-outline-danger" >
+                            <button v-if="canDelete" class="btn btn-sm btn-outline-danger"
+                                    type="button"
+                                    @click="deleteParticipante(p)">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="6" class="text-center text-muted py-2" v-if="laravelData.data && laravelData.data.length <=0">No hay participantes para este evento</td>
+                        <td v-if="laravelData.data && laravelData.data.length <=0" class="no-data" colspan="6">No hay
+                            participantes para este evento
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -67,6 +70,7 @@
         <div class="card-body py-0 text-center">
             <pagination :data="laravelData" @pagination-change-page="getParticipants"/>
         </div>
+        <dlg-confirm ref="confirm"></dlg-confirm>
     </div>
 </template>
 
@@ -74,12 +78,14 @@
 import Loader from "./_partials/Loader";
 import DlgSearchStudent from "./_dialog/DlgSearchStudent";
 import DlgSendEmails from "./_dialog/DlgSendEmails";
+import DlgConfirm from "./_dialog/DlgConfirm";
+
 export default {
     name: "ParticipantComponent",
-    components: {DlgSendEmails, DlgSearchStudent, Loader},
+    components: {DlgConfirm, DlgSendEmails, DlgSearchStudent, Loader},
     props: {
         event: {
-            type: Number|String,
+            type: Number | String,
             default: null
         },
         add: {
@@ -118,54 +124,58 @@ export default {
                         this.loaders.push({id: e.id, loader: false})
                     });
                     if(this.mail) {
-                        this.dialogEmail = true;
                         this.$refs.sendEmail.getParticipantes();
                     }
                 }
             }).finally(() => this.loader = false);
         },
-        deleteParticipante(p){
+        async deleteParticipante(p) {
             let self = this;
-            this.$dialog
-                .confirm({title: 'Confirmar eliminación', body: `¿Esta seguro que desea eliminar a ${p.surname} de la lista de participantes?`}, {loader: true})
-                .then(function(dialog) {
-                    axios.delete(`/participantes/${p.id}`).then(res =>{
-                        if (res.data.ok) {
-                            const index = self.laravelData.data.indexOf(p);
-                            if (index>= 0) {
-                                self.laravelData.data.splice(index, 1);
-                            }
-                            self.$alert.ok(res.data.message);
-                        }
-                    }).finally(() => dialog.close());
-                })
+
+            if (!await this.$refs.confirm.open('Eliminar participante',
+                `¿Está seguro que desea eliminar esta persona del listado de participantes?`, {loader: true})) {
+                return;
+            }
+            axios.delete(`/participantes/${p.id}`).then(res => {
+                if (res.data.ok) {
+                    const index = self.laravelData.data.indexOf(p);
+                    if (index >= 0) {
+                        self.laravelData.data.splice(index, 1);
+                    }
+                    self.$alert.ok(res.data.message);
+                }
+            }).finally(() => this.$refs.confirm.close());
+
         },
-        addParticipant(p) {
+        async addParticipant(p) {
             if (this.laravelData.data.find(e => e.user_id === p.id)) {
                 this.$alert.err("Este estudiante ya esta en la lista");
                 return;
             }
             this.dialog = false;
             let self = this;
-            this.$dialog
-                .confirm({title: 'Agregar nuevo estudiante', body: `¿Esta seguro que desea agregar a ${p.surname} ${p.name} de la lista de participantes?`}, {loader: true})
-                .then(function(dialog) {
-                    axios.post(`/participantes/add`, {event_id: self.event.id, user_id: p.id}).then(res =>{
-                        if (res.data.ok) {
-                            self.laravelData.data.push({
-                                name: p.name,
-                                surname: p.surname,
-                                dni: p.dni,
-                                user_id: p.id,
-                                email: p.email,
-                                nota_3: 0,
-                                nota_7: 0
-                            });
-                            self.loaders.push({id: p.id, loader: false})
-                            self.$alert.ok(res.data.message);
-                        }
-                    }).finally(() => dialog.close());
-                })
+
+            if (!await this.$refs.confirm.open('Agregar Estudiante',
+                `¿Esta seguro que desea agregar a ${p.surname} ${p.name} de la lista de participantes?`, {loader: true})) {
+                return;
+            }
+
+            axios.post(`/participantes/add`, {event_id: self.event.id, user_id: p.id}).then(res => {
+                if (res.data.ok) {
+                    self.laravelData.data.push({
+                        id: res.data.body.id,
+                        name: p.name,
+                        surname: p.surname,
+                        dni: p.dni,
+                        user_id: p.id,
+                        email: p.email,
+                        nota_3: 0,
+                        nota_7: 0
+                    });
+                    self.loaders.push({id: p.id, loader: false})
+                    self.$alert.ok(res.data.message);
+                }
+            }).finally(() => this.$refs.confirm.close());
         },
         // enviar certificado
         sendEmailCert(p, index) {

@@ -74,6 +74,20 @@ class Event extends Model
         return "";
     }
 
+    // obtener estado
+    public function status(){
+        switch ($this->status) {
+            case self::STATUS_CALIFICADO:
+                if ($this->type !== self::TypeAsistencia)
+                    return "Calificado";
+                else return "En proceso";
+            case self::STATUS_ACTIVO:
+                return  "En proceso";
+            case self::STATUS_FINALIZAD :
+                return "Finalizado";
+        }
+    }
+
     // fechas
     public function matriculaDate(){
         return $this->formatDates($this->matricula_inicio, $this->matricula_fin);

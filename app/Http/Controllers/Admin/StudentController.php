@@ -90,7 +90,7 @@ class StudentController extends Controller
             $student = EventParticipant::join('users', 'users.id', 'event_participants.user_id')
                 ->join('persons', 'persons.id', 'users.person_id')
                 ->whereHas('event', function ($query) use($search){
-                    return $query->where('title', 'like', "$search%");
+                    return $query->where('title', 'like', "%$search%");
                 })
                 ->select(
                     'event_participants.status',
@@ -222,7 +222,7 @@ class StudentController extends Controller
         $person->save();
         $user->save();
 
-        if ($request->get('sendEmail') && $request->has('password'))
+        if ($request->get('sendEmail') && $request->get('password'))
             $user->notify(new SendTempPassword($request->password));
 
         return back()->with('ok', 'Estudiante modificado con éxito');

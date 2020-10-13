@@ -37,7 +37,7 @@
                         </td>
                     </tr>
                     <tr v-if="laravelData.data && laravelData.data.length <=0">
-                        <td colspan="4" class="text-center text-muted py-2" >No hay administradores para este evento</td>
+                        <td colspan="4" class="no-data" >No hay administradores para este evento</td>
                     </tr>
                     </tbody>
                 </table>

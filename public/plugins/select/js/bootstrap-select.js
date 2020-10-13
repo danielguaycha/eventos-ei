@@ -1041,7 +1041,7 @@
       var showTick = (this.multiple || this.options.showTick) ? ' show-tick' : '',
           multiselectable = this.multiple ? ' aria-multiselectable="true"' : '',
           inputGroup = '',
-          autofocus = this.autofocus ? ' autofocus' : '';
+          autofocus = '';
 
       if (version.major < 4 && this.$element.parent().hasClass('input-group')) {
         inputGroup = ' input-group-btn';

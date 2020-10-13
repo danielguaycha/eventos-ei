@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-
+@push('nav')
+    @include('notify-min')
+@endpush
 @section('content')
     <form action="{{ route('students.update', ['student' => $user->id]) }}" method="post" class="card">
         @csrf @method('put')
@@ -96,8 +98,6 @@
                 </div>
             </div>
         </div>
-
-        @include('notify');
 
         <div class="card-footer text-right">
             <button type="submit" class="btn btn-primary">Actualizar</button>

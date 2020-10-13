@@ -2554,8 +2554,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _partials_Loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_partials/Loader */ "./resources/js/components/_partials/Loader.vue");
-/* harmony import */ var _dialog_DlgConfirmNotas__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_dialog/DlgConfirmNotas */ "./resources/js/components/_dialog/DlgConfirmNotas.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _partials_Loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_partials/Loader */ "./resources/js/components/_partials/Loader.vue");
+/* harmony import */ var _dialog_DlgConfirmNotas__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_dialog/DlgConfirmNotas */ "./resources/js/components/_dialog/DlgConfirmNotas.vue");
+/* harmony import */ var _dialog_DlgConfirm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./_dialog/DlgConfirm */ "./resources/js/components/_dialog/DlgConfirm.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2629,13 +2638,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "NotasComponent",
   components: {
-    DlgConfirmNotas: _dialog_DlgConfirmNotas__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Loader: _partials_Loader__WEBPACK_IMPORTED_MODULE_0__["default"]
+    DlgConfirm: _dialog_DlgConfirm__WEBPACK_IMPORTED_MODULE_3__["default"],
+    DlgConfirmNotas: _dialog_DlgConfirmNotas__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Loader: _partials_Loader__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
     event: {
@@ -2697,24 +2712,49 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     confirmNotas: function confirmNotas() {
-      var self = this;
-      this.$dialog.confirm({
-        title: 'Confirmar envío de Notas',
-        body: "Una vez enviadas las notas no se permiten modificaciones, si lo que desea es solo guardar el avance use el bot\xF3n \"Guardar\", por el contrario presione \"Confirmar\""
-      }, {
-        loader: true
-      }).then(function (dialog) {
-        axios.post("/events/notas/finish/".concat(self.event)).then(function (res) {
-          if (res.data.ok) {
-            self.$alert.ok(res.data.message);
-            window.location.reload();
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var self, confirm;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                self = _this3;
+                _context.next = 3;
+                return _this3.$refs.confirm.open("Confirmar enviar notas", "Una vez enviadas las notas no se permiten modificaciones, si lo que desea es solo guardar el avance use el bot\xF3n \"Guardar\", por el contrario presione \"Confirmar\"", {
+                  loader: true
+                });
+
+              case 3:
+                confirm = _context.sent;
+
+                if (confirm) {
+                  _context.next = 6;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 6:
+                axios.post("/events/notas/finish/".concat(self.event)).then(function (res) {
+                  if (res.data.ok) {
+                    self.$alert.ok(res.data.message);
+                    window.location.reload();
+                  }
+                })["catch"](function (err) {
+                  return self.$alert.err(err);
+                })["finally"](function () {
+                  return _this3.$refs.confirm.close();
+                });
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
           }
-        })["catch"](function (err) {
-          return self.$alert.err(err);
-        })["finally"](function () {
-          return dialog.close();
-        });
-      });
+        }, _callee);
+      }))();
     }
   }
 });
@@ -2730,9 +2770,18 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _partials_Loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./_partials/Loader */ "./resources/js/components/_partials/Loader.vue");
-/* harmony import */ var _dialog_DlgSearchStudent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_dialog/DlgSearchStudent */ "./resources/js/components/_dialog/DlgSearchStudent.vue");
-/* harmony import */ var _dialog_DlgSendEmails__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_dialog/DlgSendEmails */ "./resources/js/components/_dialog/DlgSendEmails.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _partials_Loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_partials/Loader */ "./resources/js/components/_partials/Loader.vue");
+/* harmony import */ var _dialog_DlgSearchStudent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./_dialog/DlgSearchStudent */ "./resources/js/components/_dialog/DlgSearchStudent.vue");
+/* harmony import */ var _dialog_DlgSendEmails__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./_dialog/DlgSendEmails */ "./resources/js/components/_dialog/DlgSendEmails.vue");
+/* harmony import */ var _dialog_DlgConfirm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./_dialog/DlgConfirm */ "./resources/js/components/_dialog/DlgConfirm.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2805,15 +2854,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ParticipantComponent",
   components: {
-    DlgSendEmails: _dialog_DlgSendEmails__WEBPACK_IMPORTED_MODULE_2__["default"],
-    DlgSearchStudent: _dialog_DlgSearchStudent__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Loader: _partials_Loader__WEBPACK_IMPORTED_MODULE_0__["default"]
+    DlgConfirm: _dialog_DlgConfirm__WEBPACK_IMPORTED_MODULE_4__["default"],
+    DlgSendEmails: _dialog_DlgSendEmails__WEBPACK_IMPORTED_MODULE_3__["default"],
+    DlgSearchStudent: _dialog_DlgSearchStudent__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Loader: _partials_Loader__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
     event: {
@@ -2864,8 +2919,6 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           if (_this.mail) {
-            _this.dialogEmail = true;
-
             _this.$refs.sendEmail.getParticipantes();
           }
         }
@@ -2874,83 +2927,135 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deleteParticipante: function deleteParticipante(p) {
-      var self = this;
-      this.$dialog.confirm({
-        title: 'Confirmar eliminación',
-        body: "\xBFEsta seguro que desea eliminar a ".concat(p.surname, " de la lista de participantes?")
-      }, {
-        loader: true
-      }).then(function (dialog) {
-        axios["delete"]("/participantes/".concat(p.id)).then(function (res) {
-          if (res.data.ok) {
-            var index = self.laravelData.data.indexOf(p);
+      var _this2 = this;
 
-            if (index >= 0) {
-              self.laravelData.data.splice(index, 1);
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var self;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                self = _this2;
+                _context.next = 3;
+                return _this2.$refs.confirm.open('Eliminar participante', "\xBFEst\xE1 seguro que desea eliminar esta persona del listado de participantes?", {
+                  loader: true
+                });
+
+              case 3:
+                if (_context.sent) {
+                  _context.next = 5;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 5:
+                axios["delete"]("/participantes/".concat(p.id)).then(function (res) {
+                  if (res.data.ok) {
+                    var index = self.laravelData.data.indexOf(p);
+
+                    if (index >= 0) {
+                      self.laravelData.data.splice(index, 1);
+                    }
+
+                    self.$alert.ok(res.data.message);
+                  }
+                })["finally"](function () {
+                  return _this2.$refs.confirm.close();
+                });
+
+              case 6:
+              case "end":
+                return _context.stop();
             }
-
-            self.$alert.ok(res.data.message);
           }
-        })["finally"](function () {
-          return dialog.close();
-        });
-      });
+        }, _callee);
+      }))();
     },
     addParticipant: function addParticipant(p) {
-      if (this.laravelData.data.find(function (e) {
-        return e.user_id === p.id;
-      })) {
-        this.$alert.err("Este estudiante ya esta en la lista");
-        return;
-      }
+      var _this3 = this;
 
-      this.dialog = false;
-      var self = this;
-      this.$dialog.confirm({
-        title: 'Agregar nuevo estudiante',
-        body: "\xBFEsta seguro que desea agregar a ".concat(p.surname, " ").concat(p.name, " de la lista de participantes?")
-      }, {
-        loader: true
-      }).then(function (dialog) {
-        axios.post("/participantes/add", {
-          event_id: self.event.id,
-          user_id: p.id
-        }).then(function (res) {
-          if (res.data.ok) {
-            self.laravelData.data.push({
-              name: p.name,
-              surname: p.surname,
-              dni: p.dni,
-              user_id: p.id,
-              email: p.email,
-              nota_3: 0,
-              nota_7: 0
-            });
-            self.loaders.push({
-              id: p.id,
-              loader: false
-            });
-            self.$alert.ok(res.data.message);
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var self;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!_this3.laravelData.data.find(function (e) {
+                  return e.user_id === p.id;
+                })) {
+                  _context2.next = 3;
+                  break;
+                }
+
+                _this3.$alert.err("Este estudiante ya esta en la lista");
+
+                return _context2.abrupt("return");
+
+              case 3:
+                _this3.dialog = false;
+                self = _this3;
+                _context2.next = 7;
+                return _this3.$refs.confirm.open('Agregar Estudiante', "\xBFEsta seguro que desea agregar a ".concat(p.surname, " ").concat(p.name, " de la lista de participantes?"), {
+                  loader: true
+                });
+
+              case 7:
+                if (_context2.sent) {
+                  _context2.next = 9;
+                  break;
+                }
+
+                return _context2.abrupt("return");
+
+              case 9:
+                axios.post("/participantes/add", {
+                  event_id: self.event.id,
+                  user_id: p.id
+                }).then(function (res) {
+                  if (res.data.ok) {
+                    self.laravelData.data.push({
+                      id: res.data.body.id,
+                      name: p.name,
+                      surname: p.surname,
+                      dni: p.dni,
+                      user_id: p.id,
+                      email: p.email,
+                      nota_3: 0,
+                      nota_7: 0
+                    });
+                    self.loaders.push({
+                      id: p.id,
+                      loader: false
+                    });
+                    self.$alert.ok(res.data.message);
+                  }
+                })["finally"](function () {
+                  return _this3.$refs.confirm.close();
+                });
+
+              case 10:
+              case "end":
+                return _context2.stop();
+            }
           }
-        })["finally"](function () {
-          return dialog.close();
-        });
-      });
+        }, _callee2);
+      }))();
     },
     // enviar certificado
     sendEmailCert: function sendEmailCert(p, index) {
-      var _this2 = this;
+      var _this4 = this;
 
       if (!p) return;
       this.loaders[index].loader = true;
       axios.get("/events/sendmail/".concat(p.id)).then(function (res) {
         if (res.data.ok) {
-          _this2.$alert.ok(res.data.message);
+          _this4.$alert.ok(res.data.message);
         }
       })["catch"](function (err) {
-        _this2.$alert.err(err);
+        _this4.$alert.err(err);
       })["finally"](function () {
-        return _this2.loaders[index].loader = false;
+        return _this4.loaders[index].loader = false;
       });
     },
     onSend: function onSend(p) {
@@ -3133,6 +3238,91 @@ __webpack_require__.r(__webpack_exports__);
     },
     selectAll: function selectAll($e) {
       console.log($e);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/_dialog/DlgConfirm.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/_dialog/DlgConfirm.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _partials_Dialog__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../_partials/Dialog */ "./resources/js/components/_partials/Dialog.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "DlgConfirm",
+  components: {
+    Dialog: _partials_Dialog__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      resolve: null,
+      reject: null,
+      message: null,
+      title: null,
+      options: {
+        color: 'primary',
+        loader: false
+      },
+      show: false,
+      loader: false
+    };
+  },
+  methods: {
+    open: function open() {
+      var _this = this;
+
+      var title = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Confirmar';
+      var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '¿Está seguro de que desea realizar esta acción?';
+      var options = arguments.length > 2 ? arguments[2] : undefined;
+      this.show = true;
+      this.title = title;
+      this.message = message;
+      this.options = Object.assign(this.options, options);
+      return new Promise(function (resolve, reject) {
+        _this.resolve = resolve;
+        _this.reject = reject;
+      });
+    },
+    agree: function agree() {
+      this.resolve(true);
+      if (!this.options.loader) this.show = false;else this.loader = true;
+    },
+    cancel: function cancel() {
+      this.resolve(false);
+      this.show = false;
+      this.options.loader = false;
+      this.loader = false;
+    },
+    close: function close() {
+      this.resolve(false);
+      this.show = false;
+      this.options.loader = false;
+      this.loader = false;
     }
   }
 });
@@ -3347,6 +3537,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _partials_Dialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../_partials/Dialog */ "./resources/js/components/_partials/Dialog.vue");
+/* harmony import */ var _DlgConfirm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DlgConfirm */ "./resources/js/components/_dialog/DlgConfirm.vue");
 
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
@@ -3380,6 +3571,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "DlgSendEmails",
@@ -3391,6 +3586,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   components: {
+    DlgConfirm: _DlgConfirm__WEBPACK_IMPORTED_MODULE_2__["default"],
     Dialog: _partials_Dialog__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
@@ -3406,55 +3602,84 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getParticipantes: function getParticipantes() {
       var _this = this;
 
-      this.loader = true;
-      axios.get("/participantes/aprobados/".concat(this.event)).then(function (res) {
-        if (res.data.ok) {
-          _this.participantes = res.data.body;
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var confirm;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _this.$refs.confirm.open("Confirmar envío de certificados", "\xBFEsta seguro de que desea enviar todos los certificados pendientes a los estudiantes?");
 
-          if (_this.participantes.length > 0) {
-            _this.sendEmails();
-          } else {
-            _this.$alert.err("No existen participantes aprobados!");
+              case 2:
+                confirm = _context.sent;
 
-            _this.show = false;
+                if (confirm) {
+                  _context.next = 5;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 5:
+                _this.show = true;
+                _this.loader = true;
+                axios.get("/participantes/aprobados/".concat(_this.event)).then(function (res) {
+                  if (res.data.ok) {
+                    _this.participantes = res.data.body;
+
+                    if (_this.participantes.length > 0) {
+                      _this.sendEmails();
+                    } else {
+                      _this.$alert.err("No existen participantes aprobados!");
+
+                      _this.show = false;
+                    }
+                  }
+                }); //.finally(() => this.loader = false);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
           }
-        }
-      }); //.finally(() => this.loader = false);
+        }, _callee);
+      }))();
     },
     sendEmails: function sendEmails() {
       var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
         var sent, _iterator, _step, p;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 _this2.process = 0;
                 _this2.cancelSource = axios.CancelToken.source();
                 _this2.loader = true;
                 sent = 0;
                 _iterator = _createForOfIteratorHelper(_this2.participantes);
-                _context.prev = 5;
+                _context2.prev = 5;
 
                 _iterator.s();
 
               case 7:
                 if ((_step = _iterator.n()).done) {
-                  _context.next = 25;
+                  _context2.next = 24;
                   break;
                 }
 
                 p = _step.value;
 
                 if (!(p.status <= 2)) {
-                  _context.next = 22;
+                  _context2.next = 21;
                   break;
                 }
 
-                _context.prev = 10;
-                _context.next = 13;
+                _context2.prev = 10;
+                _context2.next = 13;
                 return axios.get("/events/sendmail/".concat(p.id), {
                   cancelToken: _this2.cancelSource.token
                 });
@@ -3467,43 +3692,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
                 sent++;
-                _context.next = 22;
+                _context2.next = 21;
                 break;
 
               case 17:
-                _context.prev = 17;
-                _context.t0 = _context["catch"](10);
-
-                _this2.$alert.err(_context.t0);
-
+                _context2.prev = 17;
+                _context2.t0 = _context2["catch"](10);
+                //this.$alert.err(e);
                 _this2.show = false;
-                return _context.abrupt("return");
+                return _context2.abrupt("return");
 
-              case 22:
+              case 21:
                 _this2.process++;
 
-              case 23:
-                _context.next = 7;
+              case 22:
+                _context2.next = 7;
                 break;
 
-              case 25:
-                _context.next = 30;
+              case 24:
+                _context2.next = 29;
                 break;
 
-              case 27:
-                _context.prev = 27;
-                _context.t1 = _context["catch"](5);
+              case 26:
+                _context2.prev = 26;
+                _context2.t1 = _context2["catch"](5);
 
-                _iterator.e(_context.t1);
+                _iterator.e(_context2.t1);
 
-              case 30:
-                _context.prev = 30;
+              case 29:
+                _context2.prev = 29;
 
                 _iterator.f();
 
-                return _context.finish(30);
+                return _context2.finish(29);
 
-              case 33:
+              case 32:
                 _this2.cancelSource = null;
 
                 if (sent <= 0) {
@@ -3514,12 +3737,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this2.show = false;
 
-              case 36:
+              case 35:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, null, [[5, 27, 30, 33], [10, 17]]);
+        }, _callee2, null, [[5, 26, 29, 32], [10, 17]]);
       }))();
     },
     cancelRequest: function cancelRequest() {
@@ -3563,10 +3786,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Dialog",
   props: {
-    value: Boolean
+    value: Boolean,
+    alert: {
+      type: Boolean,
+      "default": false
+    }
   },
   methods: {
     close: function close() {
@@ -3631,6 +3861,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Loader */ "./resources/js/components/_partials/Loader.vue");
+//
+//
+//
 //
 //
 //
@@ -41415,7 +41648,7 @@ var render = function() {
                             _c(
                               "td",
                               {
-                                staticClass: "text-center text-muted py-2",
+                                staticClass: "no-data",
                                 attrs: { colspan: "4" }
                               },
                               [
@@ -41491,206 +41724,226 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _c("div", { staticClass: "card-header" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _vm.laravelData.data && _vm.laravelData.data.length > 0
-        ? _c(
-            "div",
-            { staticClass: "d-flex align-items-center" },
-            [
-              _vm.loaderSave
-                ? _c("div", {
-                    staticClass:
-                      "spinner-border text-dark spinner-border-sm mr-2",
-                    attrs: { role: "status" }
-                  })
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-sm btn-success",
-                  attrs: { disabled: _vm.loaderSave },
-                  on: { click: _vm.saveNotas }
-                },
-                [
-                  _c("i", { staticClass: "fa fa-save mr-1" }),
-                  _vm._v(_vm._s(_vm.loaderSave ? "Guardando..." : "Guardar"))
-                ]
-              ),
-              _vm._v(" "),
-              _c("DlgConfirmNotas", {
-                attrs: { event: _vm.event, disabled: _vm.loaderSave },
-                on: { onConfirm: _vm.confirmNotas },
-                model: {
-                  value: _vm.dialog,
-                  callback: function($$v) {
-                    _vm.dialog = $$v
-                  },
-                  expression: "dialog"
-                }
-              })
-            ],
-            1
-          )
-        : _vm._e()
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "card-body p-0" },
-      [
-        _c("Loader", { attrs: { loading: _vm.loader } }),
+  return _c(
+    "div",
+    { staticClass: "card" },
+    [
+      _c("div", { staticClass: "card-header" }, [
+        _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "table-responsive m-0" }, [
-          !_vm.loader && _vm.laravelData
-            ? _c(
-                "table",
-                {
-                  staticClass: "table table-bordered table-hover m-0 table-sm "
-                },
-                [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    [
-                      _vm._l(_vm.laravelData.data, function(p) {
-                        return _c("tr", { key: p.id }, [
-                          _c("td", { attrs: { "data-name": "Estudiante" } }, [
-                            _vm._v(_vm._s(p.surname) + " " + _vm._s(p.name))
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              staticClass: "input-nota",
-                              attrs: { "data-name": "Nota /7" }
-                            },
-                            [
-                              _c("vue-numeric", {
-                                staticClass:
-                                  "form-control form-control-sm text-center",
-                                attrs: {
-                                  min: 0,
-                                  max: 7,
-                                  precision: 2,
-                                  "empty-value": 0,
-                                  "decimal-separator": "."
-                                },
-                                model: {
-                                  value: p.nota_7,
-                                  callback: function($$v) {
-                                    _vm.$set(p, "nota_7", $$v)
-                                  },
-                                  expression: "p.nota_7"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              staticClass: "input-nota",
-                              attrs: { "data-name": "Nota /3" }
-                            },
-                            [
-                              _c("vue-numeric", {
-                                staticClass:
-                                  "form-control form-control-sm text-center",
-                                attrs: {
-                                  min: 0,
-                                  max: 3,
-                                  precision: 2,
-                                  "empty-value": 0,
-                                  "decimal-separator": "."
-                                },
-                                model: {
-                                  value: p.nota_3,
-                                  callback: function($$v) {
-                                    _vm.$set(p, "nota_3", $$v)
-                                  },
-                                  expression: "p.nota_3"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              staticClass: "input-nota",
-                              attrs: { "data-name": "Promedio" }
-                            },
-                            [
-                              _c("input", {
-                                staticClass: "form-control form-control-sm",
-                                attrs: {
-                                  type: "text",
-                                  disabled: true,
-                                  readonly: ""
-                                },
-                                domProps: { value: p.nota_7 + p.nota_3 }
-                              })
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            { staticClass: "td-100", attrs: { width: "1%" } },
-                            [
-                              p.nota_7 + p.nota_3 < 7
-                                ? _c("small", { staticClass: "text-danger" }, [
-                                    _vm._v("Reprobado")
-                                  ])
-                                : _c("small", { staticClass: "text-success" }, [
-                                    _vm._v("Aprobado")
-                                  ])
-                            ]
-                          )
-                        ])
-                      }),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _vm.laravelData.data && _vm.laravelData.data.length <= 0
-                          ? _c(
+        _vm.laravelData.data && _vm.laravelData.data.length > 0
+          ? _c(
+              "div",
+              { staticClass: "d-flex align-items-center" },
+              [
+                _vm.loaderSave
+                  ? _c("div", {
+                      staticClass:
+                        "spinner-border text-dark spinner-border-sm mr-2",
+                      attrs: { role: "status" }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-success",
+                    attrs: { disabled: _vm.loaderSave },
+                    on: { click: _vm.saveNotas }
+                  },
+                  [
+                    _c("i", { staticClass: "fa fa-save mr-1" }),
+                    _vm._v(
+                      _vm._s(_vm.loaderSave ? "Guardando..." : "Guardar") +
+                        "\n            "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("DlgConfirmNotas", {
+                  attrs: { disabled: _vm.loaderSave, event: _vm.event },
+                  on: { onConfirm: _vm.confirmNotas },
+                  model: {
+                    value: _vm.dialog,
+                    callback: function($$v) {
+                      _vm.dialog = $$v
+                    },
+                    expression: "dialog"
+                  }
+                })
+              ],
+              1
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "card-body p-0" },
+        [
+          _c("Loader", { attrs: { loading: _vm.loader } }),
+          _vm._v(" "),
+          _c("div", { staticClass: "table-responsive m-0" }, [
+            !_vm.loader && _vm.laravelData
+              ? _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-bordered table-hover m-0 table-sm "
+                  },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      [
+                        _vm._l(_vm.laravelData.data, function(p) {
+                          return _c("tr", { key: p.id }, [
+                            _c("td", { attrs: { "data-name": "Estudiante" } }, [
+                              _vm._v(_vm._s(p.surname) + " " + _vm._s(p.name))
+                            ]),
+                            _vm._v(" "),
+                            _c(
                               "td",
                               {
-                                staticClass: "text-center text-muted py-2",
-                                attrs: { colspan: "5" }
+                                staticClass: "input-nota",
+                                attrs: { "data-name": "Nota /7" }
                               },
-                              [_vm._v("No hay estudiantes en este evento")]
+                              [
+                                _c("vue-numeric", {
+                                  staticClass:
+                                    "form-control form-control-sm text-center",
+                                  attrs: {
+                                    "empty-value": 0,
+                                    min: 0,
+                                    precision: 2,
+                                    "decimal-separator": ".",
+                                    max: 7
+                                  },
+                                  model: {
+                                    value: p.nota_7,
+                                    callback: function($$v) {
+                                      _vm.$set(p, "nota_7", $$v)
+                                    },
+                                    expression: "p.nota_7"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticClass: "input-nota",
+                                attrs: { "data-name": "Nota /3" }
+                              },
+                              [
+                                _c("vue-numeric", {
+                                  staticClass:
+                                    "form-control form-control-sm text-center",
+                                  attrs: {
+                                    "empty-value": 0,
+                                    min: 0,
+                                    precision: 2,
+                                    "decimal-separator": ".",
+                                    max: 3
+                                  },
+                                  model: {
+                                    value: p.nota_3,
+                                    callback: function($$v) {
+                                      _vm.$set(p, "nota_3", $$v)
+                                    },
+                                    expression: "p.nota_3"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticClass: "input-nota",
+                                attrs: { "data-name": "Promedio" }
+                              },
+                              [
+                                _c("input", {
+                                  staticClass: "form-control form-control-sm",
+                                  attrs: {
+                                    disabled: true,
+                                    readonly: "",
+                                    type: "text"
+                                  },
+                                  domProps: { value: p.nota_7 + p.nota_3 }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              { staticClass: "td-100", attrs: { width: "1%" } },
+                              [
+                                p.nota_7 + p.nota_3 < 7
+                                  ? _c(
+                                      "small",
+                                      { staticClass: "text-danger" },
+                                      [_vm._v("Reprobado")]
+                                    )
+                                  : _c(
+                                      "small",
+                                      { staticClass: "text-success" },
+                                      [_vm._v("Aprobado")]
+                                    )
+                              ]
                             )
-                          : _vm._e()
-                      ])
-                    ],
-                    2
-                  )
-                ]
-              )
-            : _vm._e()
-        ])
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "card-body py-0 text-center" },
-      [
-        _c("pagination", {
-          attrs: { data: _vm.laravelData },
-          on: { "pagination-change-page": _vm.getNotas }
-        })
-      ],
-      1
-    )
-  ])
+                          ])
+                        }),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _vm.laravelData.data &&
+                          _vm.laravelData.data.length <= 0
+                            ? _c(
+                                "td",
+                                {
+                                  staticClass: "no-data",
+                                  attrs: { colspan: "5" }
+                                },
+                                [
+                                  _vm._v(
+                                    "No hay\n                        estudiantes en este evento\n                    "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ],
+                      2
+                    )
+                  ]
+                )
+              : _vm._e()
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "card-body py-0 text-center" },
+        [
+          _c("pagination", {
+            attrs: { data: _vm.laravelData },
+            on: { "pagination-change-page": _vm.getNotas }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("dlg-confirm", { ref: "confirm" })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -41744,221 +41997,242 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _c("div", { staticClass: "card-header" }, [
-      _c("div", [
-        _c("b", [
-          _c("i", { staticClass: "fa fa-user" }),
-          _vm._v(
-            "Listado de participantes (" +
-              _vm._s(_vm.laravelData.data ? _vm.laravelData.data.length : 0) +
-              ")"
-          )
-        ])
+  return _c(
+    "div",
+    { staticClass: "card" },
+    [
+      _c("div", { staticClass: "card-header" }, [
+        _c("div", [
+          _c("b", [
+            _c("i", { staticClass: "fa fa-user" }),
+            _vm._v(
+              "Listado de participantes (" +
+                _vm._s(_vm.laravelData.data ? _vm.laravelData.data.length : 0) +
+                ")"
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "d-flex" },
+          [
+            _vm.event
+              ? _c("DlgSendEmails", {
+                  ref: "sendEmail",
+                  attrs: {
+                    event: _vm.event.id,
+                    participantes: _vm.laravelData.data
+                  },
+                  on: { onSend: _vm.onSend },
+                  model: {
+                    value: _vm.dialogEmail,
+                    callback: function($$v) {
+                      _vm.dialogEmail = $$v
+                    },
+                    expression: "dialogEmail"
+                  }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.add
+              ? _c("DlgSearchStudent", {
+                  on: { onSelect: _vm.addParticipant },
+                  model: {
+                    value: _vm.dialog,
+                    callback: function($$v) {
+                      _vm.dialog = $$v
+                    },
+                    expression: "dialog"
+                  }
+                })
+              : _vm._e()
+          ],
+          1
+        )
       ]),
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "d-flex" },
+        { staticClass: "card-body p-0" },
         [
-          _vm.event
-            ? _c("DlgSendEmails", {
-                ref: "sendEmail",
-                attrs: {
-                  event: _vm.event.id,
-                  participantes: _vm.laravelData.data
-                },
-                on: { onSend: _vm.onSend },
-                model: {
-                  value: _vm.dialogEmail,
-                  callback: function($$v) {
-                    _vm.dialogEmail = $$v
-                  },
-                  expression: "dialogEmail"
-                }
-              })
-            : _vm._e(),
+          _c("Loader", { attrs: { loading: _vm.loader } }),
           _vm._v(" "),
-          _vm.add
-            ? _c("DlgSearchStudent", {
-                on: { onSelect: _vm.addParticipant },
-                model: {
-                  value: _vm.dialog,
-                  callback: function($$v) {
-                    _vm.dialog = $$v
+          _c("div", { staticClass: "table-responsive m-0" }, [
+            !_vm.loader && _vm.laravelData
+              ? _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-bordered table-hover m-0 table-sm "
                   },
-                  expression: "dialog"
-                }
-              })
-            : _vm._e()
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "card-body p-0" },
-      [
-        _c("Loader", { attrs: { loading: _vm.loader } }),
-        _vm._v(" "),
-        _c("div", { staticClass: "table-responsive table-bordered m-0" }, [
-          !_vm.loader && _vm.laravelData
-            ? _c(
-                "table",
-                {
-                  staticClass: "table table-bordered table-hover m-0 table-sm "
-                },
-                [
-                  _c("thead", [
-                    _c("tr", { staticClass: "align-middle" }, [
-                      _c("th", [_vm._v("Estudiante")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Cedula")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Correo")]),
-                      _vm._v(" "),
-                      _vm.event.type !== "asistencia"
-                        ? _c("th", { staticClass: "text-left" }, [
-                            _c("span", [_vm._v("Calif.")])
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Certificado")]),
-                      _vm._v(" "),
-                      _c("th")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    [
-                      _vm._l(_vm.laravelData.data, function(p, index) {
-                        return _c("tr", { key: p.id }, [
-                          _c("td", { attrs: { "data-name": "Estudiante" } }, [
-                            _vm._v(_vm._s(p.surname) + " " + _vm._s(p.name))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { attrs: { "data-name": "Cedula" } }, [
-                            _vm._v(_vm._s(p.dni))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { attrs: { "data-name": "Correo" } }, [
-                            _vm._v(_vm._s(p.email))
-                          ]),
-                          _vm._v(" "),
-                          _vm.event.type !== "asistencia"
-                            ? _c(
-                                "td",
-                                {
-                                  staticClass: "text-left",
-                                  attrs: { "data-name": "Calif." }
-                                },
-                                [
-                                  p.nota_3 + p.nota_7 < 7
-                                    ? _c("b", { staticClass: "text-danger" }, [
-                                        _vm._v(_vm._s(p.nota_3 + p.nota_7))
-                                      ])
-                                    : _c("b", { staticClass: "text-success" }, [
-                                        _vm._v(_vm._s(p.nota_3 + p.nota_7))
-                                      ])
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c("td", { attrs: { "data-name": "Certificado" } }, [
-                            p.status === 3
-                              ? _c("span", [_vm._v("Enviado")])
-                              : _c("span", [_vm._v("No enviado")])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "text-right" }, [
-                            _vm.viewBtnSend(p)
+                  [
+                    _c("thead", [
+                      _c("tr", { staticClass: "align-middle" }, [
+                        _c("th", [_vm._v("Estudiante")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Cedula")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Correo")]),
+                        _vm._v(" "),
+                        _vm.event.type !== "asistencia"
+                          ? _c("th", { staticClass: "text-left" }, [
+                              _c("span", [_vm._v("Calif.")])
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Certificado")]),
+                        _vm._v(" "),
+                        _c("th")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      [
+                        _vm._l(_vm.laravelData.data, function(p, index) {
+                          return _c("tr", { key: p.id }, [
+                            _c("td", { attrs: { "data-name": "Estudiante" } }, [
+                              _vm._v(_vm._s(p.surname) + " " + _vm._s(p.name))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { "data-name": "Cedula" } }, [
+                              _vm._v(_vm._s(p.dni))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", { attrs: { "data-name": "Correo" } }, [
+                              _vm._v(_vm._s(p.email))
+                            ]),
+                            _vm._v(" "),
+                            _vm.event.type !== "asistencia"
                               ? _c(
-                                  "button",
+                                  "td",
                                   {
-                                    staticClass:
-                                      "btn btn-sm btn-outline-primary",
-                                    attrs: {
-                                      type: "button",
-                                      disabled: _vm.loaders[index].loader,
-                                      title: "Enviar certificado"
-                                    },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.sendEmailCert(p, index)
-                                      }
-                                    }
+                                    staticClass: "text-left",
+                                    attrs: { "data-name": "Calif." }
                                   },
                                   [
-                                    !_vm.loaders[index].loader
-                                      ? _c("i", {
-                                          staticClass: "fa fa-envelope"
-                                        })
-                                      : _c("span", {
-                                          staticClass:
-                                            "spinner-border spinner-border-sm text-primary",
-                                          attrs: { role: "status" }
-                                        })
+                                    p.nota_3 + p.nota_7 < 7
+                                      ? _c(
+                                          "b",
+                                          { staticClass: "text-danger" },
+                                          [_vm._v(_vm._s(p.nota_3 + p.nota_7))]
+                                        )
+                                      : _c(
+                                          "b",
+                                          { staticClass: "text-success" },
+                                          [_vm._v(_vm._s(p.nota_3 + p.nota_7))]
+                                        )
                                   ]
                                 )
                               : _vm._e(),
                             _vm._v(" "),
-                            _vm.canDelete
-                              ? _c(
-                                  "button",
-                                  {
-                                    staticClass:
-                                      "btn btn-sm btn-outline-danger",
-                                    attrs: { type: "button" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.deleteParticipante(p)
-                                      }
-                                    }
-                                  },
-                                  [_c("i", { staticClass: "fa fa-trash" })]
-                                )
-                              : _vm._e()
-                          ])
-                        ])
-                      }),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _vm.laravelData.data && _vm.laravelData.data.length <= 0
-                          ? _c(
+                            _c(
                               "td",
-                              {
-                                staticClass: "text-center text-muted py-2",
-                                attrs: { colspan: "6" }
-                              },
-                              [_vm._v("No hay participantes para este evento")]
-                            )
-                          : _vm._e()
-                      ])
-                    ],
-                    2
-                  )
-                ]
-              )
-            : _vm._e()
-        ])
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "card-body py-0 text-center" },
-      [
-        _c("pagination", {
-          attrs: { data: _vm.laravelData },
-          on: { "pagination-change-page": _vm.getParticipants }
-        })
-      ],
-      1
-    )
-  ])
+                              { attrs: { "data-name": "Certificado" } },
+                              [
+                                p.status === 3
+                                  ? _c("span", [_vm._v("Enviado")])
+                                  : _c("span", [_vm._v("No enviado")])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "text-right" }, [
+                              _vm.viewBtnSend(p)
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn btn-sm btn-outline-primary",
+                                      attrs: {
+                                        disabled: _vm.loaders[index].loader,
+                                        title: "Enviar certificado",
+                                        type: "button"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.sendEmailCert(p, index)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      !_vm.loaders[index].loader
+                                        ? _c("i", {
+                                            staticClass: "fa fa-envelope"
+                                          })
+                                        : _c("span", {
+                                            staticClass:
+                                              "spinner-border spinner-border-sm text-primary",
+                                            attrs: { role: "status" }
+                                          })
+                                    ]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.canDelete
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn btn-sm btn-outline-danger",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.deleteParticipante(p)
+                                        }
+                                      }
+                                    },
+                                    [_c("i", { staticClass: "fa fa-trash" })]
+                                  )
+                                : _vm._e()
+                            ])
+                          ])
+                        }),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _vm.laravelData.data &&
+                          _vm.laravelData.data.length <= 0
+                            ? _c(
+                                "td",
+                                {
+                                  staticClass: "no-data",
+                                  attrs: { colspan: "6" }
+                                },
+                                [
+                                  _vm._v(
+                                    "No hay\n                        participantes para este evento\n                    "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ])
+                      ],
+                      2
+                    )
+                  ]
+                )
+              : _vm._e()
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "card-body py-0 text-center" },
+        [
+          _c("pagination", {
+            attrs: { data: _vm.laravelData },
+            on: { "pagination-change-page": _vm.getParticipants }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("dlg-confirm", { ref: "confirm" })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -42019,7 +42293,7 @@ var render = function() {
         _vm._v(" "),
         _vm._t("default"),
         _vm._v(" "),
-        _c("div", { staticClass: "table-responsive table-bordered m-0" }, [
+        _c("div", { staticClass: "table-responsive m-0" }, [
           !_vm.loader && _vm.laravelData
             ? _c(
                 "table",
@@ -42170,7 +42444,7 @@ var render = function() {
                           ? _c(
                               "td",
                               {
-                                staticClass: "text-center text-muted py-2",
+                                staticClass: "no-data",
                                 attrs: { colspan: "4" }
                               },
                               [_vm._v("No hay postulantes para este evento")]
@@ -42228,6 +42502,78 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/_dialog/DlgConfirm.vue?vue&type=template&id=7ce9ceb4&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/_dialog/DlgConfirm.vue?vue&type=template&id=7ce9ceb4&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "Dialog",
+    {
+      attrs: { alert: "" },
+      model: {
+        value: _vm.show,
+        callback: function($$v) {
+          _vm.show = $$v
+        },
+        expression: "show"
+      }
+    },
+    [
+      _c("div", { staticClass: "dlg-header" }, [
+        _c("b", [_vm._v(_vm._s(_vm.title))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "dlg-body" }, [
+        _vm._v("\n        " + _vm._s(_vm.message) + "\n    ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "dlg-footer text-right" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-outline-danger mr-1",
+            attrs: { disabled: _vm.loader },
+            on: { click: _vm.cancel }
+          },
+          [_vm._v("Cancelar")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { disabled: _vm.loader },
+            on: { click: _vm.agree }
+          },
+          [
+            _vm.loader
+              ? _c("span", { staticClass: "spinner-border spinner-border-sm" })
+              : _vm._e(),
+            _vm._v("\n            Confirmar\n        ")
+          ]
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -42591,20 +42937,20 @@ var render = function() {
           staticClass: "btn btn-sm btn-outline-primary mr-1",
           on: {
             click: function($event) {
-              _vm.show = true
-              _vm.getParticipantes()
+              return _vm.getParticipantes()
             }
           }
         },
         [
           _c("i", { staticClass: "fa fa-envelope mr-1" }),
-          _vm._v("Enviar certificados")
+          _vm._v("Enviar certificados\n    ")
         ]
       ),
       _vm._v(" "),
       _c(
         "Dialog",
         {
+          attrs: { alert: "" },
           model: {
             value: _vm.show,
             callback: function($$v) {
@@ -42666,7 +43012,9 @@ var render = function() {
             )
           ])
         ]
-      )
+      ),
+      _vm._v(" "),
+      _c("dlg-confirm", { ref: "confirm" })
     ],
     1
   )
@@ -42697,12 +43045,19 @@ var render = function() {
     ? _c("transition", { attrs: { name: "modal" } }, [
         _c("div", { staticClass: "modal-mask" }, [
           _c("div", { staticClass: "modal-wrapper" }, [
-            _c(
-              "div",
-              { staticClass: "modal-container" },
-              [_vm._t("default")],
-              2
-            )
+            !_vm.alert
+              ? _c(
+                  "div",
+                  { staticClass: "modal-container" },
+                  [_vm._t("default")],
+                  2
+                )
+              : _c(
+                  "div",
+                  { staticClass: "modal-container-confirm" },
+                  [_vm._t("default")],
+                  2
+                )
           ])
         ])
       ])
@@ -42794,66 +43149,78 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.laravelData.data, function(p) {
-                  return _c("tr", { key: p.id }, [
-                    _c("td", { attrs: { "data-name": "Estudiante" } }, [
-                      _vm._v(_vm._s(p.surname) + " " + _vm._s(p.name))
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      {
-                        staticClass: "text-center td-100",
-                        attrs: { width: "10%", "data-name": "Nota /7" }
-                      },
-                      [_vm._v(_vm._s(p.nota_7))]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      {
-                        staticClass: "text-center td-100",
-                        attrs: { width: "10%", "data-name": "Nota /3" }
-                      },
-                      [_vm._v(_vm._s(p.nota_3))]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      {
-                        staticClass: "text-center td-100",
-                        attrs: { width: "10%", "data-name": "Total" }
-                      },
-                      [
-                        _c("b", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(p.nota_3 + p.nota_7) +
-                              "\n                    "
-                          )
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      {
-                        staticClass: "td-100",
-                        attrs: { width: "1%", "data-name": "Estado" }
-                      },
-                      [
-                        p.nota_7 + p.nota_3 < 7
-                          ? _c("small", { staticClass: "text-danger" }, [
-                              _vm._v("Reprobado")
-                            ])
-                          : _c("small", { staticClass: "text-success" }, [
-                              _vm._v("Aprobado")
-                            ])
-                      ]
-                    )
-                  ])
-                }),
-                0
+                [
+                  _vm._l(_vm.laravelData.data, function(p) {
+                    return _c("tr", { key: p.id }, [
+                      _c("td", { attrs: { "data-name": "Estudiante" } }, [
+                        _vm._v(_vm._s(p.surname) + " " + _vm._s(p.name))
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "text-center td-100",
+                          attrs: { width: "10%", "data-name": "Nota /7" }
+                        },
+                        [_vm._v(_vm._s(p.nota_7))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "text-center td-100",
+                          attrs: { width: "10%", "data-name": "Nota /3" }
+                        },
+                        [_vm._v(_vm._s(p.nota_3))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "text-center td-100",
+                          attrs: { width: "10%", "data-name": "Total" }
+                        },
+                        [
+                          _c("b", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(p.nota_3 + p.nota_7) +
+                                "\n                    "
+                            )
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          staticClass: "td-100",
+                          attrs: { width: "1%", "data-name": "Estado" }
+                        },
+                        [
+                          p.nota_7 + p.nota_3 < 7
+                            ? _c("small", { staticClass: "text-danger" }, [
+                                _vm._v("Reprobado")
+                              ])
+                            : _c("small", { staticClass: "text-success" }, [
+                                _vm._v("Aprobado")
+                              ])
+                        ]
+                      )
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _vm.laravelData.data && _vm.laravelData.data.length <= 0
+                    ? _c("tr", [
+                        _c(
+                          "td",
+                          { staticClass: "no-data", attrs: { colspan: "5" } },
+                          [_vm._v("No se han registrado notas")]
+                        )
+                      ])
+                    : _vm._e()
+                ],
+                2
               )
             ]
           )
@@ -55573,6 +55940,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PostulantComponent_vue_vue_type_template_id_00e19290___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PostulantComponent_vue_vue_type_template_id_00e19290___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/_dialog/DlgConfirm.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/_dialog/DlgConfirm.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DlgConfirm_vue_vue_type_template_id_7ce9ceb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DlgConfirm.vue?vue&type=template&id=7ce9ceb4&scoped=true& */ "./resources/js/components/_dialog/DlgConfirm.vue?vue&type=template&id=7ce9ceb4&scoped=true&");
+/* harmony import */ var _DlgConfirm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DlgConfirm.vue?vue&type=script&lang=js& */ "./resources/js/components/_dialog/DlgConfirm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DlgConfirm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DlgConfirm_vue_vue_type_template_id_7ce9ceb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DlgConfirm_vue_vue_type_template_id_7ce9ceb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "7ce9ceb4",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/_dialog/DlgConfirm.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/_dialog/DlgConfirm.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/_dialog/DlgConfirm.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DlgConfirm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./DlgConfirm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/_dialog/DlgConfirm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DlgConfirm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/_dialog/DlgConfirm.vue?vue&type=template&id=7ce9ceb4&scoped=true&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/_dialog/DlgConfirm.vue?vue&type=template&id=7ce9ceb4&scoped=true& ***!
+  \***************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DlgConfirm_vue_vue_type_template_id_7ce9ceb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./DlgConfirm.vue?vue&type=template&id=7ce9ceb4&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/_dialog/DlgConfirm.vue?vue&type=template&id=7ce9ceb4&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DlgConfirm_vue_vue_type_template_id_7ce9ceb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DlgConfirm_vue_vue_type_template_id_7ce9ceb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

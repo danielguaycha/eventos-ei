@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-
+@push('nav')
+    @include('notify-min')
+@endpush
 @section('content')
 
     <div class="card">
@@ -33,8 +35,6 @@
             </div>
         </div>
         <div class="card-body p-0">
-            @include('notify')
-
             <div class="table-responsive">
                 <table class="table table-bordered table-hover mb-0">
                     <thead>
@@ -66,7 +66,7 @@
                     @endforeach
                     @if (count($sponsors) <= 0)
                         <tr>
-                            <td colspan="3" class="text-center">No existen organizadores registrados</td>
+                            <td colspan="3" class="no-data">No existen organizadores registrados</td>
                         </tr>
                     @endif
                     </tbody>

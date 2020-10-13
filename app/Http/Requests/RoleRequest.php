@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\RequiredIf;
 
 class RoleRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class RoleRequest extends FormRequest
 
     public function rules()
     {
-        return [
+       return [
             'name' => 'required|string|max:50|min:2',
             'perms' => 'required|array|min:1',
             'perms.*' => 'required|numeric|exists:permissions,id'

@@ -95,13 +95,15 @@
             </div>
         </div>
 
-        @include('notify');
-
         <div class="card-footer text-right">
             <button type="submit" class="btn btn-primary">Actualizar Administrador</button>
         </div>
     </form>
 @endsection
+
+@push('nav')
+    @include('notify-min')
+@endpush
 
 @section('js')
     <script>

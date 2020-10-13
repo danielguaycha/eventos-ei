@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-
+@push('nav')
+    @include('notify-min')
+@endpush
 @section('content')
     <form class="card" method="post" action="{{ route('students.store') }}">
         @csrf
@@ -81,8 +83,6 @@
                 </div>
             </div>
         </div>
-
-        @include('notify');
 
         <div class="card-footer text-right">
             <button type="submit" class="btn btn-primary">Crear estudiante</button>

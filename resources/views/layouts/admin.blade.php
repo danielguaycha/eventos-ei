@@ -10,34 +10,34 @@
 
     <title>{{ config('app.name', 'EI-Event') }}</title>
 
-    @include('_globals._meta_icon_head')
+@include('_globals._meta_icon_head')
 
-    <!-- Fonts -->
+<!-- Fonts -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.min.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?v=1.0.0.1" rel="stylesheet">
     @yield('css')
     @stack('styles')
 </head>
 <body>
-    <div class="ei-container" >
-        <div class="ei-sidebar">
-            <div class="ei-sidebar-header">
-                <h3> {{ config('app.name', 'Escuela Informática') }}</h3>
-            </div>
-            <div class="ei-sidebar-body">
-                {{--Usuario--}}
-                <div class="ei-sidebar-user">
-                    <img src="{{ asset('img/profile.png') }}" alt="user-profile" height="60" />
-                    <div class="ei-sidebar-user-desc">
-                        <b>{{ Auth::user()->person->name }}</b>
-                        @php
-                            $role = Auth::user()->roles()->first();
-                        @endphp
-                        @if($role)
-                            {{ $role->description }}
+<div class="ei-container">
+    <div class="ei-sidebar">
+        <div class="ei-sidebar-header">
+            <h3> {{ config('app.name', 'Escuela Informática') }}</h3>
+        </div>
+        <div class="ei-sidebar-body">
+            {{--Usuario--}}
+            <div class="ei-sidebar-user">
+                <img src="{{ asset('img/profile.png') }}" alt="user-profile" height="60"/>
+                <div class="ei-sidebar-user-desc">
+                    <b>{{ Auth::user()->person->name }}</b>
+                    @php
+                        $role = Auth::user()->roles()->first();
+                    @endphp
+                    @if($role)
+                        {{ $role->description }}
                         @endif
                     </div>
                 </div>
@@ -100,7 +100,8 @@
                 </div>
                 <ul class="ei-nav-items">
                     <li class="dropdown">
-                        <a id="session-user" class="ei-nav-user dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a id="session-user" class="ei-nav-user dropdown-toggle" href="#" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             <img src="{{ asset('img/profile.png') }}" alt="user-profile" width="30px">
                             <span>
                                 {{ Auth::user()->person->name }}
@@ -110,9 +111,9 @@
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="session-user">
 
-                            <a href="#" class="dropdown-item">Perfil</a>
+                            <a href="{{ route('user.profile') }}" class="dropdown-item">Perfil</a>
 
-                            <a href="#" class="dropdown-item">Cambiar clave</a>
+                            <a href="{{ route('user.password') }}" class="dropdown-item">Cambiar clave</a>
 
 
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -150,6 +151,5 @@
     </script>
     @yield('js')
     @stack('js')
-
 </body>
 </html>

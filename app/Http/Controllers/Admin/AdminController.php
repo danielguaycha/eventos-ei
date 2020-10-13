@@ -90,9 +90,9 @@ class AdminController extends Controller
             'type' => 'other'
         ]);
 
-        $user->syncRoles($role);
+        $user->syncRoles([$role]);
 
-        if ($request->get('sendEmail'))
+        if ($request->get('sendEmail') && $request->password)
             $user->notify(new SendTempPassword($request->password));
 
         DB::commit();
@@ -149,7 +149,7 @@ class AdminController extends Controller
         $person->save();
         $user->save();
 
-        if ($request->get('sendEmail') && $request->has('password'))
+        if ($request->get('sendEmail') && $request->get('password'))
             $user->notify(new SendTempPassword($request->password));
 
         return back()->with('ok', 'Usuario modificado con éxito');
@@ -158,7 +158,8 @@ class AdminController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->role = User::rolStudent;
+        $user->type = User::rolStudent;
+        $user->syncRoles(User::rolStudent);
         $user->save();
 
         return back()->with('ok', 'El usuario fué dado de baja con éxito');

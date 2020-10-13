@@ -30,9 +30,13 @@ class EventController extends Controller
 
     public function index(Request $request)
     {
+        $search = $request->query('q');
+        if (!$search) $search = '';
+
         if ($request->user()->can('events.all')) {
             $e = Event::with('sponsor')
                 ->withCount('postulants', 'participantes')
+                ->where('title', 'like', "%$search%")
                 ->orderBy('id', 'desc')
                 ->get();
         }
@@ -40,6 +44,7 @@ class EventController extends Controller
             $e = $request->user()->events()
                 ->with('sponsor')
                 ->withCount('postulants', 'participantes')
+                ->where('title', 'like', "%$search%")
                 ->orderBy('id', 'desc')
                 ->get();
         }
@@ -301,20 +306,20 @@ class EventController extends Controller
         $desc= "";
         switch ($e->type){
             case Event::TypeAsistencia:
-                $desc = "Por haber <b>ASISTIDO</b> al <b>$e->title</b> realizado ".$e->eventDateForDoc();
+                $desc = "Por haber <b>ASISTIDO</b> al evento <b>$e->title</b> realizado ".$e->eventDateForDoc();
                 if ($e->hours > 0) {
                     $desc.= " equivalente a ".$e->hours." horas.";
                 }
                 break;
             case Event::TypeAprovacion:
-                $desc = "Por haber <b>APROBADO</b> al <b>$e->title</b>";
+                $desc = "Por haber <b>APROBADO</b> al evento <b>$e->title</b>";
                 if ($e->hours > 0) {
                     $desc.= " equivalente a ".$e->hours." horas,";
                 }
                 $desc.= "  obteniendo un promedio de {nota}";
                 break;
             case Event::TypeAsistenciaAprovation:
-                $desc = "Por haber <b>ASISTIDO</b> y <b>APROBADO</b> al <b>$e->title</b> realizado ".$e->eventDateForDoc();
+                $desc = "Por haber <b>ASISTIDO</b> y <b>APROBADO</b> el evento <b>$e->title</b> realizado ".$e->eventDateForDoc();
                 if ($e->hours > 0) {
                     $desc.= " equivalente a ".$e->hours." horas,";
                 }

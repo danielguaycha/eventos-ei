@@ -26,6 +26,9 @@
                         <small v-else class="text-success">Aprobado</small>
                     </td>
                 </tr>
+                <tr v-if="laravelData.data && laravelData.data.length <= 0">
+                    <td class="no-data" colspan="5">No se han registrado notas</td>
+                </tr>
             </tbody>
         </table>
         <div class="text-center">

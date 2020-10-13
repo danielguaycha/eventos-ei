@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Image;
 use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 
@@ -23,6 +24,11 @@ trait UploadTrait
 
     public function uploadImg($img, $folder, $width = 300, $height=300){
         ini_set('memory_limit','2048M');
+
+        if (!Storage::disk('public')->exists($folder)) {
+            Storage::disk('public')->makeDirectory($folder);
+        }
+
         $name = "$folder/".time().'.'.$img->getClientOriginalExtension();
         $image_resize = Image::make($img->getRealPath());
         $image_resize->resize(null, $height, function ($constraint) {

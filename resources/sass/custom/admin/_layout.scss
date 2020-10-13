@@ -139,13 +139,15 @@ $sidebarBg: #2C313D;
 // parent
 .ei-parent {
     width: 100%;
+    height: 100%
+;
     float: right;
     @include desktop {
         width: calc(100% - #{$sidebarW});
     }
     .ei-parent-content {
-
         padding: .5rem .5rem;
+        height: calc(100% - #{$navH});
     }
 }
 
@@ -170,37 +172,35 @@ $sidebarBg: #2C313D;
             }
         }
         .alert {
+            z-index: 100;
             width: 100%;
-
             display: flex;
             align-items: center;
             justify-content: start;
             border-radius: 0;
             border: none;
             border-right: 5px solid transparent;
-
-                position: fixed;
-                bottom: 0;
-
+            position: fixed;
+            bottom: 0;
+            line-height: 16px;
             @include tablet {
                 position: relative;
                 height: $navH;
                 margin-right: 1rem;
             }
-            line-height: 16px;
-            ul {
-
-                display: grid;
-                @include tablet {
-                    grid-template: 1fr auto/  auto;
-                    column-gap: 1rem;
-                }
+            .close {
+                position: absolute;
+                top: 0;
+                margin-right: 5px;
+                right: 0;
+                color: inherit !important;
+                padding: .7rem;
                 @include desktop {
-                    grid-template: 1fr /  auto;
+                    top: initial;
                 }
-                @include xDesktop {
-                    grid-template: 1fr / auto;
-                }
+            }
+            ul {
+                display: grid;
                 justify-items: start;
                 li {
                     color: $red-800;
@@ -211,6 +211,16 @@ $sidebarBg: #2C313D;
                         margin-right: 5px;
                         color: $red-600;
                     }
+                }
+                @include tablet {
+                    grid-template: 1fr auto/  auto;
+                    column-gap: 1rem;
+                }
+                @include desktop {
+                    grid-template: 1fr /  auto;
+                }
+                @include xDesktop {
+                    grid-template: 1fr / auto;
                 }
             }
             i {
@@ -253,6 +263,39 @@ $sidebarBg: #2C313D;
                 border-color: $blue-300;
                 i {
                     background: $blue-300;
+                }
+            }
+
+            @include tablet-only {
+                border-right: 0;
+                padding: .8rem .2rem;
+                &.alert-success {
+                    background: $green;
+                    color: white;
+                    ul>li {
+                        color: white;
+                    }
+                }
+                &.alert-danger {
+                    background: $red;
+                    ul>li {
+                        color: white;
+                    }
+                }
+
+                &.alert-warning {
+                    background: $orange-300;
+                    ul>li {
+                        color: white;
+                    }
+                }
+
+
+                &.alert-info {
+                    background: $blue-500;
+                    ul>li {
+                        color: white;
+                    }
                 }
             }
         }

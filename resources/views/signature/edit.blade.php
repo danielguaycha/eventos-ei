@@ -2,6 +2,9 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/dropzone/js/fileinput.css') }}">
 @endsection
+@push('nav')
+    @include('notify-min')
+@endpush
 @section('content')
     <form class="card" method="post" action="{{ route('signatures.update', ['signature' => $signature->id]) }}" enctype="multipart/form-data">
         @csrf
@@ -10,7 +13,6 @@
             <b>Editar firma</b>
         </div>
         <div class="card-body">
-            @include('notify')
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">

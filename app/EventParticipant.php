@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Libs\Hashids\Hashids;
 use Illuminate\Database\Eloquent\Model;
 
 class EventParticipant extends Model
@@ -17,5 +18,10 @@ class EventParticipant extends Model
 
     public function event() {
         return $this->belongsTo(Event::class, 'event_id');
+    }
+
+    public function getId() {
+        $hashids = new Hashids();
+        return $hashids->encode($this->id);
     }
 }

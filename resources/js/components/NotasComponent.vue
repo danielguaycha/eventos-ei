@@ -1,22 +1,23 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <div >
+            <div>
                 <b><i class="fa fa-user"></i>Calificaciones</b>
             </div>
-            <div class="d-flex align-items-center" v-if="laravelData.data && laravelData.data.length > 0 ">
-                <div class="spinner-border text-dark spinner-border-sm mr-2" role="status" v-if="loaderSave"></div>
+            <div v-if="laravelData.data && laravelData.data.length > 0 " class="d-flex align-items-center">
+                <div v-if="loaderSave" class="spinner-border text-dark spinner-border-sm mr-2" role="status"></div>
 
-                <button class="btn btn-sm btn-success" @click="saveNotas" :disabled="loaderSave">
-                    <i class="fa fa-save mr-1"></i>{{ loaderSave ? 'Guardando...' : 'Guardar' }}</button>
+                <button :disabled="loaderSave" class="btn btn-sm btn-success" @click="saveNotas">
+                    <i class="fa fa-save mr-1"></i>{{ loaderSave ? 'Guardando...' : 'Guardar' }}
+                </button>
 
-                <DlgConfirmNotas v-model="dialog" :event="event" @onConfirm="confirmNotas" :disabled="loaderSave"/>
+                <DlgConfirmNotas v-model="dialog" :disabled="loaderSave" :event="event" @onConfirm="confirmNotas"/>
             </div>
         </div>
         <div class="card-body p-0">
             <Loader :loading="loader"></Loader>
             <div class="table-responsive m-0">
-                <table class="table table-bordered table-hover m-0 table-sm " v-if="!loader && laravelData">
+                <table v-if="!loader && laravelData" class="table table-bordered table-hover m-0 table-sm ">
                     <thead>
                     <tr class="align-middle">
                         <th>Estudiante</th>
@@ -29,37 +30,39 @@
                     <tbody>
                     <tr v-for="p in laravelData.data" :key="p.id">
                         <td data-name="Estudiante">{{ p.surname }} {{ p.name }}</td>
-                        <td data-name="Nota /7" class="input-nota">
+                        <td class="input-nota" data-name="Nota /7">
                             <vue-numeric
-                                :min="0" v-bind:max="7"
+                                v-model="p.nota_7" :empty-value="0"
+                                :min="0"
                                 :precision="2"
                                 class="form-control form-control-sm text-center"
-                                :empty-value="0"
                                 decimal-separator="."
-                                v-model="p.nota_7" />
+                                v-bind:max="7"/>
                         </td>
-                        <td data-name="Nota /3" class="input-nota">
+                        <td class="input-nota" data-name="Nota /3">
                             <vue-numeric
-                                :min="0" v-bind:max="3"
+                                v-model="p.nota_3" :empty-value="0"
+                                :min="0"
                                 :precision="2"
                                 class="form-control form-control-sm text-center"
-                                :empty-value="0"
                                 decimal-separator="."
-                                v-model="p.nota_3" />
+                                v-bind:max="3"/>
                         </td>
-                        <td data-name="Promedio" class="input-nota">
-                            <input type="text"
-                                   :disabled="true"
+                        <td class="input-nota" data-name="Promedio">
+                            <input :disabled="true"
                                    :value="(p.nota_7 + p.nota_3)"
-                                   readonly class="form-control form-control-sm">
+                                   class="form-control form-control-sm"
+                                   readonly type="text">
                         </td>
-                        <td width="1%" class="td-100">
+                        <td class="td-100" width="1%">
                             <small v-if="p.nota_7 + p.nota_3 < 7" class="text-danger">Reprobado</small>
                             <small v-else class="text-success">Aprobado</small>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="5" class="text-center text-muted py-2" v-if="laravelData.data && laravelData.data.length <=0">No hay estudiantes en este evento</td>
+                        <td v-if="laravelData.data && laravelData.data.length <=0" class="no-data" colspan="5">No hay
+                            estudiantes en este evento
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -68,18 +71,21 @@
         <div class="card-body py-0 text-center">
             <pagination :data="laravelData" @pagination-change-page="getNotas"/>
         </div>
+        <dlg-confirm ref="confirm"/>
     </div>
 </template>
 
 <script>
 import Loader from "./_partials/Loader";
 import DlgConfirmNotas from "./_dialog/DlgConfirmNotas";
+import DlgConfirm from "./_dialog/DlgConfirm";
+
 export default {
     name: "NotasComponent",
-    components: {DlgConfirmNotas, Loader},
+    components: {DlgConfirm, DlgConfirmNotas, Loader},
     props: {
         event: {
-            type: Number|String,
+            type: Number | String,
             default: null
         },
     },
@@ -124,19 +130,18 @@ export default {
             }).catch(err => this.$alert.err(err))
             .finally(() => this.loaderSave = false);
         },
-        confirmNotas() {
+        async confirmNotas() {
             let self = this;
-            this.$dialog
-                .confirm({title: 'Confirmar envío de Notas', body: `Una vez enviadas las notas no se permiten modificaciones, si lo que desea es solo guardar el avance use el botón "Guardar", por el contrario presione "Confirmar"`}, {loader: true})
-                .then(function(dialog) {
-                    axios.post(`/events/notas/finish/${self.event}`).then(res =>{
-                        if (res.data.ok) {
-                            self.$alert.ok(res.data.message);
-                            window.location.reload();
-                        }
-                    }).catch(err => self.$alert.err(err))
-                        .finally(() => dialog.close());
-                })
+            const confirm = await this.$refs.confirm.open("Confirmar enviar notas", `Una vez enviadas las notas no se permiten modificaciones, si lo que desea es solo guardar el avance use el botón "Guardar", por el contrario presione "Confirmar"`, {loader: true});
+            if (!confirm) return;
+            axios.post(`/events/notas/finish/${self.event}`).then(res => {
+                if (res.data.ok) {
+                    self.$alert.ok(res.data.message);
+                    window.location.reload();
+                }
+            }).catch(err => self.$alert.err(err))
+                .finally(() => this.$refs.confirm.close());
+
         }
     },
 }

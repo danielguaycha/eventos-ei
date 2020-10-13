@@ -2,6 +2,9 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/dropzone/js/fileinput.css') }}">
 @endsection
+@push('nav')
+    @include('notify-min')
+@endpush
 @section('content')
     <form class="card" method="post" action="{{ route('sponsor.update', ['sponsor' => $sponsor->id]) }}" enctype="multipart/form-data">
         @csrf
@@ -10,7 +13,6 @@
             <b>Editar Organizador</b>
         </div>
         <div class="card-body">
-            @include('notify')
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">

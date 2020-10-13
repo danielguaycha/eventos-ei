@@ -1,9 +1,12 @@
 <template>
-    <transition name="modal" v-if="show">
+    <transition v-if="show" name="modal">
         <div class="modal-mask">
             <div class="modal-wrapper">
-                <div class="modal-container">
-                    <slot />
+                <div v-if="!alert" class="modal-container">
+                    <slot/>
+                </div>
+                <div v-else class="modal-container-confirm">
+                    <slot/>
                 </div>
             </div>
         </div>
@@ -15,6 +18,10 @@ export default {
     name: "Dialog",
     props: {
         value: Boolean,
+        alert: {
+            type: Boolean,
+            default: false
+        }
     },
     methods: {
         close() {

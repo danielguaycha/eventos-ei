@@ -1,6 +1,7 @@
 <html>
     <head>
-        <title>Documento Generado</title>
+        <title>{{ $user->person->surname }} | Certificado</title>
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/ico/favicon-32x32.png') }}">
         <style>
             {!! include ('css/doc.css') !!}
         </style>
@@ -10,7 +11,7 @@
             $svg = QrCode::size(115)->format('svg')
                 ->eyeColor(0, 26, 67, 126, 163, 32, 32)
                 ->eye("square")
-                ->generate("www.daniel.com");
+                ->generate(url('/certificado', $notas->getId()));
             $html = '<img src="data:image/svg+xml;base64,'.base64_encode($svg).'" class="qr-img"  width="115" height="115" />';
         @endphp
         <header>
@@ -82,23 +83,24 @@
                 </table>
 
                 {{--FIRMAS--}}
-                <table class="final s-{{ count($event->signatures) }}">
+
+                <table class="final s-{{ count($design->signatures) }}">
                     <tbody>
-                        <tr>
-                            @foreach ($event->signatures as $s)
-                                <td class="signatures">
-                                    <img src="{{storage_path()}}/app/public/{{ $s->image }}" width="100px">
-                                    <div>
-                                        <div class="line"></div>
-                                        <div>{{ $s->name }}</div>
-                                        <b>{{ $s->cargo }}</b>
-                                    </div>
-                                </td>
-                            @endforeach
-                            <td class="qr">
-                                {!! $html !!}
+                    <tr>
+                        @foreach ($design->signatures as $s)
+                            <td class="signatures">
+                                <img src="{{storage_path()}}/app/public/{{ $s['image'] }}" width="100px">
+                                <div>
+                                    <div class="line"></div>
+                                    <div>{{ $s['name'] }}</div>
+                                    <b>{{ $s['cargo'] }}</b>
+                                </div>
                             </td>
-                        </tr>
+                        @endforeach
+                        <td class="qr">
+                            {!! $html !!}
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

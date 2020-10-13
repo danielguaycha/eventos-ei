@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-
+@push('nav')
+    @include('notify-min')
+@endpush
 @section('content')
     <div class="card">
         <div class="card-header border-bottom-0">
@@ -34,7 +36,6 @@
             </div>
         </div>
         <div class="card-body p-0">
-            @include('notify')
             <div class="table-responsive">
                 <table class="table table-bordered table-hover mb-0">
                     <thead>
@@ -76,7 +77,7 @@
                         @endforeach
                     @else
                         <tr class="text-center">
-                            <td colspan="5">
+                            <td colspan="5" class="no-data">
                                 @if ( app('request')->input('q'))
                                     No existe información para tu búsqueda
                                 @else

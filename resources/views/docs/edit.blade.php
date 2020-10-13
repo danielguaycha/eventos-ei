@@ -25,19 +25,9 @@
                         <div class="membrete">
                             <h3>UNIVERSIDAD TÉCNICA DE MACHALA</h3>
                             <h4>D.I. NO. 69-04 DE 14 DE ABRIL DE 1969</h4>
-                            <div class="sponsor">
-                                <i>&mdash;&mdash;&nbsp;</i>
-                                <select class="form-select select-center"
-                                        name="sponsor_id"
-                                        id="sponsor_id">
-                                    @foreach ($sponsors as $s)
-                                        <option @if ($s->id === $event->sponsor_id) selected @endif
-                                            value="{{ $s->id }}">{{ $s->name }}</option>
-                                    @endforeach
-                                </select>
-                                <i>&nbsp;&mdash;&mdash;</i>
-                            </div>
+
                         </div>
+
                         <div class="select_logo">
                             <div class="btn-group dropleft">
 
@@ -92,6 +82,21 @@
                         </div>
                     </div>
                     <div class="otorga my-2">
+
+                        <div class="form-group w-75 m-auto">
+                            <div class="sponsor">
+
+                                <select class="form-select select-center"
+                                        name="sponsor_id"
+                                        id="sponsor_id">
+                                    @foreach ($sponsors as $s)
+                                        <option @if ($s->id === $event->sponsor_id) selected @endif
+                                        value="{{ $s->id }}">{{ $s->name }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
                         <div class="form-group w-75 m-auto">
                             <select class="form-select select-center text-primary" name="otorga" id="otorga">
                                 <option value="Otorga el presente" @if($doc->otorga === 'Otorga el presente') selected @endif>Otorga el presente</option>
@@ -110,7 +115,7 @@
 
                     <div class="my-3 text-center">
                         <p class="text-muted">
-                            A: -------------------- NOMBRES DEL ESTUDIANTE --------------------------
+                            A:  :::: NOMBRES DEL ESTUDIANTE ::::
                         </p>
                     </div>
                     {{--Descripción--}}
@@ -146,7 +151,8 @@
                     <div>
                         <b class="text-muted">Firmas</b>
                         <div class="ei-multiselect">
-                            <select class="selectpicker" id="signatures" required
+                            <select class="selectpicker"
+                                    id="signatures" required
                                     name="signatures[]" data-style="btn-normal" title="Escoja máximo 4"
                                     data-live-search="true" data-max-options="4" data-size="10" multiple>
                                 @foreach ($signatures as $s)

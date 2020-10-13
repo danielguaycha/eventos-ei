@@ -82,7 +82,7 @@
                 </table>
 
                 {{--FIRMAS--}}
-                <table class="final s-{{ count($event->signatures) }}">
+                <table class="final s-{{ count($data->signatures) }}">
                     <tbody>
                         <tr>
                             @foreach ($data->signatures as $s)

@@ -31,34 +31,55 @@
     transition: all 0.3s ease;
     font-family: Helvetica, Arial, sans-serif;
     position: relative;
-    .dlg-header {
-        padding: 0 0 10px 0;
-        border-bottom: .9px solid rgba(black, .08);
-        display: flex;
-        align-items: center;
-        form {
-            flex-grow: 1;
-            padding-left: 1rem;
-            display: flex;
-        }
-    }
     .dlg-body {
         min-height: 100px;
         height: 100%;
     }
+
     .dlg-footer {
         padding-top: 10px;
         border-top: .9px solid rgba(black, .08);
         width: 100%;
-       @include mobil-only {
-           padding-bottom: .7rem;
-           padding-right: 1rem;
-           padding-left: 1rem;
-           position: fixed;
-           bottom: 0;
-       }
+        @include mobil-only {
+            padding-bottom: .7rem;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            position: fixed;
+            bottom: 0;
+        }
     }
 }
+
+.modal-container-confirm {
+    margin: 0px auto;
+    padding: 1rem .8rem;
+    width: 350px;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    transition: all 0.3s ease;
+    font-family: Helvetica, Arial, sans-serif;
+    position: relative;
+    min-height: 50px !important;
+
+    .dlg-footer {
+        margin-top: 1rem;
+    }
+}
+
+.dlg-header {
+    padding: 0 0 10px 0;
+    border-bottom: .9px solid rgba(black, .08);
+    display: flex;
+    align-items: center;
+
+    form {
+        flex-grow: 1;
+        padding-left: 1rem;
+        display: flex;
+    }
+}
+
 
 /*
  * The following styles are auto-applied to elements with

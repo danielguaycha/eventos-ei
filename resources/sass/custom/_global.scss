@@ -1,5 +1,5 @@
 html,
-body, #app {
+body, .ei-app-content {
     height: 100%;
     overflow-x: hidden;
 }
@@ -97,7 +97,6 @@ body, #app {
     );
 }
 
-
 // select
 .select-min {
     width: auto;
@@ -105,9 +104,13 @@ body, #app {
     padding-right: 2rem;
 }
 
-
 // hide values
 @include tablet-only {
+    .card {
+        .card-header {
+            padding: 0 8px 5px 8px;
+        }
+    }
     table, thead, tbody, th, td, tr {
         display: block;
     }
@@ -159,12 +162,22 @@ body, #app {
         &.td-100 {
             width: 100%;
         }
+        &.no-data {
+            display: flex;
+            justify-content: center;
+            color: #888;
+            &:before {
+                display: none;
+            }
+        }
     }
 
     .input-nota {
         width: 100% !important;
     }
+}
 
-
-
+td.no-data {
+    color: #888;
+    text-align: center;
 }

@@ -61,10 +61,12 @@ class RoleController extends Controller
             return back()->with('err', 'Ya existe un rol con este nombre')->withInput($request->all());
         }
 
-        $role->update([
-            'name' => Str::lower($request->get('name')),
-            'description' => $request->get('name')
-        ]);
+        if ($role->name !== User::rolAdmin && $role->name !== User::rolStudent) {
+            $role->update([
+                'name' => Str::lower($request->get('name')),
+                'description' => $request->get('name')
+            ]);
+        }
 
         $role->syncPermissions($request->get('perms'));
         return back()->with('ok', 'Rol actualizado con éxito');
@@ -75,6 +77,10 @@ class RoleController extends Controller
 
         if ($role->name === User::rolAdmin || $role->name === User::rolStudent) {
             return back()->with('warn', 'No se pueden eliminar roles básicos');
+        }
+        $users = User::role($role->name)->get();
+        foreach ($users as $u) {
+            $u->assignRole(User::rolStudent);;
         }
 
         $role->delete();

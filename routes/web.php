@@ -12,21 +12,27 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+\Illuminate\Support\Facades\Auth::routes();
+Auth::routes(['verify' => true]);
 
+// initial page
 Route::get('/', function () {
     return view('welcome');
 });
-
+// home before login
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
-\Illuminate\Support\Facades\Auth::routes();
+// user routes
+Route::get('user/profile', 'UserController@profile')->name('user.profile');
+Route::put('user/profile', 'UserController@updateProfile')->name('user.update');
+Route::get('user/password', 'UserController@password')->name('user.password');
+Route::put('user/password', 'UserController@updatePassword')->name('user.update_password');
 
 Route::group(['namespace' => 'Guest'], function () {
     // redirects
     Route::get('e/{shortLink}', 'RedirectController@redirectEvent')->name('redirect.event');
+    Route::get('certificado/{id}', 'CertificadoController@show');
 });
-
-Auth::routes(['verify' => true]);
 
 Route::group([
     'namespace' => 'Admin', 'middleware' => ['verified']], function () {

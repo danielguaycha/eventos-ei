@@ -56,6 +56,7 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'hash_key' => 'DanielG1995',
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

@@ -12,7 +12,7 @@
         <div class="card-body p-0">
             <Loader :loading="loader"></Loader>
             <slot></slot>
-            <div class="table-responsive table-bordered m-0">
+            <div class="table-responsive m-0">
                 <table class="table table-bordered table-hover m-0 table-sm " v-if="!loader && laravelData">
                     <thead>
                     <tr class="align-middle">
@@ -46,7 +46,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4" class="text-center text-muted py-2" v-if="laravelData.data.length <=0">No hay postulantes para este evento</td>
+                        <td colspan="4" class="no-data" v-if="laravelData.data.length <=0">No hay postulantes para este evento</td>
                     </tr>
                     </tbody>
                 </table>
