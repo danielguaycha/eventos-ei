@@ -30,7 +30,11 @@
         <div class="ei-sidebar-body">
             {{--Usuario--}}
             <div class="ei-sidebar-user">
-                <img src="{{ asset('img/profile.png') }}" alt="user-profile" height="60"/>
+
+                <img
+                    src="{{ Avatar::create(Auth::user()->person->name . ' ' . Auth::user()->person->surname) }}"
+                    alt="user-profile" width="30px">
+
                 <div class="ei-sidebar-user-desc">
                     <b>{{ Auth::user()->person->name }}</b>
                     @php
@@ -38,59 +42,63 @@
                     @endphp
                     @if($role)
                         {{ $role->description }}
-                        @endif
-                    </div>
-                </div>
-                {{--Menú--}}
-                <div class="ei-sidebar-menu">
-                    <ul>
-                        {{--Acceso solo al uaurio root--}}
-                        @role('root')
-                            <li class="ei-sidebar-divider">Usuarios</li>
-                            <li><a href="{{ route('admins.index') }}"
-                                   class="@if (request()->is('user/admins/*') || request()->is('user/admins')) active @endif"> <i class="fa fa-users-cog"></i>Usuarios/Admins</a></li>
-                            <li><a href="{{ route('rol.index') }}"
-                                   class="@if (request()->is('rol/*') || request()->is('rol')) active @endif"><i class="fa fa-user-lock"></i>Roles/Permisos</a></li>
-                        @endrole
-
-                        @can('students.index')
-                            <li><a href="{{ route('students.index') }}" class="@if (request()->is('user/students/*') || request()->is('user/students')) active @endif"> <i class="fa fa-user-alt"></i>Estudiantes</a></li>
-                        @endcan
-
-                        {{--Acceso a los usuarios con su respectivo permiso--}}
-                            <li class="ei-sidebar-divider">Eventos</li>
-                            {{--<li><a href="#"><i class="fa fa-user-graduate"></i>Mis cursos</a></li>--}}
-                            @can('events.index')
-                                <li><a href="{{ route('events.index') }}"
-                                       class="@if (request()->is('events/*') || request()->is('events')) active @endif"
-                                    ><i class="fa fa-graduation-cap"></i>Cursos/Eventos</a></li>
-                            @endcan
-                            @canany('sponsors.*|signatures.*')
-                                <li class="ei-sidebar-divider">Configuraciones</li>
-                            @endcanany
-                            @can('sponsors.index')
-                                <li>
-                                    <a href="{{ route('sponsor.index') }}"
-                                       class="@if (request()->is('sponsor/*') || request()->is('sponsor')) active @endif">
-                                        <i class="fa fa-university"></i>Organizadores</a>
-                                </li>
-                            @endcan
-                            @can('signatures.index')
-                                <li>
-                                    <a href="{{ route('signatures.index') }}"
-                                       class="@if (request()->is('signatures/*') || request()->is('signatures')) active @endif">
-                                        <i class="fa fa-signature"></i>Firmas</a>
-                                </li>
-                            @endcan
-                    </ul>
+                    @endif
                 </div>
             </div>
+            {{--Menú--}}
+            <div class="ei-sidebar-menu">
+                <ul>
+                    {{--Acceso solo al uaurio root--}}
+                    @role('root')
+                    <li class="ei-sidebar-divider">Usuarios</li>
+                    <li><a href="{{ route('admins.index') }}"
+                           class="@if (request()->is('user/admins/*') || request()->is('user/admins')) active @endif">
+                            <i class="fa fa-users-cog"></i>Usuarios/Admins</a></li>
+                    <li><a href="{{ route('rol.index') }}"
+                           class="@if (request()->is('rol/*') || request()->is('rol')) active @endif"><i
+                                class="fa fa-user-lock"></i>Roles/Permisos</a></li>
+                    @endrole
+
+                    @can('students.index')
+                        <li><a href="{{ route('students.index') }}"
+                               class="@if (request()->is('user/students/*') || request()->is('user/students')) active @endif">
+                                <i class="fa fa-user-alt"></i>Estudiantes</a></li>
+                    @endcan
+
+                    {{--Acceso a los usuarios con su respectivo permiso--}}
+                    <li class="ei-sidebar-divider">Eventos</li>
+                    {{--<li><a href="#"><i class="fa fa-user-graduate"></i>Mis cursos</a></li>--}}
+                    @can('events.index')
+                        <li><a href="{{ route('events.index') }}"
+                               class="@if (request()->is('events/*') || request()->is('events')) active @endif"
+                            ><i class="fa fa-graduation-cap"></i>Cursos/Eventos</a></li>
+                    @endcan
+                    @canany('sponsors.*|signatures.*')
+                        <li class="ei-sidebar-divider">Configuraciones</li>
+                    @endcanany
+                    @can('sponsors.index')
+                        <li>
+                            <a href="{{ route('sponsor.index') }}"
+                               class="@if (request()->is('sponsor/*') || request()->is('sponsor')) active @endif">
+                                <i class="fa fa-university"></i>Organizadores</a>
+                        </li>
+                    @endcan
+                    @can('signatures.index')
+                        <li>
+                            <a href="{{ route('signatures.index') }}"
+                               class="@if (request()->is('signatures/*') || request()->is('signatures')) active @endif">
+                                <i class="fa fa-signature"></i>Firmas</a>
+                        </li>
+                    @endcan
+                </ul>
+            </div>
         </div>
+    </div>
 
-        <div class="ei-sidebar-overlay" id="ei-overlay"></div>
+    <div class="ei-sidebar-overlay" id="ei-overlay"></div>
 
-        <div class="ei-parent">
-            @auth
+    <div class="ei-parent">
+        @auth
             <nav class="ei-nav">
                 <div class="ei-search">
                     <button class="menu-open btn btn-link">
@@ -101,8 +109,11 @@
                 <ul class="ei-nav-items">
                     <li class="dropdown">
                         <a id="session-user" class="ei-nav-user dropdown-toggle" href="#" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            <img src="{{ asset('img/profile.png') }}" alt="user-profile" width="30px">
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            <img
+                                src="{{ Avatar::create(Auth::user()->person->name . ' ' . Auth::user()->person->surname) }}"
+                                alt="user-profile" width="30px">
                             <span>
                                 {{ Auth::user()->person->name }}
                             </span>

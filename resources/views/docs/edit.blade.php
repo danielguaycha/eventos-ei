@@ -170,9 +170,11 @@
             </div>
         </div>
         <div class="card-footer text-right">
+            @can('events.design.view')
             <a href="{{ route('design.preview', ['eventId' => $doc->event_id]) }}"
                target="_blank"
                type="button" class="btn btn-outline-secondary"><i class="fa fa-eye mr-1"></i>Previsualizar</a>
+            @endcan
             <button type="submit" class="btn btn-primary"><i class="fa fa-save mr-2"></i> Guardar Diseño</button>
         </div>
     </form>

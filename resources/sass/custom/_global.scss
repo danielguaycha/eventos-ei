@@ -43,12 +43,14 @@ body, .ei-app-content {
                 margin-right: 5px;
             }
             .ei-a-helper {
-                color: #495057a1;
+                color: rgba(black, .3);
+                background: transparent;
                 border-radius: 50%;
-                border: solid transparent;
+                border: none;
+
                 &:focus {
                     outline: none;
-                    border: solid rgba(black, .12);
+                    color: $secondary;
                 }
             }
         }
@@ -62,12 +64,21 @@ body, .ei-app-content {
             }
         }
     }
+
     .card-body {
         .card-body-title {
             color: #4f4f4f8a;
             font-weight: 700;
             margin: 10px 0;
         }
+    }
+}
+
+.card-footer {
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 
@@ -78,7 +89,8 @@ body, .ei-app-content {
 
     ul {
         list-style: none;
-        padding-left: 0px;
+        padding-left: 0;
+
         li {
             list-style: none;
         }

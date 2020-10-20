@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\DocDesigns;
 use App\Event;
 use App\EventParticipant;
 use App\EventPostulant;
 use App\Http\Controllers\Controller;
 use App\Jobs\OneMail;
-use App\Mail\CertificateMail;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class ParticipantController extends Controller
 {
@@ -24,6 +20,8 @@ class ParticipantController extends Controller
         $this->middleware('permission:events.participantes.destroy')->only(['destroy']);
         $this->middleware('permission:events.participantes.add')->only(['add']);
         $this->middleware('permission:events.notas')->only(['listForNotas', 'calificar', 'saveNotas', 'confirmNotas']);
+        $this->middleware('permission:events.notas_edit')->only(['editNotas']);
+        $this->middleware('permission:events.sendmail')->only(['sendOneEmail']);
     }
 
     public function add(Request $request) {
@@ -116,6 +114,7 @@ class ParticipantController extends Controller
     }
 
     public function editNotas($event, Request $request){
+
         $e = Event::findOrFail($event);
         if ($e->type === Event::TypeAsistencia) {
             return redirect(route('events.index'))->with('info', 'El evento es de tipo asistencia');

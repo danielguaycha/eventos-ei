@@ -2,23 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-\Illuminate\Support\Facades\Auth::routes();
 Auth::routes(['verify' => true]);
 
-// initial page
+// index page
 Route::get('/', function () {
     return view('welcome');
 });
+
 // home before login
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
@@ -27,6 +17,9 @@ Route::get('user/profile', 'UserController@profile')->name('user.profile');
 Route::put('user/profile', 'UserController@updateProfile')->name('user.update');
 Route::get('user/password', 'UserController@password')->name('user.password');
 Route::put('user/password', 'UserController@updatePassword')->name('user.update_password');
+
+// rutas publicas
+Route::get('evento/{event}', 'Admin\EventController@show')->name('evento.mostrar');
 
 Route::group(['namespace' => 'Guest'], function () {
     // redirects
@@ -46,7 +39,6 @@ Route::group([
     Route::resource("user/students", 'StudentController');
 
     // events
-
     Route::get('events/broadcast/email/{event}', 'MailBroadCastController@send')->name('events.send_mail');
     Route::get('events/postular/{event}', 'EventController@postular')->name('events.postular');
     Route::resource("events", 'EventController');
@@ -95,24 +87,6 @@ Route::group([
 
     // img
     Route::get('/img/{pathFile}/{filename}/{h?}', 'UtilController@showImg')->name('img')->middleware('auth');
-
-    /*Route::get('mailable', function () {
-        $invoice = App\Event::find(21);
-        return new App\Mail\CertificateMail($invoice, request()->user());
-    });*/
-
-    /*Route::get('/prueba', function () {
-        $event = App\Event::find(21);
-        $user = request()->user();
-        $participante = \App\EventParticipant::find(14);
-
-        return view('docs.certificate', [
-            'event' => $event,
-            'design'=> \App\DocDesigns::where('event_id', $event->id)->first() ,
-            'user' => $user,
-            'notas' => $participante
-        ]);
-    });*/
 });
 
 

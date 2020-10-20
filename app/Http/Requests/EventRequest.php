@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Event;
-use PHPUnit\Util\Type;
+use Illuminate\Foundation\Http\FormRequest;
 
 class EventRequest extends FormRequest
 {
@@ -23,7 +22,7 @@ class EventRequest extends FormRequest
         return [
             'title' => 'required|max:150|min:3',
             'description' => 'nullable|max:255',
-            'type' => 'required|in:'.Event::TypeAsistencia.",".Event::TypeAprovacion.",".Event::TypeAsistenciaAprovation,
+            'type' => 'required|in:' . Event::TypeAsistencia . "," . Event::TypeAprovacion . "," . Event::TypeAsistenciaAprovation,
             'sponsor_id' => 'required|exists:sponsors,id',
             'f_inicio' => 'required|date|date_format:Y-m-d',
             'f_fin' => 'required|date|after:f_inicio|date_format:Y-m-d',
@@ -31,7 +30,8 @@ class EventRequest extends FormRequest
             'matricula_fin' => 'required|date|after:matricula_inicio|date_format:Y-m-d',
             'signatures' => 'required|array|min:1|max:4',
             'signatures.*' => 'exists:signatures,id',
-            'hours' => 'required|numeric|min:0|max:9999'
+            'hours' => 'required|numeric|min:0|max:9999',
+            'update_cert' => 'nullable'
         ];
     }
 

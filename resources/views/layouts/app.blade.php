@@ -6,6 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @include('_globals._meta_icon_head')
 
     <title>{{ config('app.name', 'EI-Event') }}</title>
 

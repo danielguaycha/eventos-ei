@@ -2,7 +2,7 @@
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
-    AddHandler application/x-httpd-ea-php71 .php .php7 .phtml
+    # AddHandler application/x-httpd-ea-php71 .php .php7 .phtml
     RewriteEngine On
 
     # Handle Authorization Header

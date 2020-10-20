@@ -122,9 +122,13 @@
 
         </div>
         <div class="card-footer text-right">
-            <a class="btn btn-primary"
-               href="{{ route('doc.edit', ['id' => $event->id]) }}">Diseñar certificado</a>
-            <button type="submit" class="btn btn-success"><i class="fa fa-redo-alt mr-1"></i>Actualizar Evento</button>
+            <button type="submit" name="update_cert" value="true"
+                    class="btn btn-outline-primary"><i class="fa fa-redo-alt mr-1"></i>Actualizar evento & certificado
+            </button>
+
+            <button type="submit"
+                    class="btn btn-success"><i class="fa fa-redo-alt mr-1"></i>Actualizar
+            </button>
         </div>
     </form>
 @stop

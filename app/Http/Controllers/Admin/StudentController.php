@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Event;
 use App\EventParticipant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StudentRequest;
@@ -25,6 +24,7 @@ class StudentController extends Controller
         $this->middleware('permission:students.store')->only(['store', 'create']);
         $this->middleware('permission:students.update')->only(['edit', 'update']);
         $this->middleware('permission:students.destroy')->only(['destroy']);
+        $this->middleware('permission:students.view.events')->only(['show']);
     }
 
     public function search(Request $request) {

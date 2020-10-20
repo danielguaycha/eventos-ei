@@ -50,10 +50,6 @@ class Event extends Model
         return $this->belongsToMany(User::class, 'event_participants');
     }
 
-    public function admins() {
-        return $this->belongsToMany(User::class, "user_admin_events", "event_id", "user_id");
-    }
-
     public function isAdmin($userId){
         return $this->admins()->where([
             ['user_id', $userId],
@@ -61,7 +57,12 @@ class Event extends Model
         ])->exists();
     }
 
+    public function admins() {
+        return $this->belongsToMany(User::class, "user_admin_events", "event_id", "user_id");
+    }
+
     // obtener tipo
+
     public function type() {
         switch ($this->type) {
             case Event::TypeAsistenciaAprovation:
@@ -92,19 +93,22 @@ class Event extends Model
     public function matriculaDate(){
         return $this->formatDates($this->matricula_inicio, $this->matricula_fin);
     }
-    public function eventDate() {
-        return $this->formatDates($this->f_inicio, $this->f_fin);
-    }
-    public function eventDateForDoc(){
-        return $this->humanizeDate($this->f_inicio, $this->f_fin);
-    }
 
-    // formatear fechas
     public function formatDates($ini, $end) {
         $ini = Carbon::parse($ini);
         $end = Carbon::parse($end);
 
-        return $ini->isoFormat("D/MMM/YY")." - ".$end->isoFormat("D/MMM/YY");
+        return $ini->isoFormat("D/MMM/Y") . " - " . $end->isoFormat("D/MMM/Y");
+    }
+
+    public function eventDate() {
+        return $this->formatDates($this->f_inicio, $this->f_fin);
+    }
+
+    // formatear fechas
+
+    public function eventDateForDoc(){
+        return $this->humanizeDate($this->f_inicio, $this->f_fin);
     }
 
     public function humanizeDate($ini, $end) {

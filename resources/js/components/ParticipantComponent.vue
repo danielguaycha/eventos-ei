@@ -5,7 +5,7 @@
                 <b><i class="fa fa-user"></i>Listado de participantes ({{ laravelData.data ?  laravelData.data.length : 0}})</b>
             </div>
             <div class="d-flex">
-                <DlgSendEmails v-if="event"
+                <DlgSendEmails v-if="event && canSend"
                                ref="sendEmail"
                                v-model="dialogEmail"
                                :event="event.id" :participantes="laravelData.data"
@@ -95,6 +95,10 @@ export default {
         canDelete: {
             type: Boolean,
             default: false
+        },
+        canSend: {
+            type: Boolean,
+            default: false,
         },
         mail: {
             type: Boolean,
@@ -198,6 +202,7 @@ export default {
             })
         },
         viewBtnSend(p) {
+            if (!this.canSend) return false;
             if (this.event.type === 'asistencia') {
                 return true;
             }

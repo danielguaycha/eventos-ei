@@ -25,6 +25,7 @@ class EventController extends Controller
         // perms
         $this->middleware('permission:events.store')->only(['store', 'create']);
         $this->middleware('permission:events.index')->only(['index']);
+        $this->middleware('permission:events.update')->only(['edit', 'update']);
         $this->middleware('permission:events.admins.add|events.admins.destroy')->only(['indexAdmins']);
     }
 
@@ -109,12 +110,42 @@ class EventController extends Controller
         return back()->with('ok', 'Evento creado con éxito');
     }
 
-    private function getShortLink(){
+    private function getShortLink()
+    {
         $rand = Str::random(8);
         if (Event::where('slug', $rand)->exists()) {
             return $this->getShortLink();
         }
         return $rand;
+    }
+
+    private function getDescriptionByType(Event $e)
+    {
+        $desc = "";
+        switch ($e->type) {
+            case Event::TypeAsistencia:
+                $desc = "Por haber <b>ASISTIDO</b> al evento <b>$e->title</b> realizado " . $e->eventDateForDoc();
+                if ($e->hours > 0) {
+                    $desc .= " equivalente a " . $e->hours . " horas.";
+                }
+                break;
+            case Event::TypeAprovacion:
+                $desc = "Por haber <b>APROBADO</b> al evento <b>$e->title</b>";
+                if ($e->hours > 0) {
+                    $desc .= " equivalente a " . $e->hours . " horas,";
+                }
+                $desc .= "  obteniendo un promedio de {nota}";
+                break;
+            case Event::TypeAsistenciaAprovation:
+                $desc = "Por haber <b>ASISTIDO</b> y <b>APROBADO</b> el evento <b>$e->title</b> realizado " . $e->eventDateForDoc();
+                if ($e->hours > 0) {
+                    $desc .= " equivalente a " . $e->hours . " horas,";
+                }
+                $desc .= " obteniendo un promedio de {nota}";
+                break;
+        }
+
+        return $desc;
     }
 
     public function show($id)
@@ -131,6 +162,14 @@ class EventController extends Controller
         return view('events.guest.show', ['event' => $e, 'isPostulant' => $isPostulant]);
     }
 
+    public function isPostulant($eventId, $userId)
+    {
+        return EventPostulant::where([
+            ['event_id', $eventId],
+            ['user_id', $userId]
+        ])->exists();
+    }
+
     public function edit($id)
     {
         $e = Event::with('signatures')->findOrFail($id);
@@ -142,6 +181,9 @@ class EventController extends Controller
             'signatures' => $signatures
         ]);
     }
+
+
+    //* administradores de eventos
 
     public function update(EventRequest $request, $id)
     {
@@ -167,21 +209,24 @@ class EventController extends Controller
         }
         $e->save();
         $e->signatures()->sync($request->get('signatures'));
-        $imgSignatures = Signature::whereIn('id',$request->get('signatures'))->get();
+        $imgSignatures = Signature::whereIn('id', $request->get('signatures'))->get();
 
         //diseño del certificado
-        DocDesigns::updateOrCreate(
-            ['event_id'=> $e->id],
-            ['sponsor' => $sponsor->name,
-            'description' => $this->getDescriptionByType($e),
-            'event_id'=> $e->id,
-            'date' => $e->f_fin,
-            'sponsor_logo' => $sponsor->logo,
-            'signatures' => $imgSignatures]);
-
+        $msg = 'Datos del evento actualizados';
+        if ($request->has('update_cert')) {
+            DocDesigns::updateOrCreate(
+                ['event_id' => $e->id],
+                ['sponsor' => $sponsor->name,
+                    'description' => $this->getDescriptionByType($e),
+                    'event_id' => $e->id,
+                    'date' => $e->f_fin,
+                    'sponsor_logo' => $sponsor->logo,
+                    'signatures' => $imgSignatures]);
+            $msg = "Datos del evento y certificado actualizados";
+        }
 
         DB::commit();
-        return back()->with('ok', 'Evento actualizado con éxito');
+        return back()->with('ok', $msg);
     }
 
     public function destroy($id)
@@ -190,9 +235,6 @@ class EventController extends Controller
         $event->delete();
         return back()->with('ok', 'Evento eliminado con éxito');
     }
-
-
-    //* administradores de eventos
 
     public function indexAdmins($event){
         $e = Event::findOrFail($event);
@@ -213,7 +255,10 @@ class EventController extends Controller
         ]);
     }
 
-    public function addAdmins(Request $request) {
+    // function postular
+
+    public function addAdmins(Request $request)
+    {
         $request->validate([
             'event_id' => 'required|exists:events,id',
             'user_id' => 'required|exists:users,id'
@@ -267,13 +312,16 @@ class EventController extends Controller
         $admins->delete();
 
         return response()->json([
-           'ok' => true,
-           'message' => 'Administrador eliminando con éxito'
+            'ok' => true,
+            'message' => 'Administrador eliminando con éxito'
         ]);
     }
 
-    // function postular
-    public function postular(Request $request, $event){
+
+    // function for describe event
+
+    public function postular(Request $request, $event)
+    {
 
         $e = Event::findOrFail($event);
 
@@ -291,42 +339,5 @@ class EventController extends Controller
         ]);
 
         return back()->with('ok', 'Tu inscripción fué enviada con éxito');
-    }
-
-    public function isPostulant($eventId, $userId) {
-        return EventPostulant::where([
-            ['event_id', $eventId],
-            ['user_id', $userId]
-        ])->exists();
-    }
-
-
-    // function for describe event
-    private function getDescriptionByType(Event $e) {
-        $desc= "";
-        switch ($e->type){
-            case Event::TypeAsistencia:
-                $desc = "Por haber <b>ASISTIDO</b> al evento <b>$e->title</b> realizado ".$e->eventDateForDoc();
-                if ($e->hours > 0) {
-                    $desc.= " equivalente a ".$e->hours." horas.";
-                }
-                break;
-            case Event::TypeAprovacion:
-                $desc = "Por haber <b>APROBADO</b> al evento <b>$e->title</b>";
-                if ($e->hours > 0) {
-                    $desc.= " equivalente a ".$e->hours." horas,";
-                }
-                $desc.= "  obteniendo un promedio de {nota}";
-                break;
-            case Event::TypeAsistenciaAprovation:
-                $desc = "Por haber <b>ASISTIDO</b> y <b>APROBADO</b> el evento <b>$e->title</b> realizado ".$e->eventDateForDoc();
-                if ($e->hours > 0) {
-                    $desc.= " equivalente a ".$e->hours." horas,";
-                }
-                $desc.= " obteniendo un promedio de {nota}";
-                break;
-        }
-
-        return $desc;
     }
 }

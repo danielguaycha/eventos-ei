@@ -12,7 +12,8 @@
             @endphp
 
             <div id="head_{{ $p->module }}" class="head-perms">
-                <button class="btn btn-block text-left font-weight-bold" type="button"
+                <button class="btn btn-block text-left font-weight-bold"
+                        type="button"
                         data-toggle="collapse" data-target="#body_{{$p->module}}" aria-expanded="true"
                         aria-controls="body_{{ $p->module }}">
                     <i class="fa fa-chevron-down mr-2"></i>

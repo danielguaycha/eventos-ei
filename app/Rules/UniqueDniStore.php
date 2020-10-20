@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use App\Person;
+use App\User;
 use Illuminate\Contracts\Validation\Rule;
 
 class UniqueDniStore implements Rule
@@ -19,9 +20,11 @@ class UniqueDniStore implements Rule
     {
         if ($this->id !== null) {
 
+            $user = User::findOrFail($this->id);
+
             $p = Person::where([
                 ['dni', $value],
-                ['id', '<>', $this->id]
+                ['id', '<>', $user->person_id]
             ])->first();
 
             return !$p;

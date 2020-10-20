@@ -10,7 +10,7 @@
             $svg = QrCode::size(115)->format('svg')
                 ->eyeColor(0, 26, 67, 126, 163, 32, 32)
                 ->eye("square")
-                ->generate("www.daniel.com");
+                ->generate("dguaycha.com");
             $html = '<img src="data:image/svg+xml;base64,'.base64_encode($svg).'" class="qr-img"  width="115" height="115" />';
         @endphp
         <header>
@@ -64,19 +64,17 @@
                     </tr>
                     <tr>
                         <td class="description">
-                            <p >
+                            <p>
                                 {!! $data->description !!}
                             </p>
                         </td>
                     </tr>
-                    <tr>
-
-                            <td class="fecha">
-                                <p>
-                                    Machala, {{ Carbon\Carbon::parse($data->date)->isoFormat('DD [de] MMMM [de] YYYY') }}
-                                </p>
-                            </td>
-
+                    <tr class="content-fecha">
+                        <td class="fecha">
+                            <p>
+                                Machala, {{ Carbon\Carbon::parse($data->date)->isoFormat('DD [de] MMMM [de] YYYY') }}
+                            </p>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -84,21 +82,21 @@
                 {{--FIRMAS--}}
                 <table class="final s-{{ count($data->signatures) }}">
                     <tbody>
-                        <tr>
-                            @foreach ($data->signatures as $s)
-                                <td class="signatures">
-                                    <img src="{{storage_path()}}/app/public/{{ $s['image'] }}" width="100px">
-                                    <div>
-                                        <div class="line"></div>
-                                        <div>{{ $s['name'] }}</div>
-                                        <b>{{ $s['cargo'] }}</b>
-                                    </div>
-                                </td>
-                            @endforeach
-                            <td class="qr">
-                                {!! $html !!}
+                    <tr>
+                        @foreach ($data->signatures as $s)
+                            <td class="signatures">
+                                <img src="{{storage_path()}}/app/public/{{ $s['image'] }}" width="100px">
+                                <div>
+                                    <div class="line"></div>
+                                    <div>{{ $s['name'] }}</div>
+                                    <b>{{ $s['cargo'] }}</b>
+                                </div>
                             </td>
-                        </tr>
+                        @endforeach
+                        <td class="qr">
+                            {!! $html !!}
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

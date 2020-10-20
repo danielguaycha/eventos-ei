@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\User;
+use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
 class RolesSeeder extends Seeder
 {
     public function run()
@@ -29,6 +30,7 @@ class RolesSeeder extends Seeder
 
         // Estudiantes
         $this->addPerm("Estudiantes", "events.add.students", "Agregar estudiante a un evento");
+        $this->addPerm("Estudiantes", "students.view.events", "Ver eventos tomados por un estudiante");
 
         //* Eventos
         $this->addPerm('Eventos', 'events.all', 'Acceso a listar todos todos los eventos registrados');
@@ -49,8 +51,10 @@ class RolesSeeder extends Seeder
 
         // calificaciones
         $this->addPerm("Eventos", "events.notas", "Ingresar notas a estudiantes en los eventos");
-        $this->addPerm("Eventos", "events.notas.edit", "Permite editar las notas luego de ser procesadas");
+        $this->addPerm("Eventos", "events.notas_edit", "Permite editar las notas luego de ser procesadas");
 
+        // enviar certificados
+        $this->addPerm("Eventos", "events.sendmail", "Permite enviar certificados a los estudiantes");
         // roles
 
         Role::create(['name' => User::rolRoot, 'description' => '']);

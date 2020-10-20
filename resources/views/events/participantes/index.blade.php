@@ -5,7 +5,8 @@
         <b>Evento: </b>{{ $event->title }}
     </div>
     <participantes :event="{{ $event }}"
-                   @if (request()->query('sendmail')) :mail="true" @endif
+                   @if (request()->query('sendmail') ) :mail="true" @endif
+                   @can('events.sendmail') :can-send="true" @endcan
                    @can('events.participantes.destroy') :can-delete="true" @endcan
                    @can('events.participantes.add') :add="true" @endcan />
 @endsection

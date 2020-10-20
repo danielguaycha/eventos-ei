@@ -7,13 +7,14 @@ use App\Http\Requests\AdminRequest;
 use App\Notifications\SendTempPassword;
 use App\Person;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Illuminate\Database\Eloquent\Builder;
 
 
 class AdminController extends Controller
@@ -87,7 +88,8 @@ class AdminController extends Controller
             'email' => Str::lower($request->email),
             'person_id' => $person->id,
             'password' => Hash::make($request->password),
-            'type' => 'other'
+            'type' => 'other',
+            'email_verified_at' => Carbon::now()
         ]);
 
         $user->syncRoles([$role]);

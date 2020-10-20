@@ -10,7 +10,7 @@
         <div class="card">
             <div class="card-header">
                 <b><i class="fa fa-user"></i>Calificaciones</b>
-                @can('events.notas.edit')
+                @can('events.notas_edit')
                     <div>
                         <a href="{{ route('events.notas_edit', ['event'=> $event->id]) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit mr-1"></i>Editar notas</a>
                     </div>

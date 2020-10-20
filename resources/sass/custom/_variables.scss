@@ -11,10 +11,14 @@ $secondary: #F5A420;
 $gray: #6C757D;
 
 // Body
-$body-bg: #f8fafc;
+$body-bg: white;
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: .93rem;
 $line-height-base: 1.7;
 
+
+// cards
+$card-cap-bg: rgba(black, .01);
+$card-border-color: rgba(black, .05) !important;

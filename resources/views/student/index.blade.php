@@ -62,10 +62,14 @@
                                 </td>
                                 <td data-name="Correo">{{ $u->email }}</td>
                                 <td class="text-right">
-                                    <a href="{{route('students.show', ['student' => $u->id])}}" title="Ver cursos"
-                                       class="btn btn-sm btn-secondary"><i class="fa fa-graduation-cap"></i></a>
+                                    @can('students.view.events')
+                                        <a href="{{route('students.show', ['student' => $u->id])}}" title="Ver cursos"
+                                           class="btn btn-sm btn-secondary"><i class="fa fa-graduation-cap"></i></a>
+                                    @endcan
+
                                     @can('students.update')
-                                        <a href="{{ route('students.edit', ['student' => $u->id]) }}" class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
+                                        <a href="{{ route('students.edit', ['student' => $u->id]) }}"
+                                           class="btn btn-sm btn-primary"><i class="fa fa-pen"></i></a>
                                     @endcan
 
                                     @can('students.destroy')

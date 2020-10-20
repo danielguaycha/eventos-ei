@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Person;
 use App\Providers\RouteServiceProvider;
 use App\Rules\CedulaValida;
+use App\Rules\PersonUnique;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -36,15 +36,13 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-
     protected function validator(array $data)
     {
-
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:100', 'min:3'],
             'surname' => ['required', 'string', 'max:100', 'min:3'],
-            'dni' => ['required', 'max:10', 'min:10', new CedulaValida, 'unique:persons,dni'],
-            'role' => ['required', 'in:'.User::rolStudent.','.User::rolParticular.''],
+            'dni' => ['required', 'max:10', 'min:10', new CedulaValida, new PersonUnique($data['dni'])],
+            'role' => ['required', 'in:' . User::rolStudent . ',' . User::rolParticular . ''],
             'email' => ['required', 'string', 'email', 'max:255',
                 function ($attribute, $value, $fail) use ($data) {
                     if ($data['role'] === User::rolStudent) {
@@ -52,32 +50,12 @@ class RegisterController extends Controller
                             $fail('Si eres estudiante de la UTMACH, usa tu correo institucional');
                         }
                     }
-                },'unique:users,email'],
+                }, 'unique:users,email'],
             'password' => ['required',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
                 'string', 'min:8', 'confirmed'],
             'sendEmail' => 'nullable|boolean'
         ], $this->messages());
-    }
-
-    protected function create(array $data)
-    {
-        $person = Person::create([
-            'name' => $data['name'],
-            'surname' => $data['surname'],
-            'dni' => $data['dni']
-        ]);
-
-        $user = User::create([
-            'email' => $data['email'],
-            'person_id' => $person->id,
-            'password' => Hash::make($data['password']),
-            'type' => $data['role']
-        ]);
-
-        $user->syncRoles(User::rolStudent);
-
-        return $user;
     }
 
     private function messages() {
@@ -101,5 +79,33 @@ class RegisterController extends Controller
             'role.required' => 'Debes escoger el modo de inscripción. Estudiante o Particular',
             'role.in' => 'El tipo de inscripción no es válido',
         ];
+    }
+
+    protected function create(array $data)
+    {
+        $person = Person::firstOrCreate(
+            ['dni' => $data['dni']],
+            [
+                'name' => $data['name'],
+                'surname' => $data['surname'],
+                'dni' => $data['dni']
+            ]
+        );
+
+        User::where([
+            ['person_id', $person->id],
+            ['email_verified_at', '=', null]
+        ])->delete();
+
+        $user = User::create([
+            'email' => $data['email'],
+            'person_id' => $person->id,
+            'password' => Hash::make($data['password']),
+            'type' => $data['role']
+        ]);
+
+        $user->syncRoles(User::rolStudent);
+
+        return $user;
     }
 }

@@ -6,14 +6,14 @@
             </div>
             <div v-if="canAdd">
                 <DlgSearchStudent v-model="dialog"
-                                  @onSelect="addAdmin"
-                                  :admin="true"></DlgSearchStudent>
+                                  :admin="true"
+                                  @onSelect="addAdmin"></DlgSearchStudent>
             </div>
         </div>
         <div class="card-body py-0">
             <Loader :loading="loader"></Loader>
             <div class="table-responsive m-0">
-                <table class="table table-bordered table-hover m-0 table-sm " v-if="!loader && laravelData">
+                <table v-if="!loader && laravelData" class="table table-bordered table-hover m-0 table-sm ">
                     <thead>
                     <tr class="align-middle">
                         <th>Administrador</th>
@@ -30,14 +30,14 @@
                         <td data-name="Correo">{{ p.email }}</td>
                         <td data-name="rol">{{ p.roles.map(r => r['description']).join(',')}}</td>
                         <td class="text-right">
-                            <button type="button" v-if="canDelete" @click="deleteAdmin(p)"
-                                    class="btn btn-sm btn-outline-danger" >
+                            <button v-if="canDelete" class="btn btn-sm btn-outline-danger" type="button"
+                                    @click="deleteAdmin(p)">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </td>
                     </tr>
                     <tr v-if="laravelData.data && laravelData.data.length <=0">
-                        <td colspan="4" class="no-data" >No hay administradores para este evento</td>
+                        <td class="no-data" colspan="4">No hay administradores para este evento</td>
                     </tr>
                     </tbody>
                 </table>
@@ -46,19 +46,21 @@
         <div class="card-body py-0 text-center">
             <pagination :data="laravelData" @pagination-change-page="getAdmins"/>
         </div>
-
+        <dlg-confirm ref="confirm"></dlg-confirm>
     </div>
 </template>
 
 <script>
 import Loader from "./_partials/Loader";
 import DlgSearchStudent from "./_dialog/DlgSearchStudent";
+import DlgConfirm from "./_dialog/DlgConfirm";
+
 export default {
     name: "AdminsEventComponent",
-    components: {DlgSearchStudent, Loader},
+    components: {DlgConfirm, DlgSearchStudent, Loader},
     props: {
         event: {
-            type: Number|String,
+            type: Number | String,
             default: null
         },
         canAdd: {
@@ -90,7 +92,7 @@ export default {
                 }
             }).finally(() => this.loader = false);
         },
-        addAdmin(p) {
+        async addAdmin(p) {
             if (!this.canAdd) return;
             if (this.laravelData.data.find(e => e.id === p.id)) {
                 this.$alert.err("Esta persona ya esta en la lista");
@@ -98,47 +100,51 @@ export default {
             }
             this.dialog = false;
             let self = this;
-            this.$dialog
-                .confirm({title: 'Agregar nuevo administrador', body: `¿Esta seguro que desea agregar a ${p.surname} ${p.name} de la lista de administradores?`}, {loader: true})
-                .then(function(dialog) {
 
-                    axios.post(`/events/admins/add`, {event_id: self.event, user_id: p.id}).then(res =>{
-                        if (res.data.ok) {
-                            self.laravelData.data.push({
-                                person: {
-                                    surname : p.surname,
-                                    name: p.name,
-                                    dni: p.dni,
-                                    id: p.person_id
-                                },
-                                id: p.id,
-                                email: p.email,
-                                roles: p.roles
-                            });
-                            self.$alert.ok(res.data.message);
-                        }
-                    }).finally(() => {
-                        dialog.close();
+            if (!await this.$refs.confirm.open('Agregar Administrador',
+                `¿Esta seguro que desea agregar a ${p.surname} ${p.name} de la lista de administradores?`, {loader: true})) {
+                return;
+            }
+
+            axios.post(`/events/admins/add`, {event_id: self.event, user_id: p.id}).then(res => {
+                if (res.data.ok) {
+                    self.laravelData.data.push({
+                        person: {
+                            surname: p.surname,
+                            name: p.name,
+                            dni: p.dni,
+                            id: p.person_id
+                        },
+                        id: p.id,
+                        email: p.email,
+                        roles: p.roles
                     });
-                })
+                    self.$alert.ok(res.data.message);
+                }
+            }).finally(() => {
+                this.$refs.confirm.close();
+            });
+
         },
-        deleteAdmin(p){
+        async deleteAdmin(p) {
             if (!this.canDelete) return;
             let self = this;
-            this.$dialog
-                .confirm({title: 'Confirmar eliminación', body: `¿Esta seguro que desea eliminar a ${p.surname} de la lista de administradores?`}, {loader: true})
-                .then(function(dialog) {
-                    axios.delete(`/events/admins/${self.event}/${p.id}`).then(res =>{
-                        if (res.data.ok) {
-                            const index = self.laravelData.data.indexOf(p);
-                            if (index>= 0) {
-                                self.laravelData.data.splice(index, 1);
-                            }
-                            self.$alert.ok(res.data.message);
-                        }
-                    }).catch(err => self.$alert.err(err))
-                        .finally(() => dialog.close());
-                })
+            if (!await this.$refs.confirm.open('Confirmar Eliminación',
+                `¿Esta seguro que desea eliminar a ${p.person.surname} ${p.person.name}  de la lista de administradores?`,
+                {loader: true})) {
+                return;
+            }
+
+            axios.delete(`/events/admins/${self.event}/${p.id}`).then(res => {
+                if (res.data.ok) {
+                    const index = self.laravelData.data.indexOf(p);
+                    if (index >= 0) {
+                        self.laravelData.data.splice(index, 1);
+                    }
+                    self.$alert.ok(res.data.message);
+                }
+            }).catch(err => self.$alert.err(err))
+                .finally(() => this.$refs.confirm.close());
         }
     },
 }
