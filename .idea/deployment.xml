@@ -9,13 +9,21 @@
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/vendor" />
-            <excludedPath local="true" path="$PROJECT_DIR$/node_modules" />
-            <excludedPath local="true" path="$PROJECT_DIR$/.env" />
+            <excludedPath local="true" path="$PROJECT_DIR$/tests" />
             <excludedPath local="true" path="$PROJECT_DIR$/.vscode" />
             <excludedPath local="true" path="$PROJECT_DIR$/.idea" />
-            <excludedPath local="true" path="$PROJECT_DIR$/storage/app/public/signatures" />
-            <excludedPath local="true" path="$PROJECT_DIR$/storage/app/public/sponsors" />
+            <excludedPath local="true" path="$PROJECT_DIR$/node_modules" />
+            <excludedPath local="true" path="$PROJECT_DIR$/public/plugins" />
+            <excludedPath local="true" path="$PROJECT_DIR$/public/.htaccess" />
+            <excludedPath local="true" path="$PROJECT_DIR$/public/robots.txt" />
             <excludedPath local="true" path="$PROJECT_DIR$/resources/sass" />
+            <excludedPath local="true" path="$PROJECT_DIR$/resources/lang" />
+            <excludedPath local="true" path="$PROJECT_DIR$/routes/channels.php" />
+            <excludedPath local="true" path="$PROJECT_DIR$/routes/api.php" />
+            <excludedPath local="true" path="$PROJECT_DIR$/routes/console.php" />
+            <excludedPath local="true" path="$PROJECT_DIR$/storage" />
+            <excludedPath local="true" path="$PROJECT_DIR$/app/Console" />
+            <excludedPath local="true" path="$PROJECT_DIR$/app/Exceptions" />
           </excludedPaths>
         </serverdata>
       </paths>

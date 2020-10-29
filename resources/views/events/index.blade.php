@@ -61,7 +61,7 @@
                                 <div class="ei-event-body">
                                     <div class="organizador">
                                         @if ($e->sponsor->logo)
-                                            <img src="{{ url('img/'.$e->sponsor->logo) }}" alt="logo">
+                                            <img src="{{ url('img/'.$e->sponsor->logo.'/20') }}" alt="logo">
                                         @endif
                                         <span>
                                             {{ $e->sponsor->name }}

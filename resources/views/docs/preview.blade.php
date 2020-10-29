@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Documento Generado</title>
+        @include('_globals._meta_icon_head')
         <style>
             {!! include ('css/doc.css') !!}
         </style>

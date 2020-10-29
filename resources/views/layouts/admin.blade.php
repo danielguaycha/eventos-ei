@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'EI-Event') }}</title>
+    <title>Admin | {{ config('app.name', 'EI-Event') }} </title>
 
 @include('_globals._meta_icon_head')
 
@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}?v=1.0.0.1" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?v=1.0.0.2" rel="stylesheet">
     @yield('css')
     @stack('styles')
 </head>
@@ -142,25 +142,25 @@
                     </li>
                 </ul>
             </nav>
-            @endauth
-            {{--Parant content--}}
-            <main class="ei-parent-content" class="py-4" id="app">
-                @yield('content')
-            </main>
-        </div>
+        @endauth
+        {{--Parant content--}}
+        <main class="ei-parent-content" class="py-4" id="app">
+            @yield('content')
+        </main>
     </div>
+</div>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script>
-        $(document).on('click','.delete',function(){
-            let id = $(this).attr('data-id');
-            let url = $(this).attr('data-url')
-            $('#delete-id').val(id);
-            $('#delete-form').attr("action", url);
-        });
-    </script>
-    @yield('js')
-    @stack('js')
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}?v=1.0.0.1"></script>
+<script>
+    $(document).on('click', '.delete', function () {
+        let id = $(this).attr('data-id');
+        let url = $(this).attr('data-url')
+        $('#delete-id').val(id);
+        $('#delete-form').attr("action", url);
+    });
+</script>
+@yield('js')
+@stack('js')
 </body>
 </html>

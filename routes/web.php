@@ -6,7 +6,7 @@ Auth::routes(['verify' => true]);
 
 // index page
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 // home before login
@@ -28,7 +28,7 @@ Route::group(['namespace' => 'Guest'], function () {
 });
 
 Route::group([
-    'namespace' => 'Admin', 'middleware' => ['verified']], function () {
+    'namespace' => 'Admin', 'middleware' => ['verified', 'role:root|admin']], function () {
     // roles
     Route::resource('rol', 'RoleController')->except('show');
     // admins

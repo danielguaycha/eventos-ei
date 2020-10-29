@@ -325,7 +325,7 @@ class EventController extends Controller
 
         $e = Event::findOrFail($event);
 
-        if (!Carbon::now()->isBefore($e->matricula_fin)) {
+        if (!Carbon::now()->isAfter($e->matricula_fin)) {
             return back()->with('err', 'El periodo de matricula ha terminado');
         }
 

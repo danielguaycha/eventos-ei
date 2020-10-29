@@ -36,7 +36,8 @@
                         </ul>
                     </div>
                     @if (!$isPostulant)
-                        @if (\Carbon\Carbon::now()->isBefore($event->matricula_fin))
+                        {{ \Carbon\Carbon::now() }}
+                        @if (\Carbon\Carbon::now()->isBefore(\Carbon\Carbon::parse($event->matricula_fin)))
                             <a href="{{ route('events.postular', ['event' => $event->id]) }}"
                                class="btn btn-primary btn-block mt-2"> <i class="fa fa-graduation-cap mr-2"></i>
                                 Inscribirme</a>
