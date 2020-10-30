@@ -21,7 +21,7 @@ class CreateEventsTable extends Migration
             $table->string("description", 255)->nullable();
             $table->integer('hours')->default(0);
             //type
-            $table->enum('type', ['asistencia', 'aprobacion' ,'asistencia_aprobacion']);
+            $table->enum('type', ['asistencia', 'aprobacion', 'asistencia_aprobacion']);
             //fechas
             $table->date("f_inicio");
             $table->date("f_fin");
@@ -29,8 +29,9 @@ class CreateEventsTable extends Migration
             $table->date("matricula_fin");
 
             $table->smallInteger("status")->default(1);
-
             $table->unsignedBigInteger('sponsor_id');
+
+            $table->smallInteger('visible')->default(0);
 
             $table->timestamps();
             $table->softDeletes();

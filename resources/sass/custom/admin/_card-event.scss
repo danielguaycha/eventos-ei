@@ -22,15 +22,66 @@
     .ei-event-head {
         padding: 0rem .8rem;
         margin-bottom: 10px;
+        position: relative;
+
         .title {
             display: inline-block;
             min-height: 40px;
+
             span {
                 font-size: .89em;
                 display: inline-block;
                 font-weight: 600;
                 line-height: 18px !important;
                 color: darken($gray, 10);
+            }
+        }
+
+        .btn-visible {
+            position: absolute;
+            right: 0;
+            top: -1rem;
+
+            button {
+                transition: all .15s ease-in;
+                border: none;
+                background: $gray-100;
+                border-bottom-left-radius: 25px;
+                padding: .5rem;
+
+                .spinner-border {
+                    height: .9rem;
+                    width: .9rem;
+                    color: #ccc !important;
+                    position: relative;
+                    top: -5px;
+                }
+
+                @include desktop {
+                    padding: .3rem;
+                }
+
+                &:focus, &:active {
+                    outline: none;
+                }
+
+                &.eye {
+                    color: rgba($green, 1);
+
+                    &:hover {
+                        background: rgba($green, 1);
+                        color: white;
+                    }
+                }
+
+                &.eye-slash {
+                    color: rgba($red, 1);
+
+                    &:hover {
+                        background: $red;
+                        color: white;
+                    }
+                }
             }
         }
     }

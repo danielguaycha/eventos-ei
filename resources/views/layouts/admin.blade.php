@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}?v=1.0.0.2" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?v=1.0.0.3" rel="stylesheet">
     @yield('css')
     @stack('styles')
 </head>
@@ -151,7 +151,7 @@
 </div>
 
 <!-- Scripts -->
-<script src="{{ asset('js/app.js') }}?v=1.0.0.1"></script>
+<script src="{{ asset('js/app.js') }}?v=1.0.0.2"></script>
 <script>
     $(document).on('click', '.delete', function () {
         let id = $(this).attr('data-id');

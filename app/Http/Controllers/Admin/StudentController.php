@@ -166,13 +166,14 @@ class StudentController extends Controller
         $eventos = EventParticipant::join('events', 'events.id', 'event_participants.event_id')
             ->where('event_participants.user_id', $e->id)
             ->select(
-                'events.id',
+                'event_participants.id',
                 'events.title',
                 'events.type',
+                'events.f_fin',
                 'event_participants.nota_7',
                 'event_participants.nota_3',
                 'event_participants.status'
-            )
+            )->orderBy('f_fin', 'desc')
             ->get();
 
         return view('student.show', ['student' => $e, 'events' => $eventos]);

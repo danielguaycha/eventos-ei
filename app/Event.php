@@ -21,7 +21,7 @@ class Event extends Model
     protected $hidden = ['pivot'];
 
     protected $fillable = [
-        'status'
+        'status', 'visible'
     ];
 
     protected $casts = [

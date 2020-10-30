@@ -182,6 +182,7 @@ export default {
             }).finally(() => this.$refs.confirm.close());
         },
         // enviar certificado
+
         sendEmailCert(p, index) {
             if (!p) return;
             this.loaders[index].loader = true;

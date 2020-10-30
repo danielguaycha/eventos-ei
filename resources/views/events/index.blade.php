@@ -37,70 +37,78 @@
                     No se han agregado eventos
                 </div>
             @endif
-                <div class="ei-content">
-                    @foreach ($events as $e)
-                        <div class="ei-event-content">
-                            <div class="ei-event">
-                                <div class="ei-event-head">
-                                    @if (Str::length($e->title) >= 90)
-                                        <div class="title">
+            <div class="ei-content">
+                @foreach ($events as $e)
+                    <div class="ei-event-content">
+
+                        <div class="ei-event">
+
+                            <div class="ei-event-head">
+                                @can('events.visibility')
+                                    <div class="btn-visible">
+                                        <event-visible :event="{{ $e->id }}" :visible="{{ $e->visible }}"/>
+                                    </div>
+                                @endcan
+                                @if (Str::length($e->title) >= 90)
+                                    <div class="title">
                                             <span>{{  Str::substr($e->title, 0, 90).'...'  }}
-                                             <a href="#" role="button"tabindex="0"class="popover-dismiss"
+                                             <a href="#" role="button" tabindex="0" class="popover-dismiss"
                                                 data-content="{{ $e->title }}"
-                                                data-toggle="popover" data-trigger="focus" >Ver más</a>
+                                                data-toggle="popover" data-trigger="focus">Ver más</a>
                                             </span>
-                                        </div>
-                                    @else
-                                        <div class="title">
+                                    </div>
+                                @else
+                                    <div class="title">
                                             <span>
                                                 {{ $e->title }}
                                             </span>
-                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="ei-event-body">
+                                <div class="organizador">
+                                    @if ($e->sponsor->logo)
+                                        <img src="{{ url('img/'.$e->sponsor->logo.'/20') }}" alt="logo">
                                     @endif
-                                </div>
-                                <div class="ei-event-body">
-                                    <div class="organizador">
-                                        @if ($e->sponsor->logo)
-                                            <img src="{{ url('img/'.$e->sponsor->logo.'/20') }}" alt="logo">
-                                        @endif
-                                        <span>
+                                    <span>
                                             {{ $e->sponsor->name }}
                                         </span>
-                                    </div>
-                                    <div class="type">
-                                        @switch($e->type)
-                                            @case('asistencia')
-                                            Asistencia
-                                            @break
-                                            @case('aprobacion')
-                                            Aprobación
-                                            @break
-                                            @case('asistencia_aprobacion')
-                                            Asistencia y Aprobación
-                                            @break
-                                        @endswitch
-
-                                    </div>
-                                    <a class="more" data-toggle="collapse" href="#dates_{{$e->id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                        <i class="fa fa-chevron-down"></i>
-                                        <span>{{$e->hours}}h</span>
-                                    </a>
-                                    <div class="collapse" id="dates_{{$e->id}}">
-                                        <div class="dates">
-                                            <small>F. Matriculas</small>
-                                            <div>{{ $e->matriculaDate() }}</div>
-                                            <small>Periodo del curso</small>
-                                            <div>{{ $e->eventDate() }}</div>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div class="ei-event-footer d-flex justify-content-between">
-                                    @include('events._partials.actions-event', ['e' => $e])
+                                <div class="type">
+                                    @switch($e->type)
+                                        @case('asistencia')
+                                        Asistencia
+                                        @break
+                                        @case('aprobacion')
+                                        Aprobación
+                                        @break
+                                        @case('asistencia_aprobacion')
+                                        Asistencia y Aprobación
+                                        @break
+                                    @endswitch
+
+                                </div>
+                                <a class="more" data-toggle="collapse" href="#dates_{{$e->id}}" role="button"
+                                   aria-expanded="false" aria-controls="collapseExample">
+                                    <i class="fa fa-chevron-down"></i>
+                                    <span>{{$e->hours}}h</span>
+                                </a>
+                                <div class="collapse" id="dates_{{$e->id}}">
+                                    <div class="dates">
+                                        <small>F. Matriculas</small>
+                                        <div>{{ $e->matriculaDate() }}</div>
+                                        <small>Periodo del curso</small>
+                                        <div>{{ $e->eventDate() }}</div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="ei-event-footer d-flex justify-content-between">
+                                @include('events._partials.actions-event', ['e' => $e])
+                            </div>
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
     @include('admins._partials._modal', ['msg'=> '¿Esta seguro que desea eliminar este evento?'])

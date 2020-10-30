@@ -33,6 +33,7 @@ class RolesSeeder extends Seeder
         $this->addPerm("Estudiantes", "students.view.events", "Ver eventos tomados por un estudiante");
 
         //* Eventos
+        $this->addPerm('Eventos', 'events.visibility', 'Cambiar la visibilidad de un evento');
         $this->addPerm('Eventos', 'events.all', 'Acceso a listar todos todos los eventos registrados');
         $this->addPerm("Eventos", "events.design.edit", "Diseñar certificados para eventos");
         $this->addPerm("Eventos", "events.design.view", "Pre-visualizar certificados de eventos");

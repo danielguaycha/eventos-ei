@@ -26,6 +26,7 @@ class EventController extends Controller
         $this->middleware('permission:events.store')->only(['store', 'create']);
         $this->middleware('permission:events.index')->only(['index']);
         $this->middleware('permission:events.update')->only(['edit', 'update']);
+        $this->middleware('permission:events.visibility')->only(['visibility']);
         $this->middleware('permission:events.admins.add|events.admins.destroy')->only(['indexAdmins']);
     }
 
@@ -334,10 +335,26 @@ class EventController extends Controller
         }
 
         EventPostulant::create([
-           'event_id' => $e->id,
-           'user_id' => $request->user()->id
+            'event_id' => $e->id,
+            'user_id' => $request->user()->id
         ]);
 
         return back()->with('ok', 'Tu inscripción fué enviada con éxito');
+    }
+
+    public function visibility($id)
+    {
+        $e = Event::findOrFail($id);
+        if ($e->visible === 1) {
+            $visibility = 0;
+            $msg = "Evento marcado como oculto";
+        } else {
+            $visibility = 1;
+            $msg = "Evento marcado como visible";
+        }
+
+        $e->visible = $visibility;
+        $e->save();
+        return response()->json(['ok' => true, 'data' => $e->visible, 'message' => $msg]);
     }
 }

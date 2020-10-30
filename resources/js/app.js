@@ -26,6 +26,8 @@ Vue.component('participantes', require('./components/ParticipantComponent.vue').
 Vue.component('notas', require('./components/NotasComponent.vue').default);
 Vue.component('admins', require('./components/AdminsEventComponent.vue').default);
 Vue.component('table-notas', require('./components/_partials/TableNotas.vue').default);
+Vue.component('students', require('./components/ShowStudent').default);
+Vue.component('event-visible', require('./components/_partials/BtnVisibleEvent').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

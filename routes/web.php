@@ -39,6 +39,7 @@ Route::group([
     Route::resource("user/students", 'StudentController');
 
     // events
+    Route::get('events/visibility/{event}', 'EventController@visibility');
     Route::get('events/broadcast/email/{event}', 'MailBroadCastController@send')->name('events.send_mail');
     Route::get('events/postular/{event}', 'EventController@postular')->name('events.postular');
     Route::resource("events", 'EventController');
@@ -90,4 +91,6 @@ Route::group([
 });
 
 
-
+/*Route::get('mail', function () {
+    return (new \App\Mail\ContactMail("Hola", "Este es mi mensaje", "danielguaycha@gmail.com", "Daniel Guaycha"));
+});*/
